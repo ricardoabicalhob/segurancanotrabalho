@@ -133,6 +133,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     }
 
     const handleGenerate = async ()=> {
+        
         try {
             const response = await fetch('../../api/generate', {
                 method: 'POST',
