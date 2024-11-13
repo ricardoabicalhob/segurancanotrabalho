@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
 import { Accordion, AccordionContent } from "@/components/ui/accordion";
