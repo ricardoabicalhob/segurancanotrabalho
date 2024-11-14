@@ -35,7 +35,7 @@ export default function CardListRisk({ listRisks } :CardListRiskProps){
                                 <div className="flex gap-2 justify-center">
                                 {
                                     item.images.map((image, index) => (
-                                        <img key={index} className="w-[150px] h-[80px] mt-1 mb-1" src={image} />
+                                        <img key={index} alt="" className="w-[150px] h-[80px] mt-1 mb-1" src={image} />
                                     ))
                                 }
                                 </div>
