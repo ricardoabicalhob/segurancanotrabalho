@@ -4,7 +4,18 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts'
 
 pdfMake.vfs = pdfFonts
 
-export default async function generatePdf(contentEntry :Array<RiskProps>) {
+export type inspectionInformations = {
+    empresa :string
+    areaLotacao :string
+    localInspecionado :string
+    areaEmitente :string
+    cidade :string
+    cipa :string
+    data : Date
+    hora :string
+}
+
+export default async function generatePdf(contentEntry :Array<RiskProps>, inspectionInformations :inspectionInformations) {
 
     const documentDefinition = {
 
@@ -19,11 +30,11 @@ export default async function generatePdf(contentEntry :Array<RiskProps>) {
                             // headers are automatically repeated if the table spans over multiple pages
                             // you can declare how many rows should be treated as headers
                             headerRows: 1,
-                            widths: [ '*', '*', '*' ],
+                            widths: [ '*', 'auto', 'auto' ],
                     
                             body: [
-                              [ {text: 'Empresa: ', fontSize: 11}, {text: 'Data: ', fontSize: 11}, {text: 'Hora: ', fontSize: 11} ],
-                              [ {text: 'Local: ', fontSize: 11}, {text: 'Cidade: ', fontSize: 11}, {text: 'Área emitente: ', fontSize: 11} ],
+                              [ {text: `Empresa: ${inspectionInformations.empresa}`, fontSize: 11}, {text: `Data: ${inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`, fontSize: 11}, {text: `Hora: ${inspectionInformations.hora}`, fontSize: 11} ],
+                              [ {text: `Local: ${inspectionInformations.localInspecionado}`, fontSize: 11}, {text: `Cidade: ${inspectionInformations.cidade}`, fontSize: 11}, {text: `Área emitente: ${inspectionInformations.areaEmitente}`, fontSize: 11} ],
                             ]
                           }
                     },

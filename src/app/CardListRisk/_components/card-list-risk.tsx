@@ -9,12 +9,14 @@ import { Button } from "@/components/ui/button";
 import generatePdf from '@/lib/pdf-generate'
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { inspectionInformations } from "@/lib/pdf-generate";
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
+    inspectionInformations :inspectionInformations
 }
 
-export default function CardListRisk({ listRisks } :CardListRiskProps){
+export default function CardListRisk({ listRisks , inspectionInformations} :CardListRiskProps){
 
     return(
         <Card className="mx-auto max-w-md">
@@ -23,7 +25,7 @@ export default function CardListRisk({ listRisks } :CardListRiskProps){
             </CardHeader>
             <Accordion type="single" collapsible className="w-full px-6 py-4">
                 {
-                    listRisks !== undefined
+                    listRisks
                     ?
                     listRisks.map((item, index)=>(
                         <AccordionItem key={index} value={index.toString()} className="my-6">
@@ -36,7 +38,8 @@ export default function CardListRisk({ listRisks } :CardListRiskProps){
                                 <div className="flex gap-2 justify-center">
                                 {
                                     item.images.map((image, index) => (
-                                        <Image key={index} alt="" className="w-[150px] h-[80px] mt-1 mb-1" src={image} />
+                                        // <image key={index} className="w-[150px] h-[80px] mt-1 mb-1" src={image}/>
+                                        <Image key={index} alt="" className="w-[150px] h-[90px] mt-1 mb-1" src={image} width={150} height={90}/>
                                     ))
                                 }
                                 </div>
@@ -62,7 +65,8 @@ export default function CardListRisk({ listRisks } :CardListRiskProps){
                 }
             </Accordion>
             <CardFooter>
-                <Button onClick={()=>generatePdf(listRisks)}>Gerar PDF</Button>
+                <Button onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
+                <Button onClick={()=>console.log(inspectionInformations)}>Console</Button>
             </CardFooter>
         </Card>
     )
