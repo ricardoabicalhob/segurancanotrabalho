@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import generatePdf from '@/lib/pdf-generate'
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
@@ -35,7 +36,7 @@ export default function CardListRisk({ listRisks } :CardListRiskProps){
                                 <div className="flex gap-2 justify-center">
                                 {
                                     item.images.map((image, index) => (
-                                        <img key={index} alt="" className="w-[150px] h-[80px] mt-1 mb-1" src={image} />
+                                        <Image key={index} alt="" className="w-[150px] h-[80px] mt-1 mb-1" src={image} />
                                     ))
                                 }
                                 </div>
