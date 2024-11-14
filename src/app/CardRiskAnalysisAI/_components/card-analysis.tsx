@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
 import { Minus, Plus, TriangleAlert } from "lucide-react";
 import { useState } from "react";
+import generateAI from "../_actions/genateAI";
+import { GenerateAI } from "@/lib/generate-ai";
 
 export type RiskProps = {
     risco :string
@@ -23,7 +25,7 @@ interface CardRiskAnalysisAIProps {
 
 export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps) {
 
-    const [prompt, setPrompt] = useState('')
+    const [prompt, setPrompt] = useState<string>('')
     const [code, setCode] = useState<RiskProps>()
     const [formEditable, setFormEditable] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -132,31 +134,45 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
+    //=========COLOCAR DENTRO DE UM ACTION SERVER ================
     const handleGenerate = async ()=> {
-        
+
         try {
-            const response = await fetch('../../api/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({body: prompt}),
-            })
-    
-            const data = await response.json()
+            const response = await GenerateAI(prompt)
+            const data = await response?.json()
 
-
-            if(response.ok) {
+            if(response?.ok) {
                 setCode(data)
                 setIsLoading(false)
-            }else{
-                console.log('Algo deu errado!')
             }
-
         }catch(error) {
-            console.log('Error: ', error)
+            console.log('Erro: ', error)
         }
+        
+        // try {
+        //     const response = await fetch('../../api/generate', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({body: prompt}),
+        //     })
+    
+        //     const data = await response.json()
+
+
+        //     if(response.ok) {
+        //         setCode(data)
+        //         setIsLoading(false)
+        //     }else{
+        //         console.log('Algo deu errado!')
+        //     }
+
+        // }catch(error) {
+        //     console.log('Error: ', error)
+        // }
     }
+    //=====================================================
 
     function handleDeleteConsequence(index :number) {
         if(code) {
@@ -259,6 +275,8 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             </div>
                             
                             <Input 
+                                id="prompt"
+                                name="prompt"
                                 disabled={formEditable}
                                 className="grid-w-full items-center gap-1.5"
                                 type="text" 
@@ -267,6 +285,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 onChange={(e)=> setPrompt(e.target.value)}
                             />
                             
+                            {/* <Button formAction={generateAI} className="hover:bg-zinc-600">Analisar situação de risco com IA</Button> */}
                             <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className="hover:bg-zinc-600">Analisar situação de risco com IA</Button>
                             {isLoading && <LoadingIndicator />}
                         </div>
