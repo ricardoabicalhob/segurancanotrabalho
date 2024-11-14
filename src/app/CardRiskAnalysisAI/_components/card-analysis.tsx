@@ -134,7 +134,6 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
-    //=========COLOCAR DENTRO DE UM ACTION SERVER ================
     const handleGenerate = async ()=> {
 
         try {
@@ -172,7 +171,6 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         //     console.log('Error: ', error)
         // }
     }
-    //=====================================================
 
     function handleDeleteConsequence(index :number) {
         if(code) {
