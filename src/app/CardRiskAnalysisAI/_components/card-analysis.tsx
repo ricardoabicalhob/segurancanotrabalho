@@ -9,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
 import { Minus, Plus, TriangleAlert } from "lucide-react";
 import { useState } from "react";
-import generateAI from "../_actions/genateAI";
 import { GenerateAI } from "@/lib/generate-ai";
 
 export type RiskProps = {

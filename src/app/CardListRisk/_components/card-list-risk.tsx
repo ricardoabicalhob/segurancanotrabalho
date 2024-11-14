@@ -66,7 +66,6 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
             </Accordion>
             <CardFooter>
                 <Button onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
-                <Button onClick={()=>console.log(inspectionInformations)}>Console</Button>
             </CardFooter>
         </Card>
     )

@@ -66,13 +66,13 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                             {text: 'Consequências', fontSize: 12, bold: true},
                             {text: ' ', },
                             {
-                                ul: riskSituation.consequencias, fontSize: 11, alignment: 'justify'
+                                ul: [...riskSituation.consequencias], fontSize: 11, alignment: 'justify'
                             },
                             {text: ' '},
                             {text: 'Ações recomendadas', fontSize: 12, bold: true},
                             {text: ' ', },
                             {
-                                ul: riskSituation.acoes, fontSize: 11, alignment: 'justify'
+                                ul: [...riskSituation.acoes], fontSize: 11, alignment: 'justify'
                             },
                             {text: ' '},
                         ]
