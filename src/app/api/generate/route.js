@@ -3,7 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
 
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY)
+    const API_KEY = 'AIzaSyDX7kYegZH-DhtbM8k-s5K7CJ7eu9RfyYY'
+    const genAI = new GoogleGenerativeAI(API_KEY)
 
 
     try {
