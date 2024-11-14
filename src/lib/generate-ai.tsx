@@ -1,10 +1,10 @@
-
+'use server'
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 export async function GenerateAI( req :string) {
 
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY
+    const apiKey = process.env.GOOGLE_GEMINI_API_KEY
     const genAI = new GoogleGenerativeAI(apiKey as string)
 
 
