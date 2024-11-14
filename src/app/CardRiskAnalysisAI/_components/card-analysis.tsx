@@ -147,7 +147,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }catch(error) {
             console.log('Erro: ', error)
         }
-        
+        //
         // try {
         //     const response = await fetch('../../api/generate', {
         //         method: 'POST',
