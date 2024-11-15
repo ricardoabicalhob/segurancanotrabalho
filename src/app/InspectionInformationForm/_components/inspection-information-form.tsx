@@ -61,14 +61,14 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-2'>
-                    <Input disabled={isSaved} placeholder='Empresa' {...register('empresa')} />
-                    <Input disabled={isSaved} placeholder='Área emitente' {...register('areaEmitente')} />
-                    <Input disabled={isSaved} placeholder='Área/Lotação' {...register('areaLotacao')} />
-                    <Input disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} />
-                    <Input disabled={isSaved} placeholder='Cidade' {...register('cidade')} />
-                    <Input disabled={isSaved} placeholder='Cipa' {...register('cipa')} />
-                    <Input disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
-                    <Input disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Empresa' {...register('empresa')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área emitente' {...register('areaEmitente')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área/Lotação' {...register('areaLotacao')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cidade' {...register('cidade')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cipa' {...register('cipa')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
 
                     {
                         isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-yellow-500 hover:bg-yellow-300">

@@ -19,7 +19,7 @@ export interface CardListRiskProps {
 export default function CardListRisk({ listRisks , inspectionInformations} :CardListRiskProps){
 
     return(
-        <Card className="mx-auto max-w-md">
+        <Card className="mx-auto mx-6">
             <CardHeader>
                 <CardTitle className="text-lg">Situações de Risco Identificadas</CardTitle>
             </CardHeader>
@@ -28,13 +28,13 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                     listRisks
                     ?
                     listRisks.map((item, index)=>(
-                        <AccordionItem key={index} value={index.toString()} className="my-6">
+                        <AccordionItem key={index} value={index.toString()} className="my-6 ">
                             <div className="flex flex-row justify-between">
-                                <AccordionTrigger className="font-bold text-left max-w-[90%]">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
+                                <AccordionTrigger className="font-bold text-left max-w-[90%] text-base md:text-sm">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
                                 <ChevronDown/>
                             </div>
                             <AccordionContent>
-                                <p className="font-bold ml-4 my-4">Fotos</p>
+                                <p className="font-bold ml-4 my-4 text-base md:text-sm">Fotos</p>
                                 <div className="flex gap-2 justify-center">
                                 {
                                     item.images.map((image, index) => (
@@ -44,17 +44,17 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                                 }
                                 </div>
                                 
-                                <p className="font-bold ml-4 my-4">Principais consequências</p>
+                                <p className="font-bold ml-4 my-4 text-base md:text-sm">Principais consequências</p>
                                 {
                                     item.consequencias.map((consequencia, index)=>(
-                                        <p key={index} className="text-left ml-4">{`${index + 1}. ${consequencia}`}</p>
+                                        <p key={index} className="text-left ml-4 text-base md:text-sm">{`${index + 1}. ${consequencia}`}</p>
                                     ))
                                 }
                                 <Separator className="my-4"/>
-                                <p className="font-bold ml-4 my-4">Ações recomendadas</p>
+                                <p className="font-bold ml-4 my-4 text-base md:text-sm">Ações recomendadas</p>
                                 {
                                     item.acoes.map((acao, index)=>(
-                                        <p key={index} className="text-left ml-4">{`${index + 1}. ${acao}`}</p>
+                                        <p key={index} className="text-left ml-4 text-base md:text-sm">{`${index + 1}. ${acao}`}</p>
                                     ))
                                 }
                             </AccordionContent>
@@ -65,7 +65,7 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                 }
             </Accordion>
             <CardFooter>
-                <Button className="bg-green-600 hover:bg-green-400" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
+                <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
             </CardFooter>
         </Card>
     )

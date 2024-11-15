@@ -10,6 +10,7 @@ import convertToBase64 from "@/lib/convert-base64";
 import { Minus, Plus, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
+import AlertNotification from "@/components/AlertNotification";
 
 export type RiskProps = {
     risco :string
@@ -124,6 +125,14 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
+    function bindButtonToInputImage() {
+        const customButton = document.getElementById('customButton')
+        const fileInput = document.getElementById('imageInput')
+
+        customButton?.addEventListener('click', ()=> {
+            fileInput?.click()
+        })
+    }
 
     function handleSaveRisk() {
         if(code) {
@@ -261,7 +270,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     // }
 
     return(
-        <Card className="mx-auto max-w-md">
+        <Card className="mx-auto mx-6">
             <CardHeader>
                 <CardTitle className="text-lg">Análise de Risco</CardTitle>
             </CardHeader>
@@ -278,7 +287,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 id="prompt"
                                 name="prompt"
                                 disabled={formEditable}
-                                className="grid-w-full items-center gap-1.5"
+                                className="grid-w-full items-center gap-1.5 text-base md:text-sm"
                                 type="text" 
                                 placeholder="Descreva a situação de risco identificada..."  
                                 value={prompt}
@@ -286,7 +295,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             />
                             
                             {/* <Button formAction={generateAI} className="hover:bg-zinc-600">Analisar situação de risco com IA</Button> */}
-                            <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className=" bg-green-600 hover:bg-green-400">Analisar situação de risco com IA</Button>
+                            <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className=" bg-green-600 hover:bg-green-400 text-base md:text-sm">Analisar situação de risco com IA</Button>
                             {isLoading && <LoadingIndicator />}
                         </div>
                     </div>
@@ -297,8 +306,11 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             {
                                 code && <>
                                             <Separator className="my-4"/>
-                                            <Label className="font-bold" >Foto</Label>
-                                            <Input onClick={() => handleSelectImage()} disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>
+                                            <Label className="font-bold text-base md:text-sm" >Foto</Label>
+                                            {/* <Input style={{display: 'none'}} disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>
+                                            <Button formAction={bindButtonToInputImage} id="customButton" className="bg-green-600 hover:bg-green-400">Selecionar</Button> */}
+                                            <Input disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>    
+                                            
                                             <ul className="flex flex-col gap-2 p-2" id="nameFile">
 
                                             </ul>
@@ -307,7 +319,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                             </Card> */}
                                             <Separator className="my-4"/>
                                             <div className="flex flex-row justify-between items-center">
-                                                <p className="font-bold">{`Principais consequências ${formEditable ? '(Máx. 5)' : ''}`}</p>
+                                                <p className="font-bold text-base md:text-sm">{`Principais consequências ${formEditable ? '(Máx. 5)' : ''}`}</p>
                                                 {formEditable && <Button formAction={()=> handleAddConsequence()} className="w-8 h-8 rounded-full bg-transparent hover:bg-gray-200 border-none shadow-none"><Plus className=" text-emerald-700" /></Button>}
                                             </div>
                                         </>
@@ -317,7 +329,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code !== undefined 
                                 ? 
                                 code.consequencias.map((item, index)=>(
-                                    !formEditable && <p key={index}>{`${index + 1}. ${item}`}</p>
+                                    !formEditable && <p className="text-base md:text-sm" key={index}>{`${index + 1}. ${item}`}</p>
                                 ))
                                 :
                                 ''
@@ -328,6 +340,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code.consequencias.map((item, index)=>(
                                     formEditable && <div key={index} className="flex flex-row items-center gap-2">
                                                         <Input 
+                                                            className="text-base md:text-sm"
                                                             key={index}
                                                             type="text"
                                                             value={code.consequencias[index]}
@@ -345,7 +358,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code && <>
                                             <Separator className="my-4"/>
                                             <div className="flex flex-row justify-between items-center">
-                                                <p className="font-bold">{`Ações recomendadas ${formEditable ? '(Máx. 5)' : ''}`}</p>
+                                                <p className="font-bold text-base md:text-sm">{`Ações recomendadas ${formEditable ? '(Máx. 5)' : ''}`}</p>
                                                 {formEditable && <Button formAction={()=> handleAddAction()} className="w-8 h-8 rounded-full bg-transparent hover:bg-gray-200 border-none shadow-none"><Plus className=" text-emerald-700" /></Button>}
                                             </div>
                                         </>
@@ -354,7 +367,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code !== undefined
                                 ?
                                 code.acoes.map((item, index)=>(
-                                    !formEditable && <p key={index}>{`${index + 1}. ${item}`}</p>
+                                    !formEditable && <p className="text-base md:text-sm" key={index}>{`${index + 1}. ${item}`}</p>
                                 ))
                                 :
                                 ''
@@ -365,6 +378,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code.acoes.map((item, index)=>(
                                     formEditable && <div key={index} className="flex flex-row items-center gap-2">
                                                         <Input
+                                                            className="text-base md:text-sm"
                                                             key={index}
                                                             type="text"
                                                             value={code.acoes[index]}
@@ -387,16 +401,16 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                 {
                     code && <>
                                 {
-                                    prompt && <Button disabled={formEditable} onClick={()=>{handleClearPrompt(); handleClearCode(); handleClearImage()}}>Limpar</Button>
+                                    prompt && <Button className="text-base md:text-sm" disabled={formEditable} onClick={()=>{handleClearPrompt(); handleClearCode(); handleClearImage()}}>Limpar</Button>
                                 }
                                 {
-                                    formEditable && <Button onClick={handleCancelEdit}>Salvar alterações</Button>
+                                    formEditable && <Button className="text-base md:text-sm" onClick={handleCancelEdit}>Salvar alterações</Button>
                                 }
                                 {
-                                    !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300">Editar</Button>
+                                    !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300 text-base md:text-sm">Editar</Button>
                                 }
                                 
-                                <Button onClick={()=>{handleSaveRisk(); handleClearPrompt(); handleClearCode(); }} disabled={formEditable} className="bg-emerald-600 hover:bg-emerald-400">Salvar</Button>
+                                <Button onClick={()=>{handleSaveRisk(); handleClearPrompt(); handleClearCode(); }} disabled={formEditable} className="bg-emerald-600 hover:bg-emerald-400 text-base md:text-sm">Salvar</Button>
                             </>
                 }
             </CardFooter>
