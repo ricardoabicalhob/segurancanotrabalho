@@ -19,7 +19,7 @@ export interface CardListRiskProps {
 export default function CardListRisk({ listRisks , inspectionInformations} :CardListRiskProps){
 
     return(
-        <Card className="mx-auto mx-6">
+        <Card className="mx-auto max-w-md">
             <CardHeader>
                 <CardTitle className="text-lg">Situações de Risco Identificadas</CardTitle>
             </CardHeader>

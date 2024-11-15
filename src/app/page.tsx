@@ -32,7 +32,8 @@ export default function Home() {
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
                 <p className="self-center justify-self-start">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
-            <main className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 my-6">
+            
+            <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pt-6">
                 <section>
                     <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p>
                     <InspectionInformationForm onAddInspectionInformations={handleAddInspectionInformations}/>
@@ -48,7 +49,10 @@ export default function Home() {
                     <CardListRisk listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
                 </section>
             </main>
+            
+            <footer className="bg-green-100 p-6 mt-6">
+                <p className="mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm">Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
+            </footer>
         </div>
-        
    )
 }

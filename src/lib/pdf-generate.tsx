@@ -53,13 +53,27 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                             {text:' '},
                             {text: 'Fotos', fontSize: 12, bold: true},
                             {text: ' ', },
-                            
-                            riskSituation.images.map((img, index) => (
-                                [
-                                    {image: riskSituation.images[index], fit: [300, 160], alignment: 'center'},
-                                    {text: ' ', },
-                                ]
-                            )),
+
+                            {
+                                table: {
+                                    // headers are automatically repeated if the table spans over multiple pages
+                                    // you can declare how many rows should be treated as headers
+                                    headerRows: 1,
+                                    widths: [ '*', '*' ],
+                                    border: false,
+                                    body: [
+                                        riskSituation.images.map((img, index) => (
+                                            [{image: riskSituation.images[index], fit: [300, 160], alignment: 'center'}]
+                                        ))
+                                    ]
+                                }
+                            },                   
+                            // riskSituation.images.map((img, index) => (
+                            //     [
+                            //         {image: riskSituation.images[index], fit: [300, 160], alignment: 'center'},
+                            //         {text: ' ', },
+                            //     ]
+                            // )),
                             {text: ' ', },
 
                             {text:' '},

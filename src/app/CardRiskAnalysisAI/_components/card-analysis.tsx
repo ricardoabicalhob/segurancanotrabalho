@@ -270,7 +270,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     // }
 
     return(
-        <Card className="mx-auto mx-6">
+        <Card className="mx-auto max-w-md">
             <CardHeader>
                 <CardTitle className="text-lg">Análise de Risco</CardTitle>
             </CardHeader>
@@ -309,7 +309,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                             <Label className="font-bold text-base md:text-sm" >Foto</Label>
                                             {/* <Input style={{display: 'none'}} disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>
                                             <Button formAction={bindButtonToInputImage} id="customButton" className="bg-green-600 hover:bg-green-400">Selecionar</Button> */}
-                                            <Input disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>    
+                                            <Input onClick={handleSelectImage} disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>    
                                             
                                             <ul className="flex flex-col gap-2 p-2" id="nameFile">
 
