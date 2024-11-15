@@ -65,7 +65,7 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                 }
             </Accordion>
             <CardFooter>
-                <Button onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
+                <Button className="bg-green-600 hover:bg-green-400" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
             </CardFooter>
         </Card>
     )

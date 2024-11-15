@@ -67,8 +67,8 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
                     <Input disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} />
                     <Input disabled={isSaved} placeholder='Cidade' {...register('cidade')} />
                     <Input disabled={isSaved} placeholder='Cipa' {...register('cipa')} />
-                    <Input disabled={isSaved} type='date' {...register('data')} />
-                    <Input disabled={isSaved} type='time' {...register('hora')} />
+                    <Input disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
+                    <Input disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
 
                     {
                         isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-yellow-500 hover:bg-yellow-300">
@@ -76,7 +76,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
                                     </Button>
                     }
                     {
-                        !isSaved && <Button type='submit' formAction={()=> {handleSaveInspectionInformation}} className="bg-emerald-600 hover:bg-emerald-400">
+                        !isSaved && <Button type='submit' formAction={()=> {handleSaveInspectionInformation}} className="bg-green-600 hover:bg-green-400">
                                         Salvar
                                     </Button>
                     }

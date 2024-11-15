@@ -142,8 +142,11 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
             if(response?.ok) {
                 setCode(data)
                 setIsLoading(false)
+            }else {
+                setIsLoading(false)
             }
         }catch(error) {
+            setIsLoading(false)
             console.log('Erro: ', error)
         }
         //
@@ -283,7 +286,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             />
                             
                             {/* <Button formAction={generateAI} className="hover:bg-zinc-600">Analisar situação de risco com IA</Button> */}
-                            <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className="hover:bg-zinc-600">Analisar situação de risco com IA</Button>
+                            <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className=" bg-green-600 hover:bg-green-400">Analisar situação de risco com IA</Button>
                             {isLoading && <LoadingIndicator />}
                         </div>
                     </div>
