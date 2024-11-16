@@ -410,7 +410,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                     !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300 text-base md:text-sm">Editar</Button>
                                 }
                                 
-                                <Button onClick={()=>{handleSaveRisk(); handleClearPrompt(); handleClearCode(); }} disabled={formEditable} className="bg-emerald-600 hover:bg-emerald-400 text-base md:text-sm">Salvar</Button>
+                                <Button onClick={()=>{handleSaveRisk(); handleClearPrompt(); handleClearCode(); }} disabled={formEditable} className="bg-green-600 hover:bg-green-400 text-base md:text-sm">Salvar</Button>
                             </>
                 }
             </CardFooter>

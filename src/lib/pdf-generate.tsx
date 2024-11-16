@@ -60,10 +60,9 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                                     // you can declare how many rows should be treated as headers
                                     headerRows: 1,
                                     widths: [ '*', '*' ],
-                                    border: false,
                                     body: [
-                                        riskSituation.images.map((img, index) => (
-                                            [{image: riskSituation.images[index], fit: [300, 160], alignment: 'center'}]
+                                        ...riskSituation.images.map((img, index) => (
+                                            [{image: riskSituation.images[index], fit: [290, 160], alignment: 'center'}]
                                         ))
                                     ]
                                 }
