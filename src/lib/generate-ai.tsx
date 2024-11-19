@@ -1,3 +1,4 @@
+import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
@@ -10,7 +11,8 @@ export async function GenerateAI( req :string) {
     try {
 
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-pro",
+              //model: "gemini-1.5-pro",
+              model: "gemini-1.5-flash"
         });
 
         const generationConfig = {
@@ -43,4 +45,13 @@ export async function GenerateAI( req :string) {
     }catch(error) {
         console.log(error)
     }
+
+    // const response = {
+    //     risco: 'Funcionáro trabalhando em alutra sem EPI',
+    //     consequencias: ['Quedas graves', 'Morte', 'fraturas graves'],
+    //     acoes: ['Entregar EPIs necessários conforme estipula a NR-35', 'Cobrar a utilização correta dos EPIs'],
+    //     images: []
+    // }
+
+    // return Response.json(JSON.parse(JSON.stringify(response)))
 }

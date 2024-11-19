@@ -28,7 +28,7 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                     listRisks
                     ?
                     listRisks.map((item, index)=>(
-                        <AccordionItem key={index} value={index.toString()} className="my-6 ">
+                        <AccordionItem key={index} value={index.toString()} className={`my-6`}>
                             <div className="flex flex-row justify-between">
                                 <AccordionTrigger className="font-bold text-left max-w-[90%] text-base md:text-sm">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
                                 <ChevronDown/>

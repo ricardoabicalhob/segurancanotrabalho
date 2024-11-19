@@ -13,9 +13,26 @@ export type inspectionInformations = {
     cipa :string
     data : Date
     hora :string
+    responsavelPelaInspecao :string
 }
 
+
 export default async function generatePdf(contentEntry :Array<RiskProps>, inspectionInformations :inspectionInformations) {
+
+    function createTableRow(imageUrl :string) {
+        return [
+            {
+                image: imageUrl,
+                width: 100,
+                height: 100
+            },
+            {
+                image: imageUrl,
+                width: 100,
+                height: 100
+            }
+        ]
+    }
 
     const documentDefinition = {
 
@@ -53,26 +70,45 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                             {text:' '},
                             {text: 'Fotos', fontSize: 12, bold: true},
                             {text: ' ', },
+                            riskSituation.images.length === 0 ? {text: 'Fotos não incluídas.', fontSize: 11} : null,
 
                             {
                                 table: {
-                                    // headers are automatically repeated if the table spans over multiple pages
-                                    // you can declare how many rows should be treated as headers
                                     headerRows: 1,
                                     widths: [ '*', '*' ],
+                                    
                                     body: [
-                                        ...riskSituation.images.map((img, index) => (
-                                            [{image: riskSituation.images[index], fit: [290, 160], alignment: 'center'}]
-                                        ))
-                                    ]
+                                        
+                                        riskSituation.images.map(image => ({
+                                            image: image,
+                                            fit: [290, 160],
+                                            alignment: 'center',
+                                            style: 'imageStyle'
+                                        }))
+
+
+                                        // riskSituation.images.forEach((imageUrl, index)=>{
+                                        //     if(index % 2 === 0) {
+                                        //         documentDefinition.content[10][4].table.body.push(createTableRow(imageUrl))
+                                        //     }else {
+                                        //         documentDefinition.content[10][4].table.body[documentDefinition.content[0].table.body.length -1].push({
+                                        //             image: imageUrl,
+                                        //             width: 100,
+                                        //             height: 100
+                                        //         })
+                                        //     }
+                                        // })
+                                        
+                                    ],
+                                    styles: {
+                                        imageStyle: {
+                                            margin: [5, 5, 5, 5], // Margens ao redor da imagem
+                                            border: 0, // Borda de 1 pixel
+                                        }
+                                    }
                                 }
                             },                   
-                            // riskSituation.images.map((img, index) => (
-                            //     [
-                            //         {image: riskSituation.images[index], fit: [300, 160], alignment: 'center'},
-                            //         {text: ' ', },
-                            //     ]
-                            // )),
+                           
                             {text: ' ', },
 
                             {text:' '},
@@ -89,7 +125,16 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                             },
                             {text: ' '},
                         ]
-                    ))
+                    )),
+
+                    {text: ' ', },
+                    {text: ' ', },
+                    {text: ' ', },
+                    {text: ' ', },
+                    {text: ' ', },
+                    {text: ' ', },
+                    {text: '_____________________________________________', alignment: 'center'},
+                    {text: 'Responsável pela inspeção', alignment: 'center' },
                 ]
     }
 

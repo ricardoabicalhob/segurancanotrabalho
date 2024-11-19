@@ -29,7 +29,10 @@ export const formInspectionInformationSchema = z.object({
         message: ''
     }),
     data: z.coerce.date(),
-    hora: z.string()
+    hora: z.string(),
+    responsavelPelaInspecao: z.string().min(2, {
+
+    })
 })
 
 interface InspectionInformationFormProps {
@@ -69,6 +72,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cipa' {...register('cipa')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
 
                     {
                         isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-yellow-500 hover:bg-yellow-300">

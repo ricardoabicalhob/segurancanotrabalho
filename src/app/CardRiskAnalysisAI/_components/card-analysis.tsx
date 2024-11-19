@@ -4,13 +4,12 @@ import LoadingIndicator from "@/components/LoadingIndicator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
-import { Minus, Plus, TriangleAlert } from "lucide-react";
-import { useState } from "react";
+import { Image, Minus, Plus, TriangleAlert, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
-import AlertNotification from "@/components/AlertNotification";
+import { createRoot } from "react-dom/client";
 
 export type RiskProps = {
     risco :string
@@ -23,6 +22,7 @@ interface CardRiskAnalysisAIProps {
     onAddRisk :(risk :RiskProps)=>void
 }
 
+
 export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps) {
 
     const [prompt, setPrompt] = useState<string>('')
@@ -30,6 +30,8 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     const [formEditable, setFormEditable] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [imgSelected, setImgSelected] = useState(false)
+    const [imageNameList, setImageNameList] = useState<string[]>([])
+    const LIMIT_IMAGES = 2
 
     function validationForm() {
         let result = false
@@ -71,6 +73,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
 
     function handleClearPrompt() {
         setPrompt('')
+        setImageNameList([])
     }
 
     function handleClearCode() {
@@ -83,7 +86,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
 
     function handleAddImage(image :string) {
         if(code) {
-            const newImages = [...code.images]
+            const newImages = code.images //Alterado de [...code.images]
             newImages.push(image)
 
             setCode({
@@ -92,6 +95,54 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
             })
         }
     }
+
+    function addFileImageItem(imageItem :object) {
+        const fileImageItem = document.createElement('div')
+        fileImageItem.id = 'fileItem'
+        fileImageItem.className = 'bg-white rounded-md max-h-fit p-2 select-none'
+        const root = createRoot(fileImageItem)
+        root.render(
+            <div className="flex flex-row items justify-between gap-1.5">
+                <div className="flex flex-row gap-1.5">
+                    <Image className="text-black"/>
+                    <p>{imageItem.name}</p>
+                </div>
+                <X className="text-red-600"/>
+            </div>)
+        
+        document.getElementById('nameFileList')?.appendChild(fileImageItem)
+        
+        
+        imageNameList.push(imageItem.name)
+    }
+
+    function newInputFile() {
+        const newInput = document.createElement('input')
+        newInput.type = 'file'
+        newInput.id = 'imageInput'
+        newInput.multiple = false
+        newInput.className = 'opacity-0'
+        newInput.addEventListener('change', e => {
+
+            const file = e.target?.files[0]
+
+            convertToBase64(file)
+                .then(base64String => {
+                    addFileImageItem(file)
+
+                    handleAddImage(base64String)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        })
+
+        return newInput
+    }
+
+    useEffect(()=>{
+        console.log(code)
+    }, [code])
 
     function handleSelectImage() {
          
@@ -103,16 +154,17 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                 const file = event.target?.files[0]
                 convertToBase64(file)
                 .then(base64String => {
-                    // const img = document.createElement('img')
-                    // img.src = base64String as any
-                    // document.getElementById('imgBox')?.appendChild(img)
 
-                    const name = document.createElement('li')
-                    name.innerText = file.name
-                    name.className = 'bg-gray-200 rounded-md p-2 w-full select-none'
-                    document.getElementById('nameFile')?.appendChild(name)
+                    addFileImageItem(file)
                     
                     handleAddImage(base64String)
+                    
+                    if(img) {
+                        const inputFile = newInputFile()
+                        
+                        img.remove()
+                        document.getElementById('addImageSection')?.insertAdjacentElement('beforeend', inputFile)
+                    }
                     
                     //setImgSelected(true)
                 })
@@ -121,7 +173,6 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                 })
             
             })
-            
         }
     }
 
@@ -277,7 +328,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
             <CardContent>
                 <form className="flex flex-col text-left gap-2">
                     <div className="space-y-6">
-                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <div className="grid w-full max-w-md items-center gap-1.5">
                             <div className="flex flex-row gap-2">
                                 <TriangleAlert className="text-yellow-500"/>
                                 <label className="font-bold">Situação de risco</label>
@@ -299,30 +350,32 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             {isLoading && <LoadingIndicator />}
                         </div>
                     </div>
-                    <div className="space-y6">
+                    <div className="space-y-6">
                         
-                        <div className="grid w-full max-w-sm items-center gap-2">
+                        <div className="grid w-full max-w-md items-center gap-1.5">
                             
                             {
-                                code && <>
+                                code && <div className="grid w-full max-w-md items-center gap-1.5">
                                             <Separator className="my-4"/>
-                                            <Label className="font-bold text-base md:text-sm" >Foto</Label>
-                                            {/* <Input style={{display: 'none'}} disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>
-                                            <Button formAction={bindButtonToInputImage} id="customButton" className="bg-green-600 hover:bg-green-400">Selecionar</Button> */}
-                                            <Input onClick={handleSelectImage} disabled={imgSelected} type="file" maxLength={1} accept="image/*" id="imageInput"/>    
-                                            
-                                            <ul className="flex flex-col gap-2 p-2" id="nameFile">
 
-                                            </ul>
-                                            {/* <Card className="flex flex-col py-6">
-                                                <CardContent className="flex flex-col gap-2 p-2" id="nameFile"></CardContent>
-                                            </Card> */}
+                                            <div id="addImageSection" className=" bg-green-600 rounded-md h-9 flex items-center justify-center">
+                                                <p className="text-white text-base md:text-sm select-none max-w-fit" style={{position: 'absolute'}}>Adicionar foto</p>
+                                                <Input style={{opacity: 0}} onClick={handleSelectImage} multiple={false} type="file" maxLength={1} accept="image/*" id="imageInput"/>
+                                            </div>
+                                                
+
+                                            {
+                                                imageNameList && <ul className="flex flex-col gap-1.5 p-2 w-full rounded-md bg-slate-100" id="nameFileList">
+                                                                    
+                                                </ul>
+                                            }
+                                            
                                             <Separator className="my-4"/>
                                             <div className="flex flex-row justify-between items-center">
                                                 <p className="font-bold text-base md:text-sm">{`Principais consequências ${formEditable ? '(Máx. 5)' : ''}`}</p>
                                                 {formEditable && <Button formAction={()=> handleAddConsequence()} className="w-8 h-8 rounded-full bg-transparent hover:bg-gray-200 border-none shadow-none"><Plus className=" text-emerald-700" /></Button>}
                                             </div>
-                                        </>
+                                        </div>
                             }
 
                             {
@@ -410,7 +463,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                     !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300 text-base md:text-sm">Editar</Button>
                                 }
                                 
-                                <Button onClick={()=>{handleSaveRisk(); handleClearPrompt(); handleClearCode(); }} disabled={formEditable} className="bg-green-600 hover:bg-green-400 text-base md:text-sm">Salvar</Button>
+                                <Button onClick={()=>{ console.log(code); handleSaveRisk(); handleClearPrompt(); handleClearCode()}} disabled={formEditable} className="bg-green-600 hover:bg-green-400 text-base md:text-sm">Salvar</Button>
                             </>
                 }
             </CardFooter>

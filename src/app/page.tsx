@@ -26,11 +26,34 @@ export default function Home() {
         setInspectionInformations(inspectionInformations)
     }
 
+    // function newInputFile() {
+    //     const newInput = document.createElement('input')
+    //     newInput.type = 'file'
+    //     newInput.id = 'inputFile'
+    //     newInput.addEventListener('change', e => {
+    //         console.log(e.target?.files[0].name)
+    //     })
+
+    //     return newInput
+    // }
+
+    // function handleSelectFile() {
+    //     const file = document.getElementById('inputFile')
+
+    //     file?.addEventListener('change', e => {
+    //         console.log(e.target?.files[0].name)
+
+    //         const newInput = newInputFile()
+    //         file.replaceWith(newInput)
+    //     })
+    // }
+
     return(
-        <div className="">
+        <div className="h-full">
             <nav className="p-3 sm:p-6 text-green-900 font-bold text-2xl grid grid-flow-col max-auto gap-2 bg-green-100">
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
                 <p className="self-center justify-self-start">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+                {/* <input onClick={handleSelectFile} id="inputFile" type="file"/> */}
             </nav>
             
             <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pt-6">
