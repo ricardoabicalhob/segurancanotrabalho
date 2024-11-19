@@ -49,7 +49,7 @@ export default function Home() {
                 </section>
             </main>
             
-            <footer className="bg-green-100 p-6 mt-6">
+            <footer className="bg-green-100 p-6 mt-6 h-auto">
                 <p className="mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm">Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
             </footer>
         </div>
