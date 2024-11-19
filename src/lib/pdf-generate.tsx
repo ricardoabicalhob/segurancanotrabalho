@@ -36,6 +36,10 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
 
     const documentDefinition = {
 
+        pageSize: 'A4',
+
+        pageMargins: [40, 60, 40, 60],
+
         content: [
                     {text: 'Relatório de Inspeção de Segurança', fontSize: 16, alignment: 'center'},
                     {text: ' '},
