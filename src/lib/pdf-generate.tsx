@@ -109,6 +109,10 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                                             margin: [5, 5, 5, 5], // Margens ao redor da imagem
                                             border: 0, // Borda de 1 pixel
                                         }
+                                    },
+                                    layout: {
+                                        hLineColor: ()=> 'transparent',
+                                        vLineColor: ()=> 'transparent'
                                     }
                                 }
                             },                   
@@ -138,6 +142,7 @@ export default async function generatePdf(contentEntry :Array<RiskProps>, inspec
                     {text: ' ', },
                     {text: ' ', },
                     {text: '_____________________________________________', alignment: 'center'},
+                    {text: inspectionInformations.responsavelPelaInspecao, alignment: 'center'},
                     {text: 'Responsável pela inspeção', alignment: 'center' },
                 ]
     }

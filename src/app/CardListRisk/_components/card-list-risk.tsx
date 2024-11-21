@@ -35,7 +35,7 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                             </div>
                             <AccordionContent>
                                 <p className="font-bold ml-4 my-4 text-base md:text-sm">Fotos</p>
-                                <div className="flex gap-2 justify-center">
+                                <div className="grid grid-flow-row grid-cols-2 gap-2 justify-center">
                                 {
                                     item.images.map((image, index) => (
                                         // <image key={index} className="w-[150px] h-[80px] mt-1 mb-1" src={image}/>

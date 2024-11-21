@@ -10,6 +10,9 @@ import { Image, Minus, Plus, TriangleAlert, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
 import { createRoot } from "react-dom/client";
+import AlertNotification from "@/components/AlertNotification";
+import ListUploadedImages from "@/components/ListUploadedImages";
+import { ok } from "assert";
 
 export type RiskProps = {
     risco :string
@@ -30,7 +33,8 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     const [formEditable, setFormEditable] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [imageNameList, setImageNameList] = useState<string[]>([])
-    const LIMIT_IMAGES = 2
+    const [error, setError] = useState(false)
+    const [errorNameFile, setErrorNameFile] = useState(false)
 
     function validationForm() {
         let result = false
@@ -91,28 +95,43 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
+    function handleRemoveImageNameList(imageName :string) {
+        if(imageNameList) {
+            const newImageNameList = [...imageNameList]
+            const indexImage = newImageNameList.findIndex(function(e) {
+                if(e === imageName){
+                    return true
+                }
+            })
+
+            newImageNameList.splice(indexImage, 1)
+            setImageNameList(newImageNameList)
+            handleRemoveImage(code?.images[indexImage] as string)
+        }
+    }
+
+    function handleRemoveImage(imageName :string) {
+        if(code) {
+            const newImages = code.images
+            const indexImage = newImages.findIndex(function(e){
+                if(e === imageName){
+                    return true
+                }
+            })
+            newImages.splice(indexImage, 1)
+            setCode(
+                {
+                    ...code,
+                    images: newImages
+                }
+            )
+        }
+    }
+
     function addFileImageItem(imageItem :object) {
-        const fileImageItem = document.createElement('div')
-        fileImageItem.id = 'fileItem'
-        fileImageItem.className = 'bg-white rounded-md max-h-fit p-2 select-none'
-        document.getElementById('nameFileList')?.appendChild(fileImageItem)
-        const root = createRoot(fileImageItem)
-        
-        root.render(
-            <div className="flex flex-row items justify-between gap-1.5">
-                <div className="flex flex-row items-center gap-2 min-w-[85%] max-w-[85%]">
-                    <div className="flex flex-row items-center justify-center min-w-[10%] max-w-[10%]">
-                        <Image className="text-black min-w-5 min-h-5 max-w-5 max-h-5"/>
-                    </div>
-                    
-                    <p className="flex text-justify min-w-[90%] max-w-[90%]">{imageItem.name}</p>
-                </div>
-                <div className="flex justify-center items-center min-w-[15%] max-w-[15%]">
-                    <X className="text-red-600 min-w-5 h-5 max-w-5 min-h-5 max-h-5"/>
-                </div>
-            </div>)
-        
-        imageNameList.push(imageItem.name)
+        if(imageNameList){
+            setImageNameList(prevItems => [...prevItems, imageItem.name])
+        }
     }
 
     function newInputFile() {
@@ -155,16 +174,15 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
             img.addEventListener('change', (event) => {
 
                 const file = event.target?.files[0]
+
                 convertToBase64(file)
                 .then(base64String => {
 
                     addFileImageItem(file)
-                    
                     handleAddImage(base64String)
                     
                     if(img) {
-                        const inputFile = newInputFile()
-                        
+                        newInputFile()
                         img.remove()
                     }
                     
@@ -175,15 +193,6 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
             
             })
         }
-    }
-
-    function bindButtonToInputImage() {
-        const customButton = document.getElementById('customButton')
-        const fileInput = document.getElementById('imageInput')
-
-        customButton?.addEventListener('click', ()=> {
-            fileInput?.click()
-        })
     }
 
     function handleSaveRisk() {
@@ -204,9 +213,18 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                 setCode(data)
                 setIsLoading(false)
             }else {
+
                 setIsLoading(false)
+                setError(true)
+                setTimeout(() => {
+                    setError(false)
+                }, 3000);
             }
         }catch(error) {
+            setError(true)
+            setTimeout(() => {
+                setError(false)
+            }, 5000);
             setIsLoading(false)
             console.log('Erro: ', error)
         }
@@ -315,11 +333,6 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
-    // function handleDeleteElement(index :number) {
-    //     if(code) {
-    //         code.consequencias.splice(index, 1)
-    //     }
-    // }
 
     return(
         <Card className="mx-auto max-w-md">
@@ -348,6 +361,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             
                             <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className=" bg-green-600 hover:bg-green-400 text-base md:text-sm">Analisar situação de risco com IA</Button>
                             {isLoading && <LoadingIndicator />}
+                            {error && <AlertNotification text="Algo deu errado! Por favor, tente novamente."/>}
                         </div>
                     </div>
                     <div className="space-y-6">
@@ -358,19 +372,12 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code && <div className="grid w-full max-w-md items-center gap-1.5">
                                             <Separator className="my-4"/>
 
-                                            <div id="addImageSection" className=" bg-green-600 rounded-md h-9 flex items-center justify-center">
+                                            <div id="addImageSection" className=" bg-green-600 hover:bg-green-400 rounded-md h-9 flex items-center justify-center">
                                                 <p className="text-white text-base md:text-sm select-none max-w-fit" style={{position: 'absolute'}}>Adicionar foto</p>
                                                 <Input style={{opacity: 0}} onClick={handleSelectImage} multiple={false} type="file" maxLength={1} accept="image/*" id="imageInput"/>
                                             </div>
-                                                
-
-                                            {
-                                                imageNameList && <ul className={`flex flex-col gap-1.5 p-2 rounded-md ${imageNameList.length > 0 ? 'bg-slate-100' : 'bg-transparent'}`} id="nameFileList">
-                                                                    
-                                                </ul>
-                                            }
                                             
-                                            
+                                            <ListUploadedImages items={imageNameList} onDeleteItem={handleRemoveImageNameList}/> 
                                         </div>
                             }
 
