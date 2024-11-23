@@ -6,6 +6,8 @@ import CardListRisk from "./CardListRisk/_components/card-list-risk";
 import { useState } from "react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import Image from "next/image";
+import { Card } from "@/components/ui/card";
+import CardFinish from "./CardFinish/_components/card-finish";
 
 type ListRisks = Array<RiskProps>
 
@@ -26,13 +28,13 @@ export default function Home() {
     }
 
     return(
-        <div className="h-screen flex flex-col justify-stretch items-stretch">
+        <div className="h-screen w-screen flex flex-col justify-stretch items-stretch">
             <nav className="p-3 sm:p-6 text-green-900 font-bold text-2xl grid grid-flow-col max-auto gap-2 bg-green-100">
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
                 <p className="self-center justify-self-start">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
             
-            <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pt-6">
+            <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-6 pt-6">
                 <section>
                     <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p>
                     <InspectionInformationForm onAddInspectionInformations={handleAddInspectionInformations}/>
@@ -44,8 +46,13 @@ export default function Home() {
                 </section>
 
                 <section>
-                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 3</p>
+                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">...Passo 2</p>
                     <CardListRisk listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
+                </section>
+
+                <section>
+                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 3</p>
+                    <CardFinish />
                 </section>
             </main>
             
