@@ -6,10 +6,10 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Dot } from "lucide-react";
+import { ArrowBigLeftDash, ChevronDown, Dot, X } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
@@ -166,8 +166,8 @@ export default function CardListRisk({ listRisks , inspectionInformations, statu
                     <p className="text-center antialiased font-bold">{inspectionInformations.responsavelPelaInspecao}</p>
                     <p className="text-center antialiased">Responsável pela inspeção</p>
                 </div>
-                <div>
-                    <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Fechar visualização</Button>
+                <div className="py-10">
+                    <Button id='voltar' className={`bg-green-600 hover:bg-green-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
                 </div>    
             </div>
         )
