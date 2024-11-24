@@ -67,7 +67,7 @@ export default function Home() {
 
                 <section>
                     {
-                        readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">...Passo 2</p>
+                        readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
                     }
                     <CardListRisk statusReadyReport={readyReport} onReadyReport={handleReadyReport} listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
                 </section>

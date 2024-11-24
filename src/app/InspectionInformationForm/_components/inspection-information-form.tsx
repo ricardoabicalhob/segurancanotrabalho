@@ -63,7 +63,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
                 <CardTitle className='text-lg'>Dados da Inspeção</CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-2'>
+                <form  onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-2'>
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Empresa' {...register('empresa')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área emitente' {...register('areaEmitente')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área/Lotação' {...register('areaLotacao')} />
