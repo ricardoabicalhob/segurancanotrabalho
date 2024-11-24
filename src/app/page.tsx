@@ -6,8 +6,9 @@ import CardListRisk from "./CardListRisk/_components/card-list-risk";
 import { useState } from "react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
 import CardFinish from "./CardFinish/_components/card-finish";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 type ListRisks = Array<RiskProps>
 
@@ -15,6 +16,12 @@ export default function Home() {
 
     const [ listRisks, setListRisks ] = useState<ListRisks>([])
     const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformations>()
+    const [ readyReport, setReadyReport ] = useState(true)
+    const router = useRouter()
+
+    function handleReadyReport() {
+        setReadyReport(!readyReport)
+    }
 
     function handleSaveRisk(risk :RiskProps) {
         const newListRisks = [...listRisks]
@@ -27,38 +34,63 @@ export default function Home() {
         setInspectionInformations(inspectionInformations)
     }
 
+    function handleViewReport() {
+        if(listRisks){
+            const dataContent = {
+                analises: listRisks
+            }
+            const data = JSON.stringify(dataContent)
+            router.push(`/generate-report/${data}`)
+        }
+    }
+
+
     return(
-        <div className="h-screen w-screen flex flex-col justify-stretch items-stretch">
-            <nav className="p-3 sm:p-6 text-green-900 font-bold text-2xl grid grid-flow-col max-auto gap-2 bg-green-100">
+        <div className="h-screen max-w-full flex flex-col">
+            <nav className={`sm:p-6 text-green-900 font-bold text-2xl grid grid-flow-col ${readyReport ? 'w-screen p-3' : 'w-[960px] self-center h-svh flex flex-row justify-center'} gap-2 bg-green-100`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
                 <p className="self-center justify-self-start">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
             
-            <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-6 pt-6">
-                <section>
-                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p>
-                    <InspectionInformationForm onAddInspectionInformations={handleAddInspectionInformations}/>
-                </section>
+            <main className={`grid grid-cols-1 sm:grid-cols-2 ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
+                {
+                    readyReport &&  <section>
+                                        <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p>
+                                        <InspectionInformationForm onAddInspectionInformations={handleAddInspectionInformations}/>
+                                    </section>
+                }
+
+                {
+                    readyReport &&  <section>
+                                        <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 2</p>
+                                        <CardRiskAnalysisAI onAddRisk={handleSaveRisk}/>
+                                    </section>
+                }
 
                 <section>
-                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 2</p>
-                    <CardRiskAnalysisAI onAddRisk={handleSaveRisk}/>
+                    {
+                        readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">...Passo 2</p>
+                    }
+                    <CardListRisk statusReadyReport={readyReport} onReadyReport={handleReadyReport} listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
                 </section>
 
-                <section>
-                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">...Passo 2</p>
-                    <CardListRisk listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
-                </section>
-
-                <section>
-                    <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 3</p>
-                    <CardFinish />
-                </section>
+                {/* {
+                    readyReport &&  <section>
+                                        <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 3</p>
+                                        <CardFinish />
+                                        
+                                        <Button onClick={()=>handleViewReport()}>
+                                            Visualizar relatório
+                                        </Button>
+                                    </section>
+                } */}
             </main>
             
-            <footer className="bg-green-100 p-6 mt-6 h-auto">
-                <p className="mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm">Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
-            </footer>
+            {
+                readyReport &&  <footer className={`bg-green-100 p-6 mt-6 h-auto ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
+                                    <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
+                                </footer>
+            }
         </div>
    )
 }

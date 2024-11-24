@@ -6,20 +6,24 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import generatePdf from '@/lib/pdf-generate'
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Dot } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
     inspectionInformations :inspectionInformations
+    statusReadyReport :boolean
+    onReadyReport :() => void
 }
 
-export default function CardListRisk({ listRisks , inspectionInformations} :CardListRiskProps){
+export default function CardListRisk({ listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
 
     return(
-        <Card className="mx-auto max-w-md">
+        statusReadyReport
+        ?
+        (
+        <Card className={`${statusReadyReport ? 'mx-auto max-w-[960px]': 'min-w-[900px]'}`}>
             <CardHeader>
                 <CardTitle className="text-lg">Situações de Risco Identificadas</CardTitle>
             </CardHeader>
@@ -64,9 +68,92 @@ export default function CardListRisk({ listRisks , inspectionInformations} :Card
                     null
                 }
             </Accordion>
-            <CardFooter>
-                <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>
+            <CardFooter className="flex flex-row gap-2">
+                {/* <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>                 */}
+                <Button className="bg-green-600 hover:bg-green-400 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
             </CardFooter>
         </Card>
+        )
+        :
+        (
+            <div key={'containerPrincipal'} className='w-svw h-svh flex flex-col items-center'>
+                <div key={'containerSubprincipal'} className="max-w-[960px]">
+                    <table className="border-2 table-auto w-[98%] bg-slate-50">
+                        <tr className="border-2 w-full">
+                            <td className="border-2 pl-2">{`Empresa: ${inspectionInformations.empresa}`}</td>
+                            <td className="border-2 pl-2">{`Data: ${inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
+                            <td className="border-2 pl-2">{`Hora: ${inspectionInformations.hora}`}</td>
+                        </tr>
+                        <tr className="border-2 w-full">
+                            <td className="border-2 pl-2">{`Local: ${inspectionInformations.localInspecionado}`}</td>
+                            <td className="border-2 pl-2">{`Cidade: ${inspectionInformations.cidade}`}</td>
+                            <td className="border-2 pl-2">{`Área emitente: ${inspectionInformations.areaEmitente}`}</td>
+                        </tr>
+                    </table>
+
+                    <p key={'naoconformidades'} className='w-full text-center my-4'>INDICAÇÃO DAS NÃO CONFORMIDADES</p>
+                    <p key={'informativo'} className='text-sm mx-6 my-4'>Solicitamos sua especial atenção para o assunto citado, visto que são irregularidades que comprometem a 
+                        segurança do(s) funcionário(s) e/ou equipamento(s) no local de trabalho e terceiros.</p>
+                </div>
+                {
+                    <div key={'containerAnalises'} className="flex flex-col gap-2 p-6 w-[940px]">
+                        {
+                            listRisks
+                            &&
+                            listRisks.map(( risk, index ) =>(
+                                <div key={'analise'}>
+                                    <p 
+                                        key={index}
+                                        className='font-bold text-base antialiased mt-4'
+                                    >
+                                        {`${index + 1}. ${risk.risco}`}
+                                    </p>
+
+                                    <p key={'fotos'} className='text-sm font-bold antialiased py-3'>Fotos</p>
+                                    <div className='flex flex-row items-center justify-center flex-wrap p-6 gap-4 border-2 rounded-md'>
+                                        {
+                                            risk.images?.map(( image, index ) => (
+                                                <Image key={index} alt="" className="w-[270px] h-[202px] mt-1 mb-1" src={image} width={150} height={90}/>
+                                            ))
+                                        }
+                                    </div>
+
+                                    <p key={'consequencias'} className='text-sm font-bold antialiased py-3'>Principais consequências</p>
+                                    {
+                                        risk.consequencias?.map(( consequencia, index ) => (
+                                            <p 
+                                                key={index}
+                                                className='text-sm antialiased ml-6 flex flex-row'
+                                            >
+                                            <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {consequencia}
+                                            </p>
+                                        ))
+                                    }
+
+                                    <p key={'acoes'} className='text-sm font-bold antialiased py-3'>Ações recomendadas</p>
+                                    {
+                                        risk.acoes?.map(( acao, index ) => (
+                                            <p 
+                                                key={index}
+                                                className='text-sm antialiased ml-6 flex flex-row'
+                                            >
+                                                <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {acao}
+                                            </p>
+                                        ))
+                                    }
+
+                                <Separator className="my-4 h-1"/>
+                                
+                                </div>
+                            ))
+                        }
+                        
+                    </div>
+                }
+                <div>
+                    <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Fechar visualização</Button>
+                </div>    
+            </div>
+        )
     )
 }
