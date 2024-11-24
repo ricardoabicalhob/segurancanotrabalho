@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Dot } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
+import { useEffect } from "react";
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
@@ -68,9 +69,17 @@ export default function CardListRisk({ listRisks , inspectionInformations, statu
                     null
                 }
             </Accordion>
-            <CardFooter className="flex flex-row gap-2">
+            
+            {
+                !listRisks.length && <p className="text-center mb-16 text-red-800">Ainda não foram inseridas situações de risco</p>
+            }
+            
+            
+            <CardFooter className="flex flex-col gap-2">
                 {/* <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>                 */}
-                <Button className="bg-green-600 hover:bg-green-400 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
+                <Button disabled={inspectionInformations === undefined ? true : false} className="bg-green-600 hover:bg-green-400 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
+                {!inspectionInformations && <p className="text-sm text-red-800">{`Preencha os dados da inspeção ${listRisks.length ? '' : ' e'}`}</p>}
+                {!listRisks.length && <p className="text-sm text-red-800">{`${!inspectionInformations ? 'i' : 'I'}nsira pelo menos uma situação de risco.`}</p>}
             </CardFooter>
         </Card>
         )
@@ -116,6 +125,9 @@ export default function CardListRisk({ listRisks , inspectionInformations, statu
                                                 <Image key={index} alt="" className="w-[270px] h-[202px] mt-1 mb-1" src={image} width={150} height={90}/>
                                             ))
                                         }
+                                        {
+                                            !risk.images.length && <p>Não foram inseridas fotos</p>
+                                        }
                                     </div>
 
                                     <p key={'consequencias'} className='text-sm font-bold antialiased py-3'>Principais consequências</p>
@@ -150,6 +162,10 @@ export default function CardListRisk({ listRisks , inspectionInformations, statu
                         
                     </div>
                 }
+                <div className="border-t-2 px-24 py-3 mt-32 border-gray-500">
+                    <p className="text-center antialiased font-bold">{inspectionInformations.responsavelPelaInspecao}</p>
+                    <p className="text-center antialiased">Responsável pela inspeção</p>
+                </div>
                 <div>
                     <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Fechar visualização</Button>
                 </div>    

@@ -6,8 +6,6 @@ import CardListRisk from "./CardListRisk/_components/card-list-risk";
 import { useState } from "react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import Image from "next/image";
-import CardFinish from "./CardFinish/_components/card-finish";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 type ListRisks = Array<RiskProps>

@@ -351,7 +351,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             <Input 
                                 id="prompt"
                                 name="prompt"
-                                disabled={formEditable}
+                                disabled={formEditable || code ? true : false}
                                 className="grid-w-full items-center gap-1.5 text-base md:text-sm"
                                 type="text" 
                                 placeholder="Descreva a situação de risco identificada..."  
