@@ -16,9 +16,10 @@ export interface CardListRiskProps {
     inspectionInformations :inspectionInformations
     statusReadyReport :boolean
     onReadyReport :() => void
+    onRemoveRiskOfList :(index :number)=>void
 }
 
-export default function CardListRisk({ listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
+export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
 
     return(
         statusReadyReport
@@ -36,7 +37,8 @@ export default function CardListRisk({ listRisks , inspectionInformations, statu
                         <AccordionItem key={index} value={index.toString()} className={`my-6`}>
                             <div className="flex flex-row justify-between">
                                 <AccordionTrigger className="font-bold text-left max-w-[90%] text-base md:text-sm">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
-                                <ChevronDown/>
+                                {/* <ChevronDown/> */}
+                                <X className="w-4 h-4 text-red-600 font-bold " onClick={()=>onRemoveRiskOfList(index)} />
                             </div>
                             <AccordionContent>
                                 <p className="font-bold ml-4 my-4 text-base md:text-sm">Fotos</p>

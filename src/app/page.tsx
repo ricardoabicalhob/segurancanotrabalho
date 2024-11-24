@@ -28,6 +28,14 @@ export default function Home() {
         setListRisks(newListRisks)
     }
 
+    function handleRemoveRiskOfList(index :number) {
+        if(listRisks) {
+            const newListRisks = [...listRisks]
+            newListRisks.splice(index, 1)
+            setListRisks(newListRisks)
+         }
+    }
+
     function handleAddInspectionInformations(inspectionInformations :inspectionInformations) {
         setInspectionInformations(inspectionInformations)
     }
@@ -69,7 +77,7 @@ export default function Home() {
                     {
                         readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
                     }
-                    <CardListRisk statusReadyReport={readyReport} onReadyReport={handleReadyReport} listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
+                    <CardListRisk onRemoveRiskOfList={handleRemoveRiskOfList} statusReadyReport={readyReport} onReadyReport={handleReadyReport} listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
                 </section>
 
                 {/* {
