@@ -130,7 +130,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                                     <div className='flex flex-row items-center justify-center flex-wrap p-6 gap-4 border-2 rounded-md'>
                                         {
                                             risk.images?.map(( image, index ) => (
-                                                <Image key={index} alt="" className="w-[330px] h-[247px] mt-1 mb-1" src={image} width={150} height={90}/>
+                                                <Image key={index} alt="" className="w-[300px] h-[225px] mt-1 mb-1" src={image} width={150} height={90}/>
                                             ))
                                         }
                                         {
