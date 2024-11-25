@@ -6,10 +6,9 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ArrowBigLeftDash, ChevronDown, Dot, X } from "lucide-react";
+import { Dot, X } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
-import { useEffect, useState } from "react";
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
@@ -20,6 +19,10 @@ export interface CardListRiskProps {
 }
 
 export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
+
+    function handlePrint() {
+        window.print()
+    }
 
     return(
         statusReadyReport
@@ -96,9 +99,9 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                             <td className="border-2 pl-2">{`Hora: ${inspectionInformations.hora}`}</td>
                         </tr>
                         <tr className="border-2 w-full">
-                            <td className="border-2 pl-2">{`Local: ${inspectionInformations.localInspecionado}`}</td>
+                            <td className="border-2 pl-2">{`Local inspecionado: ${inspectionInformations.areaLotacao}/${inspectionInformations.localInspecionado}`}</td>
                             <td className="border-2 pl-2">{`Cidade: ${inspectionInformations.cidade}`}</td>
-                            <td className="border-2 pl-2">{`Área emitente: ${inspectionInformations.areaEmitente}`}</td>
+                            <td className="border-2 pl-2">{`Área emitente: ${inspectionInformations.areaEmitente}/${inspectionInformations.cipa}`}</td>
                         </tr>
                     </table>
 
@@ -168,8 +171,9 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                     <p className="text-center antialiased font-bold">{inspectionInformations.responsavelPelaInspecao}</p>
                     <p className="text-center antialiased">Responsável pela inspeção</p>
                 </div>
-                <div className="py-10">
+                <div className=" flex flex-row gap-2 py-10">
                     <Button id='voltar' className={`bg-green-600 hover:bg-green-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
+                    <Button id='imprimir' className={`bg-zinc-600 hover:bg-zinc-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } >Imprimir</Button>
                 </div>    
             </div>
         )

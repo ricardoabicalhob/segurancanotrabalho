@@ -6,8 +6,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
-import { Image, Minus, Plus, TriangleAlert, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Minus, Plus, TriangleAlert, X } from "lucide-react";
+import { useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
 import { createRoot } from "react-dom/client";
 import AlertNotification from "@/components/AlertNotification";
@@ -476,7 +476,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                     !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300 text-base md:text-sm">Editar</Button>
                                 }
                                 
-                                <Button onClick={()=>{ console.log(code); handleSaveRisk(); handleClearPrompt(); handleClearCode()}} disabled={formEditable} className="bg-green-600 hover:bg-green-400 text-base md:text-sm">Salvar</Button>
+                                <Button onClick={()=>{ console.log(code); handleSaveRisk(); handleClearPrompt(); handleClearCode()}} disabled={formEditable} className="bg-green-600 hover:bg-green-400 text-base md:text-sm">Adicionar</Button>
                             </>
                 }
             </CardFooter>
