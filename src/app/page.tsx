@@ -52,9 +52,9 @@ export default function Home() {
 
 
     return(
-        <body className="flex flex-col w-full h-full justify-center">
+        <body className="flex flex-col w-full h-full justify-center content-between">
             
-            <nav className={`bg-green-100 text-green-900 font-bold text-2xl grid grid-flow-col gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
+            <nav className={`bg-green-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
                 <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
