@@ -6,7 +6,7 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Dot, X } from "lucide-react";
+import { Dot, ListPlus, X } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
 
@@ -28,7 +28,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
         statusReadyReport
         ?
         (
-        <Card className={`${statusReadyReport ? 'mx-auto max-w-[960px]': 'min-w-[900px]'}`}>
+        <Card className={`${statusReadyReport ? 'mx-auto max-w-[480px]': 'min-w-[480px] p-3'}`}>
             <CardHeader>
                 <CardTitle className="text-lg">Situações de Risco Identificadas</CardTitle>
             </CardHeader>
@@ -37,11 +37,11 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                     listRisks
                     ?
                     listRisks.map((item, index)=>(
-                        <AccordionItem key={index} value={index.toString()} className={`my-6`}>
-                            <div className="flex flex-row justify-between">
+                        <AccordionItem key={index} value={index.toString()} className={`my-3`}>
+                            <div className={`flex flex-row justify-between items-center bg-green-100 p-2 rounded-md`}>
                                 <AccordionTrigger className="font-bold text-left max-w-[90%] text-base md:text-sm">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
                                 {/* <ChevronDown/> */}
-                                <X className="w-4 h-4 text-red-600 font-bold " onClick={()=>onRemoveRiskOfList(index)} />
+                                <X className="w-5 h-5 text-red-600 font-bold " onClick={()=>onRemoveRiskOfList(index)} />
                             </div>
                             <AccordionContent>
                                 <p className="font-bold ml-4 my-4 text-base md:text-sm">Fotos</p>
@@ -76,23 +76,26 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
             </Accordion>
             
             {
-                !listRisks.length && <p className="text-center mb-16 text-red-800">Ainda não foram inseridas situações de risco</p>
+                !listRisks.length &&    <div className="flex flex-col items-center gap-2">
+                                            <ListPlus className="text-gray-400 w-10 h-10"/>
+                                            <p className="text-center font-bold mb-16 text-gray-400">Ainda não foram adicionadas situações de risco</p>
+                                        </div>
             }
             
             
             <CardFooter className="flex flex-col gap-2">
                 {/* <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>                 */}
                 <Button disabled={inspectionInformations === undefined ? true : false} className="bg-green-600 hover:bg-green-400 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
-                {!inspectionInformations && <p className="text-sm text-red-800">{`Preencha os dados da inspeção ${listRisks.length ? '' : ' e'}`}</p>}
-                {!listRisks.length && <p className="text-sm text-red-800">{`${!inspectionInformations ? 'i' : 'I'}nsira pelo menos uma situação de risco.`}</p>}
+                {!inspectionInformations && <p className="text-[14px] text-red-600">{`Preencha os dados da inspeção ${listRisks.length ? '' : ' e'}`}</p>}
+                {!listRisks.length && <p className="text-[14px] text-red-600">{`${!inspectionInformations ? 'a' : 'A'}dicione pelo menos uma situação de risco.`}</p>}
             </CardFooter>
         </Card>
         )
         :
         (
             <div key={'containerPrincipal'} className='w-svw h-svh flex flex-col items-center'>
-                <div key={'containerSubprincipal'} className="max-w-[960px]">
-                    <table className="border-2 table-auto w-[98%] bg-slate-50">
+                <div key={'containerSubprincipal'} className="max-w-[960px] px-4">
+                    <table className="border-2 table-auto bg-slate-50 w-full">
                         <tr className="border-2 w-full">
                             <td className="border-2 pl-2">{`Empresa: ${inspectionInformations.empresa}`}</td>
                             <td className="border-2 pl-2">{`Data: ${inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
@@ -110,7 +113,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                         segurança do(s) funcionário(s) e/ou equipamento(s) no local de trabalho e terceiros.</p>
                 </div>
                 {
-                    <div key={'containerAnalises'} className="flex flex-col gap-2 p-6 w-[940px]">
+                    <div key={'containerAnalises'} className="flex flex-col gap-2 p-6 w-full max-w-[960px] sm:w-full md:max-w-[960px]">
                         {
                             listRisks
                             &&
@@ -127,7 +130,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                                     <div className='flex flex-row items-center justify-center flex-wrap p-6 gap-4 border-2 rounded-md'>
                                         {
                                             risk.images?.map(( image, index ) => (
-                                                <Image key={index} alt="" className="w-[270px] h-[202px] mt-1 mb-1" src={image} width={150} height={90}/>
+                                                <Image key={index} alt="" className="w-[330px] h-[247px] mt-1 mb-1" src={image} width={150} height={90}/>
                                             ))
                                         }
                                         {

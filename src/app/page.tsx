@@ -52,12 +52,13 @@ export default function Home() {
 
 
     return(
-        <div className="h-screen max-w-full flex flex-col">
-            <nav className={`sm:p-6 text-green-900 font-bold text-2xl grid grid-flow-col ${readyReport ? 'w-screen p-3' : 'w-[960px] self-center h-svh flex flex-row justify-center'} gap-2 bg-green-100`}>
-                <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
-                <p className="self-center justify-self-start">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
-            </nav>
+        <body className="h-screen w-screen flex flex-col">
             
+            <nav className={`bg-green-100 text-green-900 font-bold text-2xl grid grid-flow-col gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
+                <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
+                <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+            </nav>
+
             <main className={`grid grid-cols-1 sm:grid-cols-2 ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
                 {
                     readyReport &&  <section>
@@ -97,6 +98,6 @@ export default function Home() {
                                     <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
                                 </footer>
             }
-        </div>
+        </body>
    )
 }
