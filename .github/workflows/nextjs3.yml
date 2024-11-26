@@ -92,4 +92,5 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       - name: ApiKey Google
-        run: NEXT_PUBLIC_GEMINI_API_KEY=${{secrets.NEXT_PUBLIC_GEMINI_API_KEY}}
+        env: # Or as an environment variable
+          super_secret: ${{ secrets.NEXT_PUBLIC_GEMINI_API_KEY }}
