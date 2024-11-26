@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export async function GenerateAI( req :string) {
 
     const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY
-    const genAI = new GoogleGenerativeAI('AIzaSyB_ZCRzKLE12uXQRCwJWgRTd4B4L40Fkhs')
+    const genAI = new GoogleGenerativeAI(apiKey)
 
 
     try {

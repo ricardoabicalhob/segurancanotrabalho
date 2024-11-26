@@ -109,7 +109,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                     </table>
 
                     <p key={'naoconformidades'} className='w-full text-center my-4'>INDICAÇÃO DAS NÃO CONFORMIDADES</p>
-                    <p key={'informativo'} className='text-sm mx-6 my-4'>Solicitamos sua especial atenção para o assunto citado, visto que são irregularidades que comprometem a 
+                    <p key={'informativo'} className='text-sm px-6 py-2 my-4 bg-gray-200'>Solicitamos sua especial atenção para o assunto citado, visto que são irregularidades que comprometem a 
                         segurança do(s) funcionário(s) e/ou equipamento(s) no local de trabalho e terceiros.</p>
                 </div>
                 {
