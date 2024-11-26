@@ -96,7 +96,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          token: ${{ secrets.GEMINI_API_KEY }}
+          token: ${{ secrets.token }}
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         
