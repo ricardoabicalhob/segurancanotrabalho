@@ -20,6 +20,7 @@ permissions:
   deployments: write
   issues: write
   repository-projects: write
+  pull-requests: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -95,7 +96,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          github-token: ${{ secrets.GEMINI_API_KEY }}
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         
