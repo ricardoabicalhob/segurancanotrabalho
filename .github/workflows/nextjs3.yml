@@ -94,3 +94,4 @@ jobs:
       - name: ApiKey Google
         env: # Or as an environment variable
           super_secret: ${{ secrets.NEXT_PUBLIC_GEMINI_API_KEY }}
+        run: NEXT_PUBLIC_GEMINI_API_KEY = ${{secrets.NEXT_PUBLIC_GEMINI_API_KEY}}
