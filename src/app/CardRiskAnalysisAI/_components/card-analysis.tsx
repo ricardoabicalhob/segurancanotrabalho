@@ -206,19 +206,26 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     const handleGenerate = async ()=> {
 
         try {
-            const response = await GenerateAI(prompt)
-            const data = await response?.json()
+            
+            if(prompt) {
+                
+                const response = await GenerateAI(prompt)
+                const data = await response?.json()
 
-            if(response?.ok) {
-                setCode(data)
-                setIsLoading(false)
-            }else {
+                if(response?.ok) {
+                    setCode(data)
+                    setIsLoading(false)
+                }else {
 
-                setIsLoading(false)
-                setError(true)
-                setTimeout(() => {
-                    setError(false)
-                }, 3000);
+                    setIsLoading(false)
+                    setError(true)
+                    setTimeout(() => {
+                        setError(false)
+                    }, 3000);
+                }
+
+            } else {
+                throw 'Descreva uma situação de risco'
             }
         }catch(error) {
             setError(true)
@@ -372,7 +379,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code && <div className="grid w-full max-w-md items-center gap-1.5">
                                             <Separator className="my-4"/>
 
-                                            <div id="addImageSection" className=" bg-green-600 hover:bg-green-400 rounded-md h-9 flex items-center justify-center">
+                                            <div id="addImageSection" className=" bg-emerald-600 hover:bg-emerald-400 rounded-md h-9 flex items-center justify-center">
                                                 <p className="text-white text-base md:text-sm select-none max-w-fit" style={{position: 'absolute'}}>Adicionar foto</p>
                                                 <Input style={{opacity: 0}} onClick={handleSelectImage} multiple={false} type="file" maxLength={1} accept="image/*" id="imageInput"/>
                                             </div>

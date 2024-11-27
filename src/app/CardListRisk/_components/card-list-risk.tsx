@@ -28,7 +28,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
         statusReadyReport
         ?
         (
-        <Card className={`${statusReadyReport ? 'mx-auto max-w-[480px]': 'min-w-[480px] p-3'}`}>
+        <Card className={`${statusReadyReport ? 'mx-auto max-w-md': 'min-w-[480px] p-3'}`}>
             <CardHeader>
                 <CardTitle className="text-lg">Situações de Risco Identificadas</CardTitle>
             </CardHeader>
@@ -77,7 +77,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
             
             {
                 !listRisks.length &&    <div className="flex flex-col items-center gap-2">
-                                            <ListPlus className="text-gray-400 w-10 h-10"/>
+                                            <ListPlus className="text-gray-400 w-8 h-8"/>
                                             <p className="text-center font-bold mb-16 text-gray-400">Ainda não foram adicionadas situações de risco</p>
                                         </div>
             }

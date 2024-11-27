@@ -1,4 +1,4 @@
-import { Image, X } from "lucide-react";
+import { Image, ImageOff, ImagePlus, ListPlus, X } from "lucide-react";
 
 interface ListUploadedImagesProps {
     items :string[]
@@ -37,6 +37,12 @@ export default function ListUploadedImages( { items, onDeleteItem } :ListUploade
                 items && items.map((item, index) => (
                     <ItemList fileName = {item} key={index}/>
                 ))
+            }
+            {
+                !items.length &&    <div className="flex flex-col items-center">
+                                        <ImageOff className="text-gray-400 w-6 h-6"/>
+                                        <p className="text-center font-bold text-gray-400">Ainda não foram adicionadas fotos</p>
+                                    </div>
             }
         </div>
     )

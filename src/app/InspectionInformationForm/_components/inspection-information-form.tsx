@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { inspectionInformations } from '@/lib/pdf-generate';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const formInspectionInformationSchema = z.object({
     empresa: z.string().min(2, {
@@ -37,13 +37,15 @@ export const formInspectionInformationSchema = z.object({
 
 interface InspectionInformationFormProps {
     onAddInspectionInformations :(inspectionInformations :inspectionInformations)=> void
+    inspectionInformations? :inspectionInformations
+    readyReport :boolean
 }
 
-export default function InspectionInformationForm({ onAddInspectionInformations } :InspectionInformationFormProps) {
+export default function InspectionInformationForm({ onAddInspectionInformations, inspectionInformations, readyReport } :InspectionInformationFormProps) {
 
     const [ isSaved, setIsSaved ] = useState(false)
 
-    const { register, handleSubmit } = useForm({
+    const { register, handleSubmit, setValue } = useForm({
         resolver: zodResolver(formInspectionInformationSchema)
     })
 
@@ -55,6 +57,22 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
             console.log('Algo deu errado! Por favor tente novamente.')
         }
     }
+
+    useEffect(()=>{
+        if(inspectionInformations) {
+            setValue('empresa', inspectionInformations.empresa)
+            setValue('areaEmitente', inspectionInformations.areaEmitente)
+            setValue('cipa', inspectionInformations.cipa)
+            setValue('areaLotacao', inspectionInformations.areaLotacao)
+            setValue('localInspecionado', inspectionInformations.localInspecionado)
+            setValue('cidade', inspectionInformations.cidade)
+            setValue('data', inspectionInformations.data.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
+            setValue('hora', inspectionInformations.hora)
+            setValue('responsavelPelaInspecao', inspectionInformations.responsavelPelaInspecao)
+
+            setIsSaved(true)
+        }
+    }, [readyReport])
 
     return(
 
@@ -81,7 +99,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations 
                     }
                     {
                         !isSaved && <Button type='submit' formAction={()=> {handleSaveInspectionInformation}} className="bg-green-600 hover:bg-green-400">
-                                        Salvar
+                                        Ok
                                     </Button>
                     }
                     

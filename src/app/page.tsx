@@ -52,9 +52,9 @@ export default function Home() {
 
 
     return(
-        <div className="flex flex-col w-screen justify-center">
+        <div className="flex flex-col w-screen h-auto justify-center">
             
-            <nav className={`bg-green-200 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
+            <nav className={`bg-green-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
                 <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
@@ -63,7 +63,7 @@ export default function Home() {
                 {
                     readyReport &&  <section>
                                         <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p>
-                                        <InspectionInformationForm onAddInspectionInformations={handleAddInspectionInformations}/>
+                                        <InspectionInformationForm readyReport={readyReport} inspectionInformations={inspectionInformations} onAddInspectionInformations={handleAddInspectionInformations}/>
                                     </section>
                 }
 
