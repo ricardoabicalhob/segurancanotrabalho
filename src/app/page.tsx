@@ -58,7 +58,7 @@ export default function Home() {
 
 
     return(
-        <div className="flex flex-col w-screen h-[100vh]">
+        <div className="flex flex-col w-screen h-[100vh] justify-between">
             
             <nav className={`bg-gray-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
@@ -104,7 +104,7 @@ export default function Home() {
             </main>
             
             {
-                readyReport &&  <footer className={`bg-gray-100 p-6 mt-6 ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
+                readyReport &&  <footer className={`h-auto bg-gray-100 p-6 mt-6 ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
                                     <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
                                 </footer>
             }
