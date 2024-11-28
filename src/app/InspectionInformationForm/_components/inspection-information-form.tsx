@@ -93,7 +93,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
 
                     {
-                        isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-yellow-500 hover:bg-yellow-300">
+                        isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-lime-500 hover:bg-lime-300">
                                         Alterar
                                     </Button>
                     }
