@@ -9,10 +9,10 @@ interface WelcomeProps {
 
 export default function Welcome({ onWelcome } :WelcomeProps) {
     return(
-        <Card className="fixed flex flex-col self-start justify-self-center w-[80%] md:max-w-[80%] lg:max-w-[50%] min-h-[60%] z-50 bg-gray-200 bg-opacity-90 ">
+        <Card className="fixed flex flex-col self-start justify-self-center w-[80%] md:max-w-[80%] lg:max-w-[50%] h-auto z-50 bg-gray-200 bg-opacity-90 ">
             <CardHeader className="grid grid-flow-col grid-cols-3 justify-center items-center gap-4 w-full">
                 <p />
-                <CardTitle className="justify-self-center text-lg md:text-2xl text-green-900">Bem-vindo!</CardTitle>
+                <CardTitle className="justify-self-center text-sm md:text-2xl text-green-900">Bem-vindo(a)!</CardTitle>
                 <div 
                     className="rounded-full w-7 justify-self-end bg-red-600 hover:bg-red-400 p-1"
                     onClick={()=> onWelcome()}    

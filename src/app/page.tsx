@@ -65,7 +65,7 @@ export default function Home() {
                 <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
 
-            <main className={`grid grid-cols-1 sm:grid-cols-2 ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
+            <main className={`grid grid-cols-1 sm:grid-cols-2 h-auto ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
                 {
                     isWelcome && <Welcome onWelcome={handleWelcome} />
                 }
