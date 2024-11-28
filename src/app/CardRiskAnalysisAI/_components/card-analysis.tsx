@@ -34,7 +34,6 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     const [isLoading, setIsLoading] = useState(false)
     const [imageNameList, setImageNameList] = useState<string[]>([])
     const [error, setError] = useState(false)
-    const [errorNameFile, setErrorNameFile] = useState(false)
 
     function validationForm() {
         let result = false
@@ -215,6 +214,9 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                 if(response?.ok) {
                     setCode(data)
                     setIsLoading(false)
+                    setTimeout(() => {
+                        handleLinkImages()
+                    }, 100);
                 }else {
 
                     setIsLoading(false)
@@ -340,6 +342,9 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
+    function handleLinkImages() {
+        document.getElementById('buttonAnalysis')?.click()
+    }
 
     return(
         <Card className="mx-auto max-w-md">
@@ -366,7 +371,17 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 onChange={(e)=> setPrompt(e.target.value)}
                             />
                             
-                            <Button formAction={()=>{handleGenerate(); handleLoadingIndicator()}} className=" bg-green-600 hover:bg-green-400 text-base md:text-sm">Analisar situação de risco com IA</Button>
+                            <Button 
+                                formAction={()=>{
+                                                handleGenerate(); 
+                                                handleLoadingIndicator()
+                                            }} 
+                                className=" bg-green-600 hover:bg-green-400 text-base md:text-sm"
+                            >
+                                Analisar situação de risco com IA
+                            </Button>
+                            <a id="buttonAnalysis" href="#addImageSection" />
+                            
                             {isLoading && <LoadingIndicator />}
                             {error && <AlertNotification text="Algo deu errado! Por favor, tente novamente."/>}
                         </div>
@@ -483,7 +498,19 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                     !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300 text-base md:text-sm">Editar</Button>
                                 }
                                 
-                                <Button onClick={()=>{ console.log(code); handleSaveRisk(); handleClearPrompt(); handleClearCode()}} disabled={formEditable} className="bg-green-600 hover:bg-green-400 text-base md:text-sm">Adicionar</Button>
+                                <Button 
+                                    id="buttonSave"
+                                    onClick={()=>{ 
+                                                console.log(code); 
+                                                handleSaveRisk(); 
+                                                handleClearPrompt(); 
+                                                handleClearCode()
+                                            }} disabled={formEditable} 
+                                    className="bg-green-600 hover:bg-green-400 text-base md:text-sm"
+                                >
+                                    Adicionar
+                                </Button>
+
                             </>
                 }
             </CardFooter>

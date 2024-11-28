@@ -6,7 +6,7 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Dot, ListPlus, X } from "lucide-react";
+import { Dot, ListX, X } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
 
@@ -38,7 +38,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                     ?
                     listRisks.map((item, index)=>(
                         <AccordionItem key={index} value={index.toString()} className={`my-3`}>
-                            <div className={`flex flex-row justify-between items-center bg-green-100 p-2 rounded-md`}>
+                            <div className={`flex flex-row justify-between items-center border-2 p-2 rounded-md`}>
                                 <AccordionTrigger className="font-bold text-left max-w-[90%] text-base md:text-sm">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
                                 {/* <ChevronDown/> */}
                                 <X className="w-5 h-5 text-red-600 font-bold " onClick={()=>onRemoveRiskOfList(index)} />
@@ -77,7 +77,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
             
             {
                 !listRisks.length &&    <div className="flex flex-col items-center gap-2">
-                                            <ListPlus className="text-gray-400 w-8 h-8"/>
+                                            <ListX className="text-gray-400 w-8 h-8"/>
                                             <p className="text-center font-bold mb-16 text-gray-400">Ainda não foram adicionadas situações de risco</p>
                                         </div>
             }

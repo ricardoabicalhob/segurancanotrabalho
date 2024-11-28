@@ -7,6 +7,10 @@ import { useState } from "react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Welcome from "@/components/Welcome";
 
 type ListRisks = Array<RiskProps>
 
@@ -15,6 +19,7 @@ export default function Home() {
     const [ listRisks, setListRisks ] = useState<ListRisks>([])
     const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformations>()
     const [ readyReport, setReadyReport ] = useState(true)
+    const [ isWelcome, setIsWelcome ] = useState(true)
     const router = useRouter()
 
     function handleReadyReport() {
@@ -40,6 +45,10 @@ export default function Home() {
         setInspectionInformations(inspectionInformations)
     }
 
+    function handleWelcome() {
+        setIsWelcome(!isWelcome)
+    }
+
     function handleViewReport() {
         if(listRisks){
             const dataContent = {
@@ -52,7 +61,7 @@ export default function Home() {
 
 
     return(
-        <div className="flex flex-col w-screen h-auto justify-center">
+        <div className="flex flex-col w-screen h-[100dvh - 60px] justify-center">
             
             <nav className={`bg-green-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
@@ -61,22 +70,26 @@ export default function Home() {
 
             <main className={`grid grid-cols-1 sm:grid-cols-2 ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
                 {
-                    readyReport &&  <section>
-                                        <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p>
+                    isWelcome && <Welcome onWelcome={handleWelcome} />
+                }
+                
+                {
+                    readyReport &&  <section className="">
+                                        {/* <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p> */}
                                         <InspectionInformationForm readyReport={readyReport} inspectionInformations={inspectionInformations} onAddInspectionInformations={handleAddInspectionInformations}/>
                                     </section>
                 }
 
                 {
                     readyReport &&  <section>
-                                        <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 2</p>
+                                        {/* <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 2</p> */}
                                         <CardRiskAnalysisAI onAddRisk={handleSaveRisk}/>
                                     </section>
                 }
 
                 <section>
                     {
-                        readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
+                        // readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
                     }
                     <CardListRisk onRemoveRiskOfList={handleRemoveRiskOfList} statusReadyReport={readyReport} onReadyReport={handleReadyReport} listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
                 </section>
