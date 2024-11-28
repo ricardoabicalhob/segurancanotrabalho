@@ -58,7 +58,7 @@ export default function Home() {
 
 
     return(
-        <div className="flex flex-col w-screen min-h-screen">
+        <div className="flex flex-col w-screen min-h-screen h-[calc(100vh - 60px)]">
             
             <nav className={`bg-gray-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
