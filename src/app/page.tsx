@@ -105,11 +105,11 @@ export default function Home() {
             </main>
             
             {
-                readyReport &&  <footer className={`flex flex-col h-auto bg-gray-100 p-6 mt-6 ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
+                readyReport &&  <footer className={`flex flex-col h-auto bg-gray-100 p-6 mt-6 gap-2 ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
                                     <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
                                     <a 
                                         href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes"
-                                        className={`flex gap-2 mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-md font-bold text-green-900 hover:text-green-600`}
+                                        className={`flex gap-2 mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-md font-bold text-green-600 hover:text-green-400`}
                                         target="blank"
                                     >
                                         <ExternalLink /> Ministério do Trabalho e Emprego - Normas Regulamentadoras Vigentes
