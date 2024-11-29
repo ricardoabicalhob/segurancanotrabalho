@@ -38,7 +38,7 @@ export default function CardListRisk({ onRemoveRiskOfList, listRisks , inspectio
                     ?
                     listRisks.map((item, index)=>(
                         <AccordionItem key={index} value={index.toString()} className={`my-3`}>
-                            <div className={`flex flex-row justify-between items-center hover:bg-gray-100 border-2 p-2 rounded-md`}>
+                            <div className={`flex flex-row justify-between items-center hover:bg-gray-100 border-[1px] p-2 rounded-md`}>
                                 <AccordionTrigger className="font-bold text-left max-w-[90%] text-base md:text-sm">{`${index + 1}. ${item.risco}`}</AccordionTrigger>
                                 {/* <ChevronDown/> */}
                                 <X className="w-5 h-5 text-red-600 font-bold " onClick={()=>onRemoveRiskOfList(index)} />

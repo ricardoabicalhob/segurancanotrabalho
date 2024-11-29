@@ -485,17 +485,36 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                     }
                 </form>
             </CardContent>
-            <CardFooter className="flex justify-end gap-2">
+            <CardFooter className="flex flex-col md:flex-row md:justify-end gap-2">
                 {
                     code && <>
                                 {
-                                    prompt && <Button className="text-base md:text-sm" disabled={formEditable} onClick={()=>{handleClearPrompt(); handleClearCode()}}>Limpar</Button>
+                                    prompt && <Button 
+                                                    className=" w-full md:flex-1 text-base md:text-sm" 
+                                                    disabled={formEditable} 
+                                                    onClick={()=>{
+                                                        handleClearPrompt(); 
+                                                        handleClearCode()
+                                                    }}
+                                                >
+                                                    Limpar
+                                                </Button>
                                 }
                                 {
-                                    formEditable && <Button className="text-base md:text-sm" onClick={handleCancelEdit}>Salvar alterações</Button>
+                                    formEditable && <Button 
+                                                        className="bg-green-600 hover:bg-green-400 w-full md:flex-1 text-base md:text-sm" 
+                                                        onClick={handleCancelEdit}
+                                                    >
+                                                        Salvar alterações
+                                                    </Button>
                                 }
                                 {
-                                    !formEditable && <Button onClick={handleEdit} className="bg-yellow-500 hover:bg-yellow-300 text-base md:text-sm">Editar</Button>
+                                    !formEditable && <Button 
+                                                        onClick={handleEdit}
+                                                        className="bg-lime-500 hover:bg-lime-300 w-full md:flex-1 text-base md:text-sm"
+                                                     >
+                                                        Editar
+                                                    </Button>
                                 }
                                 
                                 <Button 
@@ -506,7 +525,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                                 handleClearPrompt(); 
                                                 handleClearCode()
                                             }} disabled={formEditable} 
-                                    className="bg-green-600 hover:bg-green-400 text-base md:text-sm"
+                                    className="bg-green-600 hover:bg-green-400 w-full md:flex-1 text-base md:text-sm"
                                 >
                                     Adicionar
                                 </Button>
