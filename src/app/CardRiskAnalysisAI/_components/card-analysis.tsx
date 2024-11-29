@@ -527,7 +527,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                             }} disabled={formEditable} 
                                     className="bg-green-600 hover:bg-green-400 w-full md:flex-1 text-base md:text-sm"
                                 >
-                                    Adicionar
+                                    Adicionar ao relatório
                                 </Button>
 
                             </>
