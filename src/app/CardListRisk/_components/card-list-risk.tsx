@@ -118,7 +118,7 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
                                 <div className="flex flex-row flex-wrap items-center justify-center gap-2">
                                     {
                                         item.images?.map((image, indexImage) => (
-                                            <div className="flex flex-col">
+                                            <div key={indexImage} className="flex flex-col">
                                                 <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-red-600 hover:bg-red-400" onClick={()=> onDeleteImage(index, indexImage)}><X className="w-4 h-4 text-white"/></div>
                                                 <div className="flex flex-col bg-gray-200 m-3 px-2 py-1 rounded-md">
                                                     <Image key={indexImage} alt="" className="w-[150px] h-[90px] mt-1 mb-1" src={image} width={150} height={90}/>
@@ -136,7 +136,7 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
                                 </div>
                                 {
                                     item.consequencias?.map((consequencia, indexConsequencia)=>(
-                                        <div className="flex flex-col">
+                                        <div key={indexConsequencia} className="flex flex-col">
                                             <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-red-600 hover:bg-red-400" onClick={()=> {onDeleteConsequencia(index, indexConsequencia)}}><X className="w-4 h-4 text-white"/></div>
 
                                             <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
@@ -155,7 +155,7 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
                                 </div>
                                 {
                                     item.acoes?.map((acao, indexAcao)=>(
-                                        <div className="flex flex-col">
+                                        <div key={indexAcao} className="flex flex-col">
                                             <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-red-600 hover:bg-red-400" onClick={()=> {onDeleteAcaoRecomendada(index, indexAcao)}}><X className="w-4 h-4 text-white"/></div>
 
                                             <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
