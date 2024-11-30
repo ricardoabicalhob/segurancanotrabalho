@@ -223,7 +223,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                     setError(true)
                     setTimeout(() => {
                         setError(false)
-                    }, 3000);
+                    }, 2000);
                 }
 
             } else {
@@ -233,7 +233,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
             setError(true)
             setTimeout(() => {
                 setError(false)
-            }, 5000);
+            }, 2000);
             setIsLoading(false)
             console.log('Erro: ', error)
         }

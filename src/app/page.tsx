@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Welcome from "@/components/Welcome";
 import { ExternalLink, Link } from "lucide-react";
 
-type ListRisks = Array<RiskProps>
+export type ListRisks = Array<RiskProps>
 
 export default function Home() {
 
@@ -31,12 +31,100 @@ export default function Home() {
         setListRisks(newListRisks)
     }
 
+    function handleChangeRisco(indexRisk :number, newValue :string) {
+        if(listRisks[indexRisk]) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].risco = newValue
+            setListRisks(updatedListRisks)
+        }
+    }
+
     function handleRemoveRiskOfList(index :number) {
         if(listRisks) {
             const newListRisks = [...listRisks]
             newListRisks.splice(index, 1)
             setListRisks(newListRisks)
          }
+    }
+
+    function handleDeleteImageOfListRiscks(indexRisk :number, indexImage :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].images) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].images.splice(indexImage, 1)
+            setListRisks(updatedListRisks)
+        }
+    }
+
+    function handleAddImageOnListRisks(indexRisk :number, image :unknown) {
+        if(listRisks[indexRisk]) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].images.push(image as string)
+            setListRisks(updatedListRisks)
+        }
+    }
+
+    function handleDeleteConsequencia(indexRisk :number, indexConsequencia :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length > 1) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].consequencias.splice(indexConsequencia, 1)
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Precisa haver pelo menos uma consequência para cada situação de risco.')
+        }
+    }
+
+    function handleAddConsequencia(indexRisk :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length < 5) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].consequencias.push('')
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Máximo de 5 consequências para cada situação de risco.')
+        }
+    }
+
+    function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length > 1) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].consequencias.splice(indexConsequencia, 1, newValue)
+            setListRisks(updatedListRisks)
+        }
+    }
+
+    function handleDeleteAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1)
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Precisa haver pelo menos uma ação recomendada para cada situação de risco.')
+        }
+    }
+
+    function handleAddAcaoRecomendada(indexRisk :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length < 5) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].acoes.push('')
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Máximo de 5 ações recomendadas para cada situação de risco.')
+        }
+    }
+
+    function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1, newValue)
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Precisa haver pelo menos uma consequência para cada situação de risco.')
+        }
+    }
+
+    function handleEditRiskOfList(index :number) {
+        if(listRisks) {
+
+        }
     }
 
     function handleAddInspectionInformations(inspectionInformations :inspectionInformations) {
@@ -89,7 +177,21 @@ export default function Home() {
                     {
                         // readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
                     }
-                    <CardListRisk onRemoveRiskOfList={handleRemoveRiskOfList} statusReadyReport={readyReport} onReadyReport={handleReadyReport} listRisks={listRisks} inspectionInformations={inspectionInformations as inspectionInformations}/>
+                    <CardListRisk 
+                        onChangeRisco={handleChangeRisco}
+                        onDeleteImage={handleDeleteImageOfListRiscks} 
+                        onAddImage={handleAddImageOnListRisks}
+                        onDeleteConsequencia={handleDeleteConsequencia}
+                        onAddConsequencia={handleAddConsequencia}
+                        onChangeConsequencia={handleChangeConsequencia}
+                        onDeleteAcaoRecomendada={handleDeleteAcaoRecomendada}
+                        onAddAcaoRecomendada={handleAddAcaoRecomendada}
+                        onChangeAcaoRecomendada={handleChangeAcaoRecomendada}
+                        onRemoveRiskOfList={handleRemoveRiskOfList} 
+                        statusReadyReport={readyReport} 
+                        onReadyReport={handleReadyReport} 
+                        listRisks={listRisks} 
+                        inspectionInformations={inspectionInformations as inspectionInformations}/>
                 </section>
 
                 {/* {
