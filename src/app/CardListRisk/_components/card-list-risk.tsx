@@ -92,7 +92,7 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
                                 
                             </div>
                                         
-                            <div className="w-[450px] md:w-[500px] h-auto p-6 m-6 justify-self-center rounded-lg shadow-lg border-2" id={`${index}. ${item.risco}`} popover='manual'>
+                            <div className="w-[400px] md:w-[500px] h-auto p-6 m-6 justify-self-center rounded-lg shadow-lg border-2" id={`${index}. ${item.risco}`} popover='manual'>
                                 <p className="flex flex-row items-center font-bold mb-4">{`${index + 1}. `}<Input onChange={(e)=>onChangeRisco(index, e.target.value)} className="ml-1" value={`${item.risco}`}/></p>
                                 
                                 <Separator />
