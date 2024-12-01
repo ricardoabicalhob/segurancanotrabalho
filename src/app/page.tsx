@@ -151,7 +151,7 @@ export default function Home() {
             
             <nav className={`bg-gray-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
                 <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
-                <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+                <p className="self-center justify-self-start w-full">{`${readyReport ? 'EDITOR PARA' : ''} RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO`}</p>
             </nav>
 
             <main className={`grid grid-cols-1 sm:grid-cols-2 h-auto ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
