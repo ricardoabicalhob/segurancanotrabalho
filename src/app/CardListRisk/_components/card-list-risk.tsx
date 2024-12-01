@@ -80,14 +80,27 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
                                     <Button 
                                         popoverTarget={`${index}. ${item.risco}`}
                                         className="max-w-[45px] h-fit px-6 bg-inherit hover:bg-lime-400 text-black text-xs" 
-                                        // onClick={()=>{
-                                        //     setIsEditableRisk(true)
-                                        // }}
+                                        onClick={()=>{
+                                            setIsEditableRisk(true)
+                                        }}
                                         popoverTargetAction={'show'}
                                     >
                                         <Edit />
                                     </Button>
-                                    <Button onClick={()=>onRemoveRiskOfList(index)} className="max-w-[45px] h-fit px-6 bg-inherit hover:bg-red-400 text-black text-xs"><X /></Button>
+                                    {
+                                        isEditableRisk &&   <Button
+                                                                className=" absolute max-w-[45px] h-fit px-6 bg-inherit hover:bg-inherit text-black text-xs" 
+                                                            >
+                                                                <Edit className="text-zinc-300 font-normal"/>
+                                                            </Button>
+                                    }
+                                    <Button 
+                                        disabled={isEditableRisk}
+                                        onClick={()=>onRemoveRiskOfList(index)} 
+                                        className="max-w-[45px] h-fit px-6 bg-inherit hover:bg-red-400 text-black text-xs"
+                                    >
+                                        <X />
+                                    </Button>
                                 </div>
                                 
                             </div>
@@ -170,9 +183,9 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
 
                                 <Button
                                     className="bg-lime-500 hover:bg-lime-300 flex justify-self-end"
-                                    // onClick={()=>{
-                                    //     setIsEditableRisk(false)
-                                    // }}
+                                    onClick={()=>{
+                                        setIsEditableRisk(false)
+                                    }}
                                     popoverTarget={`${index}. ${item.risco}`}
                                 >
                                     Concluir
