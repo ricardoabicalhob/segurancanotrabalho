@@ -75,7 +75,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
                 {
                     itemRisk.images?.map((image, indexImage) => (
                         <div key={indexImage} className="flex flex-col">
-                            <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-red-600 hover:bg-red-400" onClick={()=> onDeleteImage(indexRisk, indexImage)}><X className="w-4 h-4 text-white"/></div>
+                            <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-gray-300 hover:bg-red-600" onClick={()=> onDeleteImage(indexRisk, indexImage)}><X className="w-4 h-4 text-white"/></div>
                             <div className="flex flex-col bg-gray-200 m-3 px-2 py-1 rounded-md">
                                 <Image key={indexImage} alt="" className="w-[150px] h-[90px] mt-1 mb-1" src={image} width={150} height={90}/>
                             </div>
@@ -93,7 +93,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
             {
                 itemRisk.consequencias?.map((consequencia, indexConsequencia)=>(
                     <div key={indexConsequencia} className="flex flex-col">
-                        <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-red-600 hover:bg-red-400" onClick={()=> {onDeleteConsequencia(indexRisk, indexConsequencia)}}><X className="w-4 h-4 text-white"/></div>
+                        <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-gray-300 hover:bg-red-600" onClick={()=> {onDeleteConsequencia(indexRisk, indexConsequencia)}}><X className="w-4 h-4 text-white"/></div>
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexConsequencia + 1}. `}</p>
@@ -112,7 +112,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
             {
                 itemRisk.acoes?.map((acao, indexAcao)=>(
                     <div key={indexAcao} className="flex flex-col">
-                        <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-red-600 hover:bg-red-400" onClick={()=> {onDeleteAcaoRecomendada(indexRisk, indexAcao)}}><X className="w-4 h-4 text-white"/></div>
+                        <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-gray-300 hover:bg-red-600" onClick={()=> {onDeleteAcaoRecomendada(indexRisk, indexAcao)}}><X className="w-4 h-4 text-white"/></div>
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexAcao + 1}. `}</p>
