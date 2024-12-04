@@ -1,7 +1,6 @@
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-
 export async function GenerateAI( req :string) {
 
     try {

@@ -6,6 +6,7 @@ import { Button } from "../ui/button"
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis"
 import { useState } from "react"
 import convertToBase64 from "@/lib/convert-base64"
+import { Textarea } from "../ui/textarea"
 
 interface PopoverWindowProps {
     indexRisk :number
@@ -49,7 +50,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
 
     return (
         <div className="w-[360px] md:w-[500px] h-auto p-6 m-6 justify-self-center rounded-lg shadow-lg border-2" id={`${indexRisk}. ${itemRisk.risco}`} popover='manual'>
-            <p className="flex flex-row items-center font-bold mb-4">{`${indexRisk + 1}. `}<Input onChange={(e)=>onChangeRisco(indexRisk, e.target.value)} className="ml-1" value={`${itemRisk.risco}`}/></p>
+            <p className="flex flex-row items-center font-bold mb-4">{`${indexRisk + 1}. `}<Input onChange={(e)=>onChangeRisco(indexRisk, e.target.value)} className="bg-gray-100 ml-1" value={`${itemRisk.risco}`}/></p>
             
             <Separator />
 
@@ -97,7 +98,13 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexConsequencia + 1}. `}</p>
-                            <Input className="ml-1 text-base md:text-sm" value={`${consequencia}`} onChange={e => onChangeConsequencia(indexRisk, indexConsequencia, e.target.value)} />
+                            <textarea  
+                                value={`${consequencia}`}
+                                className="h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm"  
+                                onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}} 
+                                onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
+                                onChange={e => onChangeConsequencia(indexRisk, indexConsequencia, e.target.value)} 
+                            />
                         </div>
                     </div>
                 ))
@@ -116,7 +123,13 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexAcao + 1}. `}</p>
-                            <Input className="ml-1 text-base md:text-sm" value={`${acao}`} onChange={e => onChangeAcaoRecomendada(indexRisk, indexAcao, e.target.value)} />
+                            <textarea 
+                                value={`${acao}`}
+                                className={`h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-fit resize-none overflow-y-hidden content-center text-base md:text-sm`} 
+                                onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
+                                onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}  
+                                onChange={e => onChangeAcaoRecomendada(indexRisk, indexAcao, e.target.value)} 
+                            />
                         </div>
                     </div>
                 ))
@@ -133,6 +146,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
             >
                 Concluir
             </Button>
+            
         </div>
     )
 }

@@ -22,14 +22,14 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
             <div key={'containerSubprincipal'} className="max-w-[960px] px-4">
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
-                        <td className="border-2 pl-2">{`Empresa: ${inspectionInformations.empresa}`}</td>
-                        <td className="border-2 pl-2">{`Data: ${inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
-                        <td className="border-2 pl-2">{`Hora: ${inspectionInformations.hora}`}</td>
+                        <td className="border-2 pl-2"><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
+                        <td className="border-2 pl-2"><b>Data: </b>{`${inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
+                        <td className="border-2 pl-2"><b>Hora: </b>{`${inspectionInformations.hora}`}</td>
                     </tr>
                     <tr className="border-2 w-full">
-                        <td className="border-2 pl-2">{`Local inspecionado: ${inspectionInformations.areaLotacao}/${inspectionInformations.localInspecionado}`}</td>
-                        <td className="border-2 pl-2">{`Cidade: ${inspectionInformations.cidade}`}</td>
-                        <td className="border-2 pl-2">{`Área emitente: ${inspectionInformations.areaEmitente}/${inspectionInformations.cipa}`}</td>
+                        <td className="border-2 pl-2"><b>Local inspecionado: </b>{`${inspectionInformations.areaLotacao}/${inspectionInformations.localInspecionado}`}</td>
+                        <td className="border-2 pl-2"><b>Cidade: </b>{`${inspectionInformations.cidade}`}</td>
+                        <td className="border-2 pl-2"><b>Área emitente: </b>{`${inspectionInformations.areaEmitente}/${inspectionInformations.cipa}`}</td>
                     </tr>
                 </table>
 

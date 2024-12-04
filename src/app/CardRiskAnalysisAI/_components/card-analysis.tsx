@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
-import { Minus, Plus, TriangleAlert, X } from "lucide-react";
+import { Minus, Plus, Target, TriangleAlert, X } from "lucide-react";
 import { useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
 import { createRoot } from "react-dom/client";
@@ -427,10 +427,10 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 ? 
                                 code.consequencias.map((item, index)=>(
                                     formEditable && <div key={index} className="flex flex-row items-center gap-2">
-                                                        <Input 
-                                                            className="text-base md:text-sm"
-                                                            key={index}
-                                                            type="text"
+                                                        <textarea 
+                                                            className="bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm" 
+                                                            onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}                                                              key={index}
+                                                            onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             value={code.consequencias[index]}
                                                             onChange={e => handleConsequenceChange(index, e.target.value)}
                                                         />
@@ -465,10 +465,10 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 ?
                                 code.acoes.map((item, index)=>(
                                     formEditable && <div key={index} className="flex flex-row items-center gap-2">
-                                                        <Input
-                                                            className="text-base md:text-sm"
-                                                            key={index}
-                                                            type="text"
+                                                        <textarea
+                                                            className= {` bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm`} 
+                                                            onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}                                                              key={index}
+                                                            onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             value={code.acoes[index]}
                                                             onChange={e=> handleActionChange(index, e.target.value)}
                                                         />
@@ -485,7 +485,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                     }
                 </form>
             </CardContent>
-            <CardFooter className="flex flex-col md:flex-row md:justify-end gap-2">
+            <CardFooter className="flex flex-col xl:flex-row md:justify-end gap-2">
                 {
                     code && <>
                                 {

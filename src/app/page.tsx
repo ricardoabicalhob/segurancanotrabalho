@@ -84,7 +84,7 @@ export default function Home() {
     }
 
     function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length > 1) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length >= 1) {
             const updatedListRisks = [...listRisks]
             updatedListRisks[indexRisk].consequencias.splice(indexConsequencia, 1, newValue)
             setListRisks(updatedListRisks)
@@ -112,7 +112,7 @@ export default function Home() {
     }
 
     function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length >= 1) {
             const updatedListRisks = [...listRisks]
             updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1, newValue)
             setListRisks(updatedListRisks)
