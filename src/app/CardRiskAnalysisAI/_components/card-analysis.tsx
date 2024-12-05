@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
 import { Minus, Plus, Target, TriangleAlert, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
 import { createRoot } from "react-dom/client";
 import AlertNotification from "@/components/AlertNotification";
@@ -34,6 +34,9 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
     const [isLoading, setIsLoading] = useState(false)
     const [imageNameList, setImageNameList] = useState<string[]>([])
     const [error, setError] = useState(false)
+    const textareaAcoesRefs = useRef<HTMLTextAreaElement[]>([])
+    const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
+
 
     function validationForm() {
         let result = false
@@ -63,8 +66,37 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
+    function autoHeightTextareasAcoes() {
+        if(textareaAcoesRefs.current){
+            setTimeout(() => {
+                textareaAcoesRefs.current.forEach(textarea => {
+                    if(textarea.value !== ''){
+                        textarea.style.height = '36px'
+                        textarea.style.height = textarea.scrollHeight + 'px'
+                        console.log(textarea)
+                    }
+                })    
+            }, 100);
+        }
+    }
+
+    function autoHeightTextareaConsequencias() {
+        if(textareaConsequenciasRefs.current){
+            setTimeout(() => {
+                textareaConsequenciasRefs.current.forEach(textarea => {
+                    if(textarea.value !== ''){
+                        textarea.style.height = '36px'
+                        textarea.style.height = textarea.scrollHeight + 'px'
+                    }
+                })    
+            }, 100);
+        }
+    }
+
     function handleEdit() {
         setFormEditable(true)
+        autoHeightTextareaConsequencias()
+        autoHeightTextareasAcoes()
     }
 
     function handleCancelEdit() {
@@ -427,7 +459,13 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 ? 
                                 code.consequencias.map((item, index)=>(
                                     formEditable && <div key={index} className="flex flex-row items-center gap-2">
-                                                        <textarea 
+                                                        <textarea
+                                                            key={index}
+                                                            ref={(element) => {
+                                                                if (element) {
+                                                                    textareaConsequenciasRefs.current.push(element);
+                                                                }
+                                                            }}
                                                             className="bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm" 
                                                             onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}                                                              key={index}
                                                             onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
@@ -466,7 +504,13 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code.acoes.map((item, index)=>(
                                     formEditable && <div key={index} className="flex flex-row items-center gap-2">
                                                         <textarea
-                                                            className= {` bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm`} 
+                                                            key={index}
+                                                            ref={(element) => {
+                                                                if (element) {
+                                                                    textareaAcoesRefs.current.push(element);
+                                                                }
+                                                            }}
+                                                            className= {`h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm`} 
                                                             onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}                                                              key={index}
                                                             onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             value={code.acoes[index]}

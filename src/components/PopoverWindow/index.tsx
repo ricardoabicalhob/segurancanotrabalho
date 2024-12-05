@@ -4,9 +4,8 @@ import { Input } from "../ui/input"
 import Image from "next/image"
 import { Button } from "../ui/button"
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis"
-import { useState } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import convertToBase64 from "@/lib/convert-base64"
-import { Textarea } from "../ui/textarea"
 
 interface PopoverWindowProps {
     indexRisk :number
@@ -26,6 +25,35 @@ interface PopoverWindowProps {
 
 export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, setIsEditableRisk, onChangeRisco, onAddImage, onDeleteImage, onAddConsequencia, onDeleteConsequencia, onChangeConsequencia, onAddAcaoRecomendada, onDeleteAcaoRecomendada, onChangeAcaoRecomendada } :PopoverWindowProps ) {
     
+    const textareaAcoesRefs = useRef<HTMLTextAreaElement[]>([])
+    const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
+
+    useEffect(()=>{
+        if(textareaConsequenciasRefs.current){
+            setTimeout(() => {
+                textareaConsequenciasRefs.current.forEach(textarea => {
+                    if(textarea.value !== ''){
+                        textarea.style.height = '36px'
+                        textarea.style.height = textarea.scrollHeight + 'px'
+                    }
+                })    
+            }, 100);
+        }
+    }, [textareaConsequenciasRefs.current[0]?.style.height])
+
+    useEffect(()=>{
+        if(textareaAcoesRefs.current){
+            setTimeout(() => {
+                textareaAcoesRefs.current.forEach(textarea => {
+                    if(textarea.value !== ''){
+                        textarea.style.height = '36px'
+                        textarea.style.height = textarea.scrollHeight + 'px'
+                    }
+                })    
+            }, 100);
+        }
+    }, [textareaAcoesRefs.current[0]?.style.height])
+
     function handleSelectImage(indexRisk :number) {
         const img = document.getElementById(`imageInput${indexRisk}`)
         
@@ -98,7 +126,13 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexConsequencia + 1}. `}</p>
-                            <textarea  
+                            <textarea
+                                key={indexConsequencia}
+                                ref={(element) => {
+                                    if (element) {
+                                        textareaConsequenciasRefs.current.push(element);
+                                    }
+                                }}
                                 value={`${consequencia}`}
                                 className="h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm"  
                                 onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}} 
@@ -124,8 +158,14 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexAcao + 1}. `}</p>
                             <textarea 
+                                key={indexAcao}
+                                ref={(element) => {
+                                    if (element) {
+                                        textareaAcoesRefs.current.push(element);
+                                    }
+                                }}
                                 value={`${acao}`}
-                                className={`h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-fit resize-none overflow-y-hidden content-center text-base md:text-sm`} 
+                                className={`h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm`} 
                                 onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                 onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}  
                                 onChange={e => onChangeAcaoRecomendada(indexRisk, indexAcao, e.target.value)} 

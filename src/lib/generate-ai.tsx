@@ -47,7 +47,7 @@ export async function GenerateAI( req :string) {
     // const response = {
     //     risco: 'Funcionáro trabalhando em alutra sem EPI',
     //     consequencias: ['Quedas graves', 'Morte', 'fraturas graves'],
-    //     acoes: ['Entregar EPIs necessários conforme estipula a NR-35', 'Cobrar a utilização correta dos EPIs'],
+    //     acoes: ['Entregar EPIs necessários conforme estipula a NR-35 Entregar EPIs necessários conforme estipula a NR-35 Entregar EPIs necessários conforme estipula a NR-35 Entregar EPIs necessários conforme estipula a NR-35', 'Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs'],
     //     images: []
     // }
 
