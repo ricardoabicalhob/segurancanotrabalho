@@ -27,6 +27,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
     
     const textareaAcoesRefs = useRef<HTMLTextAreaElement[]>([])
     const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
+    const textareaRisco = useRef<HTMLTextAreaElement>(null)
 
     useEffect(()=>{
         if(textareaConsequenciasRefs.current){
@@ -54,6 +55,15 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
         }
     }, [textareaAcoesRefs.current[0]?.style.height])
 
+    useEffect(()=>{
+        setTimeout(() => {
+            if(textareaRisco.current){
+                textareaRisco.current.style.height = 'auto'
+                textareaRisco.current.style.height = textareaRisco.current.scrollHeight + 'px'
+            }
+        }, 100);
+    }, [textareaRisco.current?.style.height])
+
     function handleSelectImage(indexRisk :number) {
         const img = document.getElementById(`imageInput${indexRisk}`)
         
@@ -78,7 +88,19 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
 
     return (
         <div className="w-[360px] md:w-[500px] h-auto p-6 m-6 justify-self-center rounded-lg shadow-lg border-2" id={`${indexRisk}. ${itemRisk.risco}`} popover='manual'>
-            <p className="flex flex-row items-center font-bold mb-4">{`${indexRisk + 1}. `}<Input onChange={(e)=>onChangeRisco(indexRisk, e.target.value)} className="bg-gray-100 ml-1" value={`${itemRisk.risco}`}/></p>
+            <p 
+                className="flex flex-row items-center font-bold mb-4"
+            >
+                {`${indexRisk + 1}. `}
+                <textarea 
+                    ref={textareaRisco}
+                    onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}} 
+                    onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
+                    onChange={(e)=>onChangeRisco(indexRisk, e.target.value)} 
+                    className="bg-gray-100 w-full min-h-9 overflow-y-hidden resize-none p-1 pl-2 ml-1 rounded-lg" 
+                    value={`${itemRisk.risco}`}
+                />
+            </p>
             
             <Separator />
 

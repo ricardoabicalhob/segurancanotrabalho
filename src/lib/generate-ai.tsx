@@ -45,7 +45,7 @@ export async function GenerateAI( req :string) {
     }
 
     // const response = {
-    //     risco: 'Funcionáro trabalhando em alutra sem EPI',
+    //     risco: 'Ar-condicionado há mais de 1 ano sem manutenção do equipamento e limpeza do filtro, não existe evidencias de manutenção em todo esse periodo',
     //     consequencias: ['Quedas graves', 'Morte', 'fraturas graves'],
     //     acoes: ['Entregar EPIs necessários conforme estipula a NR-35 Entregar EPIs necessários conforme estipula a NR-35 Entregar EPIs necessários conforme estipula a NR-35 Entregar EPIs necessários conforme estipula a NR-35', 'Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs Cobrar a utilização correta dos EPIs'],
     //     images: []
