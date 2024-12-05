@@ -467,7 +467,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                                                 }
                                                             }}
                                                             className="bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm" 
-                                                            onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = target.scrollHeight + 'px'}}                                                              key={index}
+                                                            onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             value={code.consequencias[index]}
                                                             onChange={e => handleConsequenceChange(index, e.target.value)}
@@ -511,7 +511,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                                                 }
                                                             }}
                                                             className= {`h-auto bg-gray-100 rounded-lg ml-1 pl-2 p-1 w-full min-h-9 resize-none overflow-y-hidden content-center text-base md:text-sm`} 
-                                                            onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = target.scrollHeight + 'px'}}                                                              key={index}
+                                                            onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "36px"; target.style.height = target.scrollHeight + 'px'}}
                                                             value={code.acoes[index]}
                                                             onChange={e=> handleActionChange(index, e.target.value)}
