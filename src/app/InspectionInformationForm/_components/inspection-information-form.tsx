@@ -28,7 +28,9 @@ export const formInspectionInformationSchema = z.object({
     cipa: z.string().min(2, {
         message: ''
     }),
-    data: z.coerce.date(),
+    data: z.coerce.date().default(new Date().toISOString()).transform((date) => {
+        return new Date(date.toLocaleDateString('en-US', {timeZone: 'UTC'}))
+    }),
     hora: z.string(),
     responsavelPelaInspecao: z.string().min(2, {
 
@@ -66,13 +68,18 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
             setValue('areaLotacao', inspectionInformations.areaLotacao)
             setValue('localInspecionado', inspectionInformations.localInspecionado)
             setValue('cidade', inspectionInformations.cidade)
-            setValue('data', inspectionInformations.data.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
+            if(typeof inspectionInformations.data === 'string'){
+                setValue('data', new Date(inspectionInformations.data).toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
+            }else{
+                setValue('data', inspectionInformations.data.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
+
+            }
             setValue('hora', inspectionInformations.hora)
             setValue('responsavelPelaInspecao', inspectionInformations.responsavelPelaInspecao)
 
             setIsSaved(true)
         }
-    }, [readyReport])
+    }, [readyReport, inspectionInformations])
 
     return(
 

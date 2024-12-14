@@ -178,6 +178,8 @@ export default function Home() {
                         // readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
                     }
                     <CardListRisk 
+                        onLoadListRisks={setListRisks}
+                        onLoadInspectionInformations={setInspectionInformations}
                         onChangeRisco={handleChangeRisco}
                         onDeleteImage={handleDeleteImageOfListRiscks} 
                         onAddImage={handleAddImageOnListRisks}

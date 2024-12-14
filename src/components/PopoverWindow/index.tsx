@@ -1,4 +1,4 @@
-import { Plus, X } from "lucide-react"
+import { ImageOff, Plus, X } from "lucide-react"
 import { Separator } from "../ui/separator"
 import { Input } from "../ui/input"
 import Image from "next/image"
@@ -6,6 +6,9 @@ import { Button } from "../ui/button"
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis"
 import { useEffect, useLayoutEffect, useRef } from "react"
 import convertToBase64 from "@/lib/convert-base64"
+import { ButtonDelete } from "../ButtonDelete"
+import { ButtonRoundedAdd } from "../ButtonRoundedAdd"
+import { text } from "stream/consumers"
 
 interface PopoverWindowProps {
     indexRisk :number
@@ -126,7 +129,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
                 {
                     itemRisk.images?.map((image, indexImage) => (
                         <div key={indexImage} className="flex flex-col">
-                            <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-gray-300 hover:bg-red-600" onClick={()=> onDeleteImage(indexRisk, indexImage)}><X className="w-4 h-4 text-white"/></div>
+                            <ButtonDelete onDelete={()=> {onDeleteImage(indexRisk, indexImage)}} />
                             <div className="flex flex-col bg-gray-200 m-3 px-2 py-1 rounded-md">
                                 <Image key={indexImage} alt="" className="w-[150px] h-[90px] mt-1 mb-1" src={image} width={150} height={90}/>
                             </div>
@@ -139,12 +142,13 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
             
             <div className="flex flex-row items-center justify-between">
                 <p className="font-bold my-4 text-base md:text-sm">Principais consequências</p>
-                <div className="flex items-center justify-center bg-green-600 hover:bg-green-400 rounded-full w-fit h-6 px-2" onClick={()=> onAddConsequencia(indexRisk)}><Plus className="text-white w-4 h-4" /><p className="text-xs text-white select-none">consequência</p></div>
+                
+                <ButtonRoundedAdd onAdd={()=> onAddConsequencia(indexRisk)} text="consequência"/>
             </div>
             {
                 itemRisk.consequencias?.map((consequencia, indexConsequencia)=>(
                     <div key={indexConsequencia} className="flex flex-col">
-                        <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-gray-300 hover:bg-red-600" onClick={()=> {onDeleteConsequencia(indexRisk, indexConsequencia)}}><X className="w-4 h-4 text-white"/></div>
+                        <ButtonDelete onDelete={()=> onDeleteConsequencia(indexRisk, indexConsequencia)}/>
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexConsequencia + 1}. `}</p>
@@ -170,12 +174,13 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
 
             <div className="flex flex-row items-center justify-between">
                 <p className="font-bold my-4 text-base md:text-sm">Ações recomendadas</p>
-                <div className="flex items-center justify-center bg-green-600 hover:bg-green-400 rounded-full w-fit h-6 px-2" onClick={()=> onAddAcaoRecomendada(indexRisk)}><Plus className="text-white w-4 h-4" /><p className="text-xs text-white select-none">ação</p></div>
+
+                <ButtonRoundedAdd onAdd={()=> onAddAcaoRecomendada(indexRisk)} text="ação"/>
             </div>
             {
                 itemRisk.acoes?.map((acao, indexAcao)=>(
                     <div key={indexAcao} className="flex flex-col">
-                        <div className="absolute flex items-center justify-center rounded-full w-6 h-6 self-end bg-gray-300 hover:bg-red-600" onClick={()=> {onDeleteAcaoRecomendada(indexRisk, indexAcao)}}><X className="w-4 h-4 text-white"/></div>
+                        <ButtonDelete onDelete={()=> {onDeleteAcaoRecomendada(indexRisk, indexAcao)}}/>
 
                         <div className="flex flex-row justify-between mb-2 ml-3 mt-3 mr-3 p-1 items-center">
                             <p className="text-base md:text-sm">{`${indexAcao + 1}. `}</p>

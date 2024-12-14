@@ -6,16 +6,24 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Edit, ListX, X } from "lucide-react";
+import { Edit, FileDown, FileUp, ListX, LoaderCircle, X } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopoverWindow from "@/components/PopoverWindow";
 import Report from "@/components/Report";
+import DownloadFile from "@/lib/downloadFile";
+import { Input } from "@/components/ui/input";
+import { ListRisks } from "@/app/page";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import LoadingIndicatorAnimated from "@/components/LoadingIndicatorAnimated";
+
 
 export interface CardListRiskProps {
     listRisks :Array<RiskProps>
+    onLoadListRisks :(listRisks :ListRisks) => void
     inspectionInformations :inspectionInformations
+    onLoadInspectionInformations :(inspectionInformations :inspectionInformations) => void
     statusReadyReport :boolean
     onReadyReport :() => void
     onRemoveRiskOfList :(index :number)=> void
@@ -30,12 +38,51 @@ export interface CardListRiskProps {
     onChangeAcaoRecomendada :(indexRisk :number, indexAcaoRecomendada :number, newValue :string)=> void
 }
 
-export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco, onDeleteConsequencia, onAddConsequencia, onChangeConsequencia, onDeleteAcaoRecomendada, onAddAcaoRecomendada, onChangeAcaoRecomendada, onRemoveRiskOfList, listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
+export default function CardListRisk({ onLoadListRisks, onLoadInspectionInformations, onDeleteImage, onAddImage, onChangeRisco, onDeleteConsequencia, onAddConsequencia, onChangeConsequencia, onDeleteAcaoRecomendada, onAddAcaoRecomendada, onChangeAcaoRecomendada, onRemoveRiskOfList, listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
 
     const [isEditableRisk, setIsEditableRisk] = useState(false)
+    const [isLoadingFile, setIsLoadingFile] = useState(false)
 
-    function handlePrint() {
-        window.print()
+    function handleSelectFile() {
+        const fileSelected = document.getElementById('inputFileLoaded')
+
+        const listener = function(event){
+            const file = event.target?.files[0]
+
+            let reader = new FileReader()
+            reader.readAsText(file, 'utf8')
+
+            setIsLoadingFile(true)
+
+            reader.onload = () => {
+                try {
+                    const data = JSON.parse(reader.result)
+                    onLoadInspectionInformations(data?.inspectionInformations)
+                    onLoadListRisks(data?.listRisks)
+                }catch(error) {
+                    console.error('Erro ao ler o arquivo: ', error)
+                }finally{
+                    setIsLoadingFile(false)
+                }
+            }
+
+            reader.onerror = () => {
+                console.error('Erro ao ler o arquivo.')
+                setIsLoadingFile(false)
+            }
+
+            // setTimeout(() => {
+            //     const data = JSON.parse(reader.result)
+            //     onLoadInspectionInformations(data?.inspectionInformations)
+            //     onLoadListRisks(data?.listRisks)
+
+            //     setIsLoadingFile(false)
+            // }, 5000);
+        }
+
+        if(fileSelected) {
+            fileSelected.addEventListener('change', listener, {once: true})
+        }
     }
 
     return(
@@ -144,8 +191,33 @@ export default function CardListRisk({ onDeleteImage, onAddImage, onChangeRisco,
             <CardFooter className="flex flex-col gap-2">
                 {/* <Button className="bg-green-600 hover:bg-green-400 text-base md:text-sm select-none" onClick={()=> generatePdf(listRisks, inspectionInformations)} >Gerar PDF</Button>                 */}
                 <Button disabled={inspectionInformations === undefined ? true : false} className="bg-green-600 hover:bg-green-400 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
-                {!inspectionInformations && <p className="text-[14px] text-red-600">{`Preencha os dados da inspeção ${listRisks.length ? '' : ' e'}`}</p>}
-                {!listRisks.length && <p className="text-[14px] text-red-600">{`${!inspectionInformations ? 'a' : 'A'}dicione pelo menos uma situação de risco.`}</p>}
+                {!inspectionInformations && <p className="select-none text-[14px] text-red-600">{`Preencha os dados da inspeção ${listRisks.length ? '' : ' e'}`}</p>}
+                {!listRisks.length && <p className="select-none text-[14px] text-red-600">{`${!inspectionInformations ? 'a' : 'A'}dicione pelo menos uma situação de risco.`}</p>}
+                <Button
+                     onClick={()=> DownloadFile(inspectionInformations, listRisks)}
+                     disabled={inspectionInformations === undefined ? true : false} 
+                     className="bg-lime-500 hover:bg-lime-300 w-full text-base md:text-sm select-none"     
+                >
+                    <FileDown />
+                    Salvar relatório
+                </Button>
+                <div className="flex items-center justify-center bg-inherit border-[1px] border-green-600 hover:bg-green-100 rounded-md w-full py-2 cursor-pointer">
+                    {
+                        isLoadingFile
+                        ?
+                        <LoadingIndicatorAnimated styles="w-4 h-4 border-[3px] mr-2" />
+                        :
+                        <FileUp className="text-green-600 mr-2 h-4 w-4" />
+                    }
+                    <p className="text-sm text-green-600 select-none">{`${isLoadingFile ? 'Carregando relatório...' : 'Carregar relatório existente'}`}</p>
+                    <Input 
+                        className="absolute w-[25%] cursor-pointer" 
+                        style={{opacity: 0, cursor: 'pointer'}}
+                        type="file" 
+                        id="inputFileLoaded"
+                        onClick={()=> handleSelectFile()}
+                    />
+                </div>
             </CardFooter>
         </Card>
         )

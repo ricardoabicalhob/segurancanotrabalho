@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
 import { Minus, Plus, Target, TriangleAlert, X } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
 import { createRoot } from "react-dom/client";
 import AlertNotification from "@/components/AlertNotification";
@@ -234,6 +234,25 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
         }
     }
 
+    function handleMyAnalysis() {
+        if(prompt) {
+            const data :RiskProps = {
+                risco: prompt,
+                consequencias: [],
+                acoes: [],
+                images: []
+            }
+    
+            setCode(data)
+            handleEdit()
+        } else {
+            setError(true)
+            setTimeout(() => {
+                setError(false)
+            }, 2000);
+        }
+    }
+
     const handleGenerate = async ()=> {
 
         try {
@@ -404,6 +423,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             />
                             
                             <Button 
+                                disabled={formEditable}
                                 formAction={()=>{
                                                 handleGenerate(); 
                                                 handleLoadingIndicator()
@@ -414,6 +434,15 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             </Button>
                             <a id="buttonAnalysis" href="#addImageSection" />
                             
+                            <p className="w-full text-center text-base md:text-sm">Ou</p>
+
+                            <Button
+                                className="bg-transparent border-green-600 border-[1px] text-green-600 hover:bg-green-100"
+                                formAction={()=> handleMyAnalysis()}
+                            >
+                                Eu quero analisar
+                            </Button>
+
                             {isLoading && <LoadingIndicator />}
                             {error && <AlertNotification text="Algo deu errado! Por favor, tente novamente."/>}
                         </div>

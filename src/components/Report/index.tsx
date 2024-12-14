@@ -1,4 +1,4 @@
-import { Dot, ImageOff } from "lucide-react"
+import { Dot, ImageOff, Printer } from "lucide-react"
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
 import Image from "next/image"
@@ -23,7 +23,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
                         <td className="border-2 pl-2"><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
-                        <td className="border-2 pl-2"><b>Data: </b>{`${inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
+                        <td className="border-2 pl-2"><b>Data: </b>{`${typeof inspectionInformations.data === 'string' ? new Date(inspectionInformations.data).toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false}) : inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
                         <td className="border-2 pl-2"><b>Hora: </b>{`${inspectionInformations.hora}`}</td>
                     </tr>
                     <tr className="border-2 w-full">
@@ -105,7 +105,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
             </div>
             <div className=" flex flex-row gap-2 py-10">
                 <Button id='voltar' className={`bg-green-600 hover:bg-green-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
-                <Button id='imprimir' className={`bg-zinc-600 hover:bg-zinc-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } >Imprimir</Button>
+                <Button id='imprimir' className={`bg-zinc-600 hover:bg-zinc-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } ><Printer /> Imprimir</Button>
             </div>    
         </div>
     )
