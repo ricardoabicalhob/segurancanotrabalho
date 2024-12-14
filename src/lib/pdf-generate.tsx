@@ -14,6 +14,8 @@ export type inspectionInformations = {
     data : Date
     hora :string
     responsavelPelaInspecao :string
+    funcaoResponsavelPelaInspecao :string
+    matriculaResponsavelPelaInspecao :string
 }
 
 

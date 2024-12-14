@@ -34,6 +34,12 @@ export const formInspectionInformationSchema = z.object({
     hora: z.string(),
     responsavelPelaInspecao: z.string().min(2, {
 
+    }),
+    funcaoResponsavelPelaInspecao: z.string().min(2, {
+
+    }),
+    matriculaResponsavelPelaInspecao: z.string().min(2, {
+
     })
 })
 
@@ -76,6 +82,8 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
             }
             setValue('hora', inspectionInformations.hora)
             setValue('responsavelPelaInspecao', inspectionInformations.responsavelPelaInspecao)
+            setValue('funcaoResponsavelPelaInspecao', inspectionInformations.funcaoResponsavelPelaInspecao)
+            setValue('matriculaResponsavelPelaInspecao', inspectionInformations.matriculaResponsavelPelaInspecao)
 
             setIsSaved(true)
         }
@@ -98,6 +106,8 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                     <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Função / Cargo' {...register('funcaoResponsavelPelaInspecao')} />
+                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Matrícula' {...register('matriculaResponsavelPelaInspecao')} />
 
                     {
                         isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-lime-500 hover:bg-lime-300">

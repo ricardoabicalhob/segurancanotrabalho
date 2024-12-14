@@ -100,8 +100,9 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 </div>
             }
             <div className="border-t-2 px-24 py-3 mt-32 border-gray-500">
-                <p className="text-center antialiased font-bold">{inspectionInformations.responsavelPelaInspecao}</p>
-                <p className="text-center antialiased">Responsável pela inspeção</p>
+                <p className="text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
+                <p className="text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
+                <p className="text-center antialiased font-bold">Responsável pela inspeção</p>
             </div>
             <div className=" flex flex-row gap-2 py-10">
                 <Button id='voltar' className={`bg-green-600 hover:bg-green-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
