@@ -6,7 +6,7 @@ import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Edit, FileDown, FileUp, ListX, LoaderCircle, X } from "lucide-react";
+import { CircleCheckBig, Edit, FileDown, FileUp, ListX, LoaderCircle, TriangleAlert, X } from "lucide-react";
 import Image from "next/image";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import { useEffect, useState } from "react";
@@ -160,7 +160,9 @@ export default function CardListRisk({ onLoadListRisks, onLoadInspectionInformat
                                 <p className="font-bold ml-4 my-4 text-base md:text-sm">Principais consequências</p>
                                 {
                                     item.consequencias?.map((consequencia, index)=>(
-                                        <p key={index} className="text-left ml-4 text-base md:text-sm">{`${index + 1}. ${consequencia}`}</p>
+                                        // <p key={index} className="text-left ml-4 text-base md:text-sm">{`${index + 1}. ${consequencia}`}</p>
+                                        <p key={index} className="flex flex-row text-left ml-4 my-4 text-base md:text-sm"><TriangleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {`${consequencia}`}</p>
+
                                     ))
                                 }
 
@@ -169,7 +171,9 @@ export default function CardListRisk({ onLoadListRisks, onLoadInspectionInformat
                                 <p className="font-bold ml-4 my-4 text-base md:text-sm">Ações recomendadas</p>
                                 {
                                     item.acoes?.map((acao, index)=>(
-                                        <p key={index} className="text-left ml-4 text-base md:text-sm">{`${index + 1}. ${acao}`}</p>
+                                        // <p key={index} className="text-left ml-4 text-base md:text-sm">{`${index + 1}. ${acao}`}</p>
+                                        <p key={index} className="flex flex-row text-left ml-4 my-4 text-base md:text-sm"><CircleCheckBig className='text-green-700 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {`${acao}`}</p>
+
                                     ))
                                 }
                             </AccordionContent>
@@ -193,6 +197,9 @@ export default function CardListRisk({ onLoadListRisks, onLoadInspectionInformat
                 <Button disabled={inspectionInformations === undefined ? true : false} className="bg-green-600 hover:bg-green-400 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
                 {!inspectionInformations && <p className="select-none text-[14px] text-red-600">{`Preencha os dados da inspeção ${listRisks.length ? '' : ' e'}`}</p>}
                 {!listRisks.length && <p className="select-none text-[14px] text-red-600">{`${!inspectionInformations ? 'a' : 'A'}dicione pelo menos uma situação de risco.`}</p>}
+                
+                <Separator className="w-full h-[0.5px] my-1"/>
+
                 <Button
                      onClick={()=> DownloadFile(inspectionInformations, listRisks)}
                      disabled={inspectionInformations === undefined ? true : false} 
@@ -214,6 +221,7 @@ export default function CardListRisk({ onLoadListRisks, onLoadInspectionInformat
                         className="absolute w-[25%] cursor-pointer" 
                         style={{opacity: 0, cursor: 'pointer'}}
                         type="file" 
+                        accept=".ris"
                         id="inputFileLoaded"
                         onClick={()=> handleSelectFile()}
                     />

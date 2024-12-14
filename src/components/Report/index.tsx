@@ -1,4 +1,4 @@
-import { Dot, ImageOff, Printer } from "lucide-react"
+import { CircleCheckBig, Dot, ImageOff, Printer, TriangleAlert } from "lucide-react"
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
 import Image from "next/image"
@@ -72,9 +72,10 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                     risk.consequencias?.map(( consequencia, index ) => (
                                         <p 
                                             key={index}
-                                            className='text-sm antialiased ml-6 flex flex-row'
+                                            className='text-sm antialiased ml-6 flex flex-row my-4'
                                         >
-                                        <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {consequencia}
+                                        {/* <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {consequencia} */}
+                                        <TriangleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {consequencia}
                                         </p>
                                     ))
                                 }
@@ -84,9 +85,10 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                     risk.acoes?.map(( acao, index ) => (
                                         <p 
                                             key={index}
-                                            className='text-sm antialiased ml-6 flex flex-row'
+                                            className='text-sm antialiased ml-6 flex flex-row my-4'
                                         >
-                                            <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {acao}
+                                            {/* <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {acao} */}
+                                            <CircleCheckBig className='text-green-700 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {acao}
                                         </p>
                                     ))
                                 }
