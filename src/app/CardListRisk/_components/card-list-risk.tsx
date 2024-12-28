@@ -1,24 +1,17 @@
 'use client'
 
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
-import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { CircleAlert, CircleCheckBig, CircleX, Edit, FileDown, FileUp, ListX, MailWarning, OctagonAlert, X } from "lucide-react";
-import Image from "next/image";
+import { Asterisk, CircleX, FileDown, FileUp, ListX, MessageSquareWarning} from "lucide-react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import { useEffect, useRef, useState } from "react";
-import PopoverWindow from "@/components/PopoverWindow";
 import Report from "@/components/Report";
 import DownloadFile from "@/lib/downloadFile";
 import { Input } from "@/components/ui/input";
 import { ListRisks } from "@/app/page";
 import LoadingIndicatorAnimated from "@/components/LoadingIndicatorAnimated";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import ListRiskItem from "@/components/ListRiskItem/list-risk-item";
-import { Scrollbar } from "@radix-ui/react-scroll-area";
 import MyDialog from "@/components/MyDialog";
 
 
@@ -100,12 +93,12 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
         statusReadyReport
         ?
         (
-            <div style={{}} className="flex flex-col justify-between min-h-full max-h-screen px-6 py-6 rounded-xl border-[1px] shadow-md">
+            <div className="flex flex-col justify-between min-h-full max-h-screen px-6 py-6 rounded-xl border-[1px] shadow-md">
                 <p className="text-lg font-bold">Situações de risco identificadas</p>
                 <div 
                     ref={listRef}
                     id="scrollAreaListaDeRiscos" 
-                    className="flex flex-col flex-1 w-[100%] mb-6 pt-3 mt-14 border-[1px] rounded-md overflow-y-auto" 
+                    className="flex flex-col flex-1 max-h-[51vh] w-[100%] mb-6 pt-3 mt-14 border-[1px] rounded-md overflow-y-auto" 
                 >
                     {
                         listRisks.map((item, index)=>(
@@ -150,8 +143,28 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
                 <div className="flex flex-col gap-3">
                     <Button disabled={!checkFilling()} className="bg-green-700 hover:bg-green-500 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
                     
-                    {(!inspectionInformations || !formUnlocked) && <p className="select-none text-center text-[14px] mb-[-10px] text-zinc-700"><i>{`Preencha os dados da inspeção${listRisks.length ? '.' : ' e'}`}</i></p>}
-                    {!listRisks.length && <p className="select-none text-center text-[14px] text-zinc-700"><i>{`${(!inspectionInformations || !formUnlocked) ? 'a' : 'A'}dicione pelo menos uma situação de risco.`}</i></p>}
+                    {(!inspectionInformations || !formUnlocked) && <p className="flex flex-row items-center justify-center gap-2 select-none text-center text-[14px] mb-[-10px] text-yellow-600">
+                                                                        <MessageSquareWarning className="w-5 h-5"/>
+                                                                        <i>{`Preencha os dados da inspeção${listRisks.length ? '.' : ' e'}`}</i>
+                                                                    </p>
+                    }
+                    
+                    {!listRisks.length && <div className="flex flex-row justify-center select-none text-center text-[14px] text-yellow-600">
+                                                <i className="flex flex-row">
+                                                    {
+                                                        (!inspectionInformations || !formUnlocked)
+                                                        ?
+                                                        <p>a</p> 
+                                                        : 
+                                                        <p className="flex flex-row items-center gap-2">
+                                                            <MessageSquareWarning className="w-5 h-5"/>
+                                                            A
+                                                        </p>
+                                                    }
+                                                <p>dicione pelo menos uma situação de risco.</p>
+                                                </i>
+                                            </div>
+                    }
 
                     <Separator className="w-full h-[0.5px] my-1"/>
 
