@@ -165,7 +165,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
             <div className="bg-gray-100 rounded-b-2xl px-2">
                 {
                     itemRisk && itemRisk.consequencias?.map((consequencia, index)=> (
-                        <div className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                        <div key={index} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                             <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
                             <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                             <textarea 
@@ -206,7 +206,7 @@ export default function PopoverWindow( { indexRisk, itemRisk, isEditableRisk, se
             <div className="bg-gray-100 rounded-b-2xl px-2">
                 {
                     itemRisk && itemRisk.acoes.map((acao, index)=> (
-                        <div className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                        <div key={index} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                             <CircleCheckBig className="mt-[0.5px] min-w-4 min-h-4 max-w-4 max-h-4 self-center text-green-600" />
                             <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                             <textarea 
