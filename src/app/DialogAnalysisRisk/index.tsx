@@ -334,9 +334,6 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                     scrollAreaRef.current.classList.add('flex-1', 'overflow-x-auto')
                     scrollAreaRef.current.classList.add('custom-scrollbar')
                     setIsFirstUpdateScrollArea(false)
-                    // scrollAreaRef.current.classList.remove('relative')
-                    // scrollAreaRef.current.classList.remove('overflow-hidden')
-                    // scrollAreaRef.current.scrollTo(0, scrollAreaRef.current.scrollHeight)
                 }
             }, 100);
         }

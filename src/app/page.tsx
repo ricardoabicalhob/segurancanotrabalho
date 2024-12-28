@@ -1,249 +1,89 @@
 'use client'
 
-import { RiskProps } from "./CardRiskAnalysisAI/_components/card-analysis";
-import InspectionInformationForm from "./InspectionInformationForm/_components/inspection-information-form";
-import CardListRisk from "./CardListRisk/_components/card-list-risk";
-import { useEffect, useState } from "react";
-import { inspectionInformations } from "@/lib/pdf-generate";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Welcome from "@/components/Welcome";
-import { ExternalLink, Link } from "lucide-react";
-import DialogAnalysisRisk from "./DialogAnalysisRisk";
-import { uuid } from "uuidv4";
-
-export type ListRisks = Array<RiskProps>
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
 
-    const [ listRisks, setListRisks ] = useState<ListRisks>([])
-    const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformations>()
-    const [ readyReport, setReadyReport ] = useState(true)
-    const [ isWelcome, setIsWelcome ] = useState(true)
-    const [ formUnlocked, setFormUnlocked ] = useState(false)
-    const router = useRouter()
-
-    function handleCheckFilling() {
-        if(listRisks.length && formUnlocked) {
-            return true
-        }
-        return false
-    }
-
-    function handleSetFormUnlocked(value? :boolean) {
-        if(value) {
-            setFormUnlocked(value)
-        }else {
-            setFormUnlocked(!formUnlocked)
-        }
-    }
-
-    function handleReadyReport() {
-        setReadyReport(!readyReport)
-    }
-
-    function handleSaveRisk(risk :RiskProps) {
-        const newListRisks = [...listRisks]
-
-        newListRisks.push(risk)
-        setListRisks(newListRisks)
-    }
-
-    function handleChangeRisco(indexRisk :number, newValue :string) {
-        if(listRisks[indexRisk]) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].risco = newValue
-            setListRisks(updatedListRisks)
-        }
-    }
-
-    function handleRemoveRiskOfList(index :number) {
-        if(listRisks) {
-            const newListRisks = [...listRisks]
-            newListRisks.splice(index, 1)
-            setListRisks(newListRisks)
-         }
-    }
-
-    function handleDeleteImageOfListRiscks(indexRisk :number, indexImage :number) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].images) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].images.splice(indexImage, 1)
-            setListRisks(updatedListRisks)
-        }
-    }
-
-    function handleAddImageOnListRisks(indexRisk :number, image :unknown) {
-        if(listRisks[indexRisk]) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].images.push(image as string)
-            setListRisks(updatedListRisks)
-        }
-    }
-
-    function handleDeleteConsequencia(indexRisk :number, indexConsequencia :number) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length > 1) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].consequencias.splice(indexConsequencia, 1)
-            setListRisks(updatedListRisks)
-        } else {
-            console.log('Ação não permitida. Precisa haver pelo menos uma consequência para cada situação de risco.')
-        }
-    }
-
-    function handleAddConsequencia(indexRisk :number) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length < 5) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].consequencias.push({id: uuid(), value: ''})
-            setListRisks(updatedListRisks)
-        } else {
-            console.log('Ação não permitida. Máximo de 5 consequências para cada situação de risco.')
-        }
-    }
-
-    function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
-        if(listRisks[indexRisk]) {
-            const newListRisks = [...listRisks]
-            newListRisks[indexRisk].consequencias[indexConsequencia].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
-
-            setListRisks(newListRisks)
-        }
-    }
-
-    function handleDeleteAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1)
-            setListRisks(updatedListRisks)
-        } else {
-            console.log('Ação não permitida. Precisa haver pelo menos uma ação recomendada para cada situação de risco.')
-        }
-    }
-
-    function handleAddAcaoRecomendada(indexRisk :number) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length < 5) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].acoes.push({id: uuid(), value: ''})
-            setListRisks(updatedListRisks)
-        } else {
-            console.log('Ação não permitida. Máximo de 5 ações recomendadas para cada situação de risco.')
-        }
-    }
-
-    function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
-        if(listRisks[indexRisk]) {
-            const newListRisks = [...listRisks]
-            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
-
-            setListRisks(newListRisks)
-        }
-    }
-
-    function handleAddInspectionInformations(inspectionInformations :inspectionInformations) {
-        setInspectionInformations(inspectionInformations)
-    }
-
-    function handleWelcome() {
-        setIsWelcome(!isWelcome)
-    }
-
-    function handleViewReport() {
-        if(listRisks){
-            const dataContent = {
-                analises: listRisks
-            }
-            const data = JSON.stringify(dataContent)
-            router.push(`/generate-report/${data}`)
-        }
-    }
-
-    useEffect(()=> {
-        handleCheckFilling()
-    }, [listRisks.length, formUnlocked])
-
-
     return(
         <div className="flex flex-col w-screen h-[100vh] justify-between">
-            
-            <nav className={`bg-gray-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
-                <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
-                <p className="self-center justify-self-start w-full">{`${readyReport ? 'EDITOR PARA' : ''} RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO`}</p>
+            <nav className="p-6">
+                {/* <Image alt='' src={require('../lib/imagens/logo-cipa-2.png')} width={50} height={50} /> */}
             </nav>
-
-            <main className={`grid grid-cols-1 sm:grid-cols-2 h-auto ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
-                {
-                    isWelcome && <Welcome onWelcome={handleWelcome} />
-                }
-                
-                {
-                    readyReport &&  <section className="">
-                                        <InspectionInformationForm setFormUnlocked={handleSetFormUnlocked} readyReport={readyReport} inspectionInformations={inspectionInformations} onAddInspectionInformations={handleAddInspectionInformations}/>
-                                    </section>
-                }
-
-                {
-                    readyReport &&  <section>
-                                        <DialogAnalysisRisk onAddRisk={handleSaveRisk}/>
-                                    </section>
-                }
-
-                {/* {
-                    readyReport &&  <section>
-                                        <CardRiskAnalysisAI onAddRisk={handleSaveRisk}/>
-                                    </section>
-                } */}
-
-                <section>
-                    {
-                        // readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
-                    }
-                    <CardListRisk 
-                        onLoadListRisks={setListRisks}
-                        onLoadInspectionInformations={setInspectionInformations}
-                        onChangeRisco={handleChangeRisco}
-                        onDeleteImage={handleDeleteImageOfListRiscks} 
-                        onAddImage={handleAddImageOnListRisks}
-                        onDeleteConsequencia={handleDeleteConsequencia}
-                        onAddConsequencia={handleAddConsequencia}
-                        onChangeConsequencia={handleChangeConsequencia}
-                        onDeleteAcaoRecomendada={handleDeleteAcaoRecomendada}
-                        onAddAcaoRecomendada={handleAddAcaoRecomendada}
-                        onChangeAcaoRecomendada={handleChangeAcaoRecomendada}
-                        onRemoveRiskOfList={handleRemoveRiskOfList} 
-                        statusReadyReport={readyReport} 
-                        onReadyReport={handleReadyReport} 
-                        listRisks={listRisks} 
-                        inspectionInformations={inspectionInformations as inspectionInformations}
-                        checkFilling={handleCheckFilling}
-                        setFormUnlocked={handleSetFormUnlocked}
-                        formUnlocked={formUnlocked}
-                    />
-                </section>
-
-                {/* {
-                    readyReport &&  <section>
-                                        <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 3</p>
-                                        <CardFinish />
-                                        
-                                        <Button onClick={()=>handleViewReport()}>
-                                            Visualizar relatório
-                                        </Button>
-                                    </section>
-                } */}
-            </main>
             
-            {
-                readyReport &&  <footer className={`flex flex-col h-auto bg-gray-100 p-6 mt-6 gap-2 ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
-                                    <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
-                                    <a 
-                                        href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes"
-                                        className={`flex gap-2 mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-md font-bold text-green-600 hover:text-green-400`}
-                                        target="blank"
-                                    >
-                                        <ExternalLink /> Ministério do Trabalho e Emprego - Normas Regulamentadoras Vigentes
-                                    </a>
-                                </footer>
-            }
+            <main className="flex flex-col">
+                <p className="w-[70%] p-1 md:p-8 self-center text-center text-2xl md:text-4xl lg:text-5xl font-bold">Crie rapidamente relatórios de inspeção de segurança do trabalho.</p>
+
+                <p className="w-[70%] pb-8 self-center text-center text-base md:text-lg">Um editor projetado para criar relatórios de inspeção de segurança do trabalho.</p>
+
+                <div className="flex flex-col md:flex-row self-center gap-4 mb-4">
+                    <Link href={'/editor'}>
+                        <Button 
+                            className="bg-green-900 hover:bg-green-700 w-full md:w-fit"
+                        >
+                            Começar
+                        </Button>
+                    </Link>
+                    
+                    <Button 
+                        className="bg-green-900 hover:bg-green-700"
+                        disabled={true}
+                    >
+                        Carregar relatório existente
+                    </Button>
+                </div>
+                
+                <div className="flex flex-col md:w-[80%] md:self-center lg:flex-row my-8">
+                    <div className="flex flex-row md:flex-1">
+                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            Simplifique a criação de seus relatórios de inspeção de segurança do trabalho. 
+                            Crie relatórios detalhados com poucos cliques e promova um ambiente de trabalho mais seguro.
+                        </p>
+                    </div>
+
+                    <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
+
+                    <div className="flex flex-row flex-1">
+                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            Descreva as situações de risco identificadas em campo e deixe a Inteligência Artifical Google Gemini fazer uma análise das principais consequências que esta situação pode acarretar, 
+                            e recomendar ações para garantir a segurança dos trabalhadores e o cumprimento das normas regulamentadoras.
+                        </p>
+                    </div>
+
+                    <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
+                    
+                    <div className="flex flex-row flex-1">
+                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            Adicione fotos para deixar o seu relatório mais completo se desejar.
+                        </p>
+                    </div>
+
+                    <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
+                    
+                    <div className="flex flex-row flex-1">
+                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            Edite as análises feitas pela IA, complementando, removendo ou reescrevendo informações.
+                        </p>
+                    </div>
+
+                    <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
+                    
+                    <div className="flex flex-row flex-1">
+                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            Revise as situações de risco adicionadas à lista e ao final visualize o relatório completo.
+                        </p>
+                    </div>
+                    
+                </div>
+                
+            </main>
+
+            <footer className="bg-lime-200">
+
+            </footer>
         </div>
-   )
+    )
 }

@@ -2,7 +2,7 @@ import { CircleAlert, CircleCheckBig, Dot, ImageOff, Printer, TriangleAlert } fr
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
 import Image from "next/image"
-import { ListRisks } from "@/app/page"
+import { ListRisks } from "@/app/page-home-1"
 import { inspectionInformations } from "@/lib/pdf-generate"
 
 interface ReportProps {

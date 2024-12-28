@@ -1,6 +1,6 @@
 import { CircleAlert, CircleCheckBig, Edit, ImageOff, Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
 import Image from "next/image";

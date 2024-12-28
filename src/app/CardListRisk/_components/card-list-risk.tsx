@@ -3,13 +3,13 @@
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Asterisk, CircleX, FileDown, FileUp, ListX, MessageSquareWarning} from "lucide-react";
+import { FileDown, FileUp, ListX, MessageSquareWarning} from "lucide-react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import { useEffect, useRef, useState } from "react";
 import Report from "@/components/Report";
 import DownloadFile from "@/lib/downloadFile";
 import { Input } from "@/components/ui/input";
-import { ListRisks } from "@/app/page";
+import { ListRisks } from "@/app/page-home-1";
 import LoadingIndicatorAnimated from "@/components/LoadingIndicatorAnimated";
 import ListRiskItem from "@/components/ListRiskItem/list-risk-item";
 import MyDialog from "@/components/MyDialog";
