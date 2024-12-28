@@ -526,11 +526,11 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         <div key={'listaDeConsequencias'} className="bg-gray-100 rounded-b-2xl px-2">
                             {
                                 risk && risk.consequencias?.map((consequencia, indexConsequencia)=> (
-                                    <div className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                                    <div key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                                         <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                         <textarea 
-                                            key={consequencia.id}
+                                            key={indexConsequencia}
                                             ref={(element) => {
                                                 if (element) {
                                                     textareaConsequenciasRefs.current.push(element);
