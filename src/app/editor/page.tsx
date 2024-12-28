@@ -194,10 +194,7 @@ export default function Home() {
                                     </section>
                 } */}
 
-                <section>
-                    {
-                        // readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
-                    }
+                <section className="sm:col-span-2 lg:col-span-1">
                     <CardListRisk 
                         onLoadListRisks={setListRisks}
                         onLoadInspectionInformations={setInspectionInformations}

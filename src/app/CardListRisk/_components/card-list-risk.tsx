@@ -93,7 +93,7 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
         statusReadyReport
         ?
         (
-            <div className="flex flex-col justify-between min-h-full max-h-screen px-6 py-6 rounded-xl border-[1px] shadow-md">
+            <div className="flex flex-col justify-between min-h-screen lg:min-h-full max-h-screen px-6 py-6 rounded-xl border-[1px] shadow-md">
                 <p className="text-lg font-bold">Situações de risco identificadas</p>
                 <div 
                     ref={listRef}
