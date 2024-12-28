@@ -2,54 +2,56 @@
 
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { inspectionInformations } from '@/lib/pdf-generate';
 import { useEffect, useState } from 'react';
+import { Check, Edit } from 'lucide-react';
 
 export const formInspectionInformationSchema = z.object({
     empresa: z.string().min(2, {
         message: ''
-    }),
+    }).toUpperCase(),
     areaLotacao: z.string().min(2, {
         message: ''
-    }),
+    }).toUpperCase(),
     localInspecionado: z.string().min(2, {
         message: ''
-    }),
+    }).toUpperCase(),
     areaEmitente: z.string().min(2, {
         message: ''
-    }),
+    }).toUpperCase(),
     cidade: z.string().min(2, {
         message: ''
-    }),
+    }).toUpperCase(),
     cipa: z.string().min(2, {
         message: ''
-    }),
+    }).toUpperCase(),
     data: z.coerce.date().default(new Date().toISOString()).transform((date) => {
         return new Date(date.toLocaleDateString('en-US', {timeZone: 'UTC'}))
     }),
     hora: z.string(),
     responsavelPelaInspecao: z.string().min(2, {
 
-    }),
+    }).toUpperCase(),
     funcaoResponsavelPelaInspecao: z.string().min(2, {
 
-    }),
+    }).toUpperCase(),
     matriculaResponsavelPelaInspecao: z.string().min(2, {
 
-    })
+    }).toUpperCase()
 })
 
 interface InspectionInformationFormProps {
     onAddInspectionInformations :(inspectionInformations :inspectionInformations)=> void
     inspectionInformations? :inspectionInformations
     readyReport :boolean
+    setFormUnlocked :()=> void
 }
 
-export default function InspectionInformationForm({ onAddInspectionInformations, inspectionInformations, readyReport } :InspectionInformationFormProps) {
+export default function InspectionInformationForm({ onAddInspectionInformations, setFormUnlocked, inspectionInformations, readyReport } :InspectionInformationFormProps) {
 
     const [ isSaved, setIsSaved ] = useState(false)
 
@@ -61,6 +63,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
         if(data) {
             onAddInspectionInformations(data as inspectionInformations)
             setIsSaved(!isSaved)
+            setFormUnlocked()
         }else{
             console.log('Algo deu errado! Por favor tente novamente.')
         }
@@ -91,12 +94,12 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
 
     return(
 
-        <Card className="mx-auto max-w-md">
+        <Card className="flex flex-col justify-between mx-auto max-w-md h-full">
             <CardHeader>
                 <CardTitle className='text-lg'>Dados da Inspeção</CardTitle>
             </CardHeader>
-            <CardContent>
-                <form  onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-2'>
+            <CardContent className='flex-1 mt-[30px]'>
+                <form id='formInformation'  onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-2'>
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Empresa' {...register('empresa')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área emitente' {...register('areaEmitente')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Ano CIPA' {...register('cipa')} />
@@ -108,20 +111,27 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Função / Cargo' {...register('funcaoResponsavelPelaInspecao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Matrícula' {...register('matriculaResponsavelPelaInspecao')} />
-
-                    {
-                        isSaved && <Button onClick={()=> setIsSaved(!isSaved)} className="bg-lime-500 hover:bg-lime-300">
-                                        Alterar
-                                    </Button>
-                    }
-                    {
-                        !isSaved && <Button type='submit' formAction={()=> {handleSaveInspectionInformation}} className="bg-green-600 hover:bg-green-400">
-                                        Ok
-                                    </Button>
-                    }
-                    
                 </form>
             </CardContent>
+            <CardFooter>
+                {
+                    isSaved && <Button onClick={()=> {setIsSaved(!isSaved); setFormUnlocked()}} className="bg-zinc-700 hover:bg-zinc-500 w-full">
+                                    <Edit />
+                                    Alterar
+                                </Button>
+                }
+                {
+                    !isSaved && <Button 
+                                    type='submit' 
+                                    form='formInformation'
+                                    formAction={()=> {handleSaveInspectionInformation}}
+                                    // onClick={()=> {isSaved ? setFormUnlocked() : null}}
+                                    className="bg-green-700 hover:bg-green-500 w-full"
+                                >
+                                    Ok
+                                </Button>
+                }
+            </CardFooter>
         </Card>
         
     )

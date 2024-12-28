@@ -1,9 +1,10 @@
 import { saveAs } from 'file-saver'
 import { inspectionInformations } from './pdf-generate'
 
-export default function DownloadFile(inspectionInformations :inspectionInformations, listRisks :object) {
+export default function DownloadFile(checkFilling :()=> boolean, inspectionInformations :inspectionInformations, listRisks :object) {
 
     const data = {
+        checkFilling: checkFilling(),
         inspectionInformations: inspectionInformations,
         listRisks: listRisks
     }

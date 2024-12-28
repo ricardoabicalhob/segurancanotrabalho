@@ -76,3 +76,17 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 7.5px !important
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-white !important 
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-zinc-200 rounded-lg !important
+  }
+}

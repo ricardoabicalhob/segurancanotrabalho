@@ -1,14 +1,16 @@
 'use client'
 
-import CardRiskAnalysisAI, { RiskProps } from "./CardRiskAnalysisAI/_components/card-analysis";
+import { RiskProps } from "./CardRiskAnalysisAI/_components/card-analysis";
 import InspectionInformationForm from "./InspectionInformationForm/_components/inspection-information-form";
 import CardListRisk from "./CardListRisk/_components/card-list-risk";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Welcome from "@/components/Welcome";
 import { ExternalLink, Link } from "lucide-react";
+import DialogAnalysisRisk from "./DialogAnalysisRisk";
+import { uuid } from "uuidv4";
 
 export type ListRisks = Array<RiskProps>
 
@@ -18,7 +20,23 @@ export default function Home() {
     const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformations>()
     const [ readyReport, setReadyReport ] = useState(true)
     const [ isWelcome, setIsWelcome ] = useState(true)
+    const [ formUnlocked, setFormUnlocked ] = useState(false)
     const router = useRouter()
+
+    function handleCheckFilling() {
+        if(listRisks.length && formUnlocked) {
+            return true
+        }
+        return false
+    }
+
+    function handleSetFormUnlocked(value? :boolean) {
+        if(value) {
+            setFormUnlocked(value)
+        }else {
+            setFormUnlocked(!formUnlocked)
+        }
+    }
 
     function handleReadyReport() {
         setReadyReport(!readyReport)
@@ -76,7 +94,7 @@ export default function Home() {
     function handleAddConsequencia(indexRisk :number) {
         if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length < 5) {
             const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].consequencias.push('')
+            updatedListRisks[indexRisk].consequencias.push({id: uuid(), value: ''})
             setListRisks(updatedListRisks)
         } else {
             console.log('Ação não permitida. Máximo de 5 consequências para cada situação de risco.')
@@ -84,10 +102,11 @@ export default function Home() {
     }
 
     function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length >= 1) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].consequencias.splice(indexConsequencia, 1, newValue)
-            setListRisks(updatedListRisks)
+        if(listRisks[indexRisk]) {
+            const newListRisks = [...listRisks]
+            newListRisks[indexRisk].consequencias[indexConsequencia].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+
+            setListRisks(newListRisks)
         }
     }
 
@@ -104,7 +123,7 @@ export default function Home() {
     function handleAddAcaoRecomendada(indexRisk :number) {
         if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length < 5) {
             const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].acoes.push('')
+            updatedListRisks[indexRisk].acoes.push({id: uuid(), value: ''})
             setListRisks(updatedListRisks)
         } else {
             console.log('Ação não permitida. Máximo de 5 ações recomendadas para cada situação de risco.')
@@ -112,18 +131,11 @@ export default function Home() {
     }
 
     function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
-        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length >= 1) {
-            const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1, newValue)
-            setListRisks(updatedListRisks)
-        } else {
-            console.log('Ação não permitida. Precisa haver pelo menos uma consequência para cada situação de risco.')
-        }
-    }
+        if(listRisks[indexRisk]) {
+            const newListRisks = [...listRisks]
+            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
 
-    function handleEditRiskOfList(index :number) {
-        if(listRisks) {
-
+            setListRisks(newListRisks)
         }
     }
 
@@ -145,6 +157,10 @@ export default function Home() {
         }
     }
 
+    useEffect(()=> {
+        handleCheckFilling()
+    }, [listRisks.length, formUnlocked])
+
 
     return(
         <div className="flex flex-col w-screen h-[100vh] justify-between">
@@ -161,17 +177,21 @@ export default function Home() {
                 
                 {
                     readyReport &&  <section className="">
-                                        {/* <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 1</p> */}
-                                        <InspectionInformationForm readyReport={readyReport} inspectionInformations={inspectionInformations} onAddInspectionInformations={handleAddInspectionInformations}/>
+                                        <InspectionInformationForm setFormUnlocked={handleSetFormUnlocked} readyReport={readyReport} inspectionInformations={inspectionInformations} onAddInspectionInformations={handleAddInspectionInformations}/>
                                     </section>
                 }
 
                 {
                     readyReport &&  <section>
-                                        {/* <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Passo 2</p> */}
-                                        <CardRiskAnalysisAI onAddRisk={handleSaveRisk}/>
+                                        <DialogAnalysisRisk onAddRisk={handleSaveRisk}/>
                                     </section>
                 }
+
+                {/* {
+                    readyReport &&  <section>
+                                        <CardRiskAnalysisAI onAddRisk={handleSaveRisk}/>
+                                    </section>
+                } */}
 
                 <section>
                     {
@@ -193,7 +213,11 @@ export default function Home() {
                         statusReadyReport={readyReport} 
                         onReadyReport={handleReadyReport} 
                         listRisks={listRisks} 
-                        inspectionInformations={inspectionInformations as inspectionInformations}/>
+                        inspectionInformations={inspectionInformations as inspectionInformations}
+                        checkFilling={handleCheckFilling}
+                        setFormUnlocked={handleSetFormUnlocked}
+                        formUnlocked={formUnlocked}
+                    />
                 </section>
 
                 {/* {

@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import convertToBase64 from "@/lib/convert-base64";
-import { Minus, Plus, Target, TriangleAlert, X } from "lucide-react";
+import { CircleAlert, CircleCheckBig, Minus, Plus, Target, TriangleAlert, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { GenerateAI } from "@/lib/generate-ai";
 import { createRoot } from "react-dom/client";
@@ -14,11 +14,23 @@ import AlertNotification from "@/components/AlertNotification";
 import ListUploadedImages from "@/components/ListUploadedImages";
 import { ok } from "assert";
 
+// export type RiskProps = {
+//     risco :string
+//     consequencias :string[]
+//     acoes :string[]
+//     images :string[]
+// }
+
+export type objList = {
+    id :string,
+    value :string
+}
+
 export type RiskProps = {
     risco :string
-    consequencias :string[]
-    acoes :string[]
-    images :string[]
+    consequencias : objList[]
+    acoes : objList[]
+    images : string[]
 }
 
 interface CardRiskAnalysisAIProps {
@@ -406,8 +418,8 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                 <form className="flex flex-col text-left gap-2">
                     <div className="space-y-6">
                         <div className="grid w-full max-w-md items-center gap-1.5">
-                            <div className="flex flex-row gap-2">
-                                <TriangleAlert className="text-yellow-500"/>
+                            <div className="flex flex-row gap-2 items-center">
+                                <CircleAlert className="text-yellow-500 w-4 h-4"/>
                                 <label className="font-bold">Situação de risco</label>
                             </div>
                             
@@ -439,11 +451,12 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                             <Button
                                 className="bg-transparent border-green-600 border-[1px] text-green-600 hover:bg-green-100"
                                 formAction={()=> handleMyAnalysis()}
+                                disabled={formEditable || code ? true : false}
                             >
                                 Eu quero analisar
                             </Button>
 
-                            {isLoading && <LoadingIndicator />}
+                            {isLoading && <LoadingIndicator text="Analisando..." />}
                             {error && <AlertNotification text="Algo deu errado! Por favor, tente novamente."/>}
                         </div>
                     </div>
@@ -478,7 +491,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code !== undefined 
                                 ? 
                                 code.consequencias.map((item, index)=>(
-                                    !formEditable && <p className="text-base md:text-sm" key={index}>{`${index + 1}. ${item}`}</p>
+                                    !formEditable && <p className="text-base md:text-sm my-1" key={index}>{`${index + 1}. ${item}`}</p>
                                 ))
                                 :
                                 ''
@@ -522,7 +535,7 @@ export default function CardRiskAnalysisAI({onAddRisk} :CardRiskAnalysisAIProps)
                                 code !== undefined
                                 ?
                                 code.acoes.map((item, index)=>(
-                                    !formEditable && <p className="text-base md:text-sm" key={index}>{`${index + 1}. ${item}`}</p>
+                                    !formEditable && <p className="text-base md:text-sm my-1" key={index}>{`${index + 1}. ${item}`}</p>
                                 ))
                                 :
                                 ''

@@ -9,21 +9,21 @@ export default function Home() {
             </nav>
             
             <main className="flex flex-col">
-                <p className="w-[70%] p-8 self-center text-center text-xl md:text-5xl font-bold">Quickly create work safety inspection reports.</p>
+                <p className="w-[70%] p-8 self-center text-center text-xl md:text-5xl font-bold">Crie rapidamente relatórios de inspeção de segurança do trabalho.</p>
 
-                <p className="w-[70%] pb-8 self-center text-center text-base md:text-lg">An editor designed for creating work safety inspection reports.</p>
+                <p className="w-[70%] pb-8 self-center text-center text-base md:text-lg">Um editor projetado para criar relatórios de inspeção de segurança do trabalho.</p>
 
                 <div className="flex flex-col md:flex-row self-center gap-4">
                     <Button 
                         className="bg-green-900 hover:bg-green-700"
                     >
-                        Get started
+                        Começar
                     </Button>
                     
                     <Button 
                         className="bg-green-900 hover:bg-green-700"
                     >
-                        Load existing report
+                        Carregar relatório existente
                     </Button>
                 </div>
                 

@@ -71,11 +71,10 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                 {
                                     risk.consequencias?.map(( consequencia, index ) => (
                                         <p 
-                                            key={index}
+                                            key={consequencia.id}
                                             className='text-sm antialiased ml-6 flex flex-row my-4'
                                         >
-                                        {/* <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {consequencia} */}
-                                        <CircleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {consequencia}
+                                        <CircleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {consequencia.value}
                                         </p>
                                     ))
                                 }
@@ -84,11 +83,10 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                 {
                                     risk.acoes?.map(( acao, index ) => (
                                         <p 
-                                            key={index}
+                                            key={acao.id}
                                             className='text-sm antialiased ml-6 flex flex-row my-4'
                                         >
-                                            {/* <Dot className='min-w-5 min-h-5 max-w-5 max-h-5'/> {acao} */}
-                                            <CircleCheckBig className='text-green-700 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {acao}
+                                            <CircleCheckBig className='text-green-700 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {acao.value}
                                         </p>
                                     ))
                                 }
@@ -107,8 +105,8 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 <p className="text-center antialiased font-bold">Responsável pela inspeção</p>
             </div>
             <div className=" flex flex-row gap-2 py-10">
-                <Button id='voltar' className={`bg-green-600 hover:bg-green-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
-                <Button id='imprimir' className={`bg-zinc-600 hover:bg-zinc-400 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } ><Printer /> Imprimir</Button>
+                <Button id='voltar' className={`bg-green-700 hover:bg-green-500 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
+                <Button id='imprimir' className={`bg-zinc-700 hover:bg-zinc-500 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } ><Printer /> Imprimir</Button>
             </div>    
         </div>
     )
