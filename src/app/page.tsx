@@ -22,14 +22,14 @@ export default function Home() {
                 <div className="flex flex-col md:flex-row self-center gap-4 mb-4">
                     <Link href={'/editor'}>
                         <Button 
-                            className="bg-green-900 hover:bg-green-700 w-full md:w-fit"
+                            className="bg-green-800 hover:bg-green-600 w-full md:w-fit"
                         >
                             Começar
                         </Button>
                     </Link>
                     
                     <Button 
-                        className="bg-green-900 hover:bg-green-700"
+                        className="bg-green-800 hover:bg-green-600"
                         disabled={true}
                     >
                         Carregar relatório existente
