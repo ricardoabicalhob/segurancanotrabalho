@@ -141,7 +141,7 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
                 
                 
                 <div className="flex flex-col gap-3">
-                    <Button disabled={!checkFilling()} className="bg-green-700 hover:bg-green-500 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
+                    <Button disabled={!checkFilling()} className="bg-green-800 hover:bg-green-600 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
                     
                     {(!inspectionInformations || !formUnlocked) && <p className="flex flex-row items-center justify-center gap-2 select-none text-center text-[14px] mb-[-10px] text-yellow-600">
                                                                         <MessageSquareWarning className="w-5 h-5"/>

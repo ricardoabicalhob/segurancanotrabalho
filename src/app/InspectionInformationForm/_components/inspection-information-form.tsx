@@ -126,7 +126,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                                     form='formInformation'
                                     formAction={()=> {handleSaveInspectionInformation}}
                                     // onClick={()=> {isSaved ? setFormUnlocked() : null}}
-                                    className="bg-green-700 hover:bg-green-500 w-full"
+                                    className="bg-green-800 hover:bg-green-600 w-full"
                                 >
                                     Ok
                                 </Button>

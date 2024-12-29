@@ -395,7 +395,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                                                     handleGenerate(); 
                                                     handleLoadingIndicator()
                                                 }} 
-                                    className=" bg-green-700 hover:bg-green-500 text-base md:text-sm"
+                                    className=" bg-green-800 hover:bg-green-600 text-base md:text-sm"
                                 >
                                     Analisar situação de risco com IA
                                 </Button>
@@ -605,7 +605,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         </Button>
 
                         <Button
-                            className="w-fit bg-green-700 hover:bg-green-500"
+                            className="w-fit bg-green-800 hover:bg-green-600"
                             id="buttonSave"
                             onClick={()=>{ 
                                         console.log(risk); 

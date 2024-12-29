@@ -49,7 +49,7 @@ export default function Home() {
                     <div className="flex flex-row flex-1">
                         <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
                             Descreva as situações de risco identificadas em campo e deixe a Inteligência Artifical Google Gemini fazer uma análise das principais consequências que esta situação pode acarretar, 
-                            e recomendar ações para garantir a segurança dos trabalhadores e o cumprimento das normas regulamentadoras.
+                            e recomendar ações para garantir a segurança dos trabalhadores e o cumprimento das normas regulamentadoras, ou faça sua própria análise.
                         </p>
                     </div>
 
