@@ -1,12 +1,72 @@
 'use client'
 
+import LoadingIndicator from "@/components/LoadingIndicator";
+import LoadingIndicatorAnimated from "@/components/LoadingIndicatorAnimated";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { SystemContext } from "@/lib/context/SystemContext";
+import { FileCheck, FileUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 
 export default function Home() {
+
+    const router = useRouter()
+
+    const [ isLoadingFile, setIsLoadingFile ] = useState(false)
+    const [ isLoadingPage, setIsLoadingPage ] = useState(false)
+    const { setUploadedFile, uploadedFile } = useContext(SystemContext)
+
+    function handleSelectFile() {
+        const fileSelected = document.getElementById('inputFileLoaded')
+
+        const listener = function(event){
+            const file = event.target?.files[0]
+
+            let reader = new FileReader()
+            reader.readAsText(file, 'utf8')
+
+            setIsLoadingFile(true)
+
+            reader.onload = () => {
+                try {
+                    const data = JSON.parse(reader.result)
+                    setUploadedFile(data)
+                    
+                }catch(error) {
+                    console.error('Erro ao ler o arquivo: ', error)
+                }finally{
+                    setIsLoadingFile(false)
+                }
+            }
+
+            reader.onerror = () => {
+                console.error('Erro ao ler o arquivo.')
+                setIsLoadingFile(false)
+            }
+        }
+
+        if(fileSelected) {
+            fileSelected.addEventListener('change', listener, {once: true})
+        }
+    }
+
+    useEffect(()=> {
+        if(uploadedFile) {
+            setIsLoadingPage(true)
+
+            setTimeout(() => {
+                setUploadedFile(null)
+            }, 3000);
+            
+            setTimeout(() => {
+                router.push('/editor')
+            }, 2000);
+        }
+    }, [uploadedFile])
 
     return(
         <div className="flex flex-col w-screen h-[100vh] justify-between">
@@ -27,13 +87,35 @@ export default function Home() {
                             Começar
                         </Button>
                     </Link>
-                    
-                    <Button 
-                        className="bg-green-800 hover:bg-green-600"
-                        disabled={true}
-                    >
-                        Carregar relatório existente
-                    </Button>
+
+                    <div className="flex items-center justify-center border-[1px] bg-green-800 hover:bg-green-600 rounded-md w-fit px-4 py-2 cursor-pointer">
+                        {
+                            isLoadingFile
+                            ?
+                            <LoadingIndicatorAnimated styles="w-4 h-4 border-[3px] mr-2" />
+                            :
+                            (
+                                uploadedFile
+                                ?
+                                <FileCheck className="text-white mr-2 h-4 w-4" />
+                                :
+                                <FileUp className="text-white mr-2 h-4 w-4" />
+                            )
+                        }
+                        
+                        <p className="text-sm text-white select-none">{`${isLoadingFile ? 'Carregando relatório...' : (uploadedFile ? 'Relatório carregado!' : 'Carregar relatório existente')}`}</p>
+                        <Input 
+                            className="absolute w-[15%] cursor-pointer" 
+                            style={{opacity: 0, cursor: 'pointer'}}
+                            type="file" 
+                            accept=".ris"
+                            id="inputFileLoaded"
+                            onClick={()=> {
+                                handleSelectFile();
+                            }}
+                        />
+                    </div>
+
                 </div>
                 
                 <div className="flex flex-col md:w-[80%] md:self-center lg:flex-row my-8">
@@ -78,12 +160,16 @@ export default function Home() {
                     </div>
                     
                 </div>
+
+                {
+                    isLoadingPage && <LoadingIndicator text="Carregando o relatório..." />
+                }
                 
             </main>
 
-            <footer className="bg-lime-200">
+            {/* <footer className="bg-lime-200">
 
-            </footer>
+            </footer> */}
         </div>
     )
 }

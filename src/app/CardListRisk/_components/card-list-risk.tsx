@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { FileDown, FileUp, ListX, MessageSquareWarning} from "lucide-react";
 import { inspectionInformations } from "@/lib/pdf-generate";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Report from "@/components/Report";
 import DownloadFile from "@/lib/downloadFile";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { ListRisks } from "@/app/page-home-1";
 import LoadingIndicatorAnimated from "@/components/LoadingIndicatorAnimated";
 import ListRiskItem from "@/components/ListRiskItem/list-risk-item";
 import MyDialog from "@/components/MyDialog";
+import { SystemContext } from "@/lib/context/SystemContext";
 
 
 export interface CardListRiskProps {
@@ -42,6 +43,8 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
     const [isEditableRisk, setIsEditableRisk] = useState(false)
     const [isLoadingFile, setIsLoadingFile] = useState(false)
     const listRef = useRef<HTMLDivElement>(null)
+
+    const { uploadedFile } = useContext(SystemContext)
 
     function handleSelectFile() {
         const fileSelected = document.getElementById('inputFileLoaded')
@@ -88,6 +91,14 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
             }
         }, 50);
     }, [listRisks.length, statusReadyReport])
+
+    useEffect(()=> {
+        if(uploadedFile) {
+            onLoadInspectionInformations(uploadedFile?.inspectionInformations)
+            onLoadListRisks(uploadedFile?.listRisks)
+            setFormUnlocked(uploadedFile?.checkFilling)
+        }
+    }, [])
 
     return(
         statusReadyReport
