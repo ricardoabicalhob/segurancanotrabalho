@@ -14,6 +14,7 @@ import LoadingIndicatorAnimated from "@/components/LoadingIndicatorAnimated";
 import ListRiskItem from "@/components/ListRiskItem/list-risk-item";
 import MyDialog from "@/components/MyDialog";
 import { SystemContext } from "@/lib/context/SystemContext";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 export interface CardListRiskProps {
@@ -151,62 +152,91 @@ export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListR
                 </div>
                 
                 
-                <div className="flex flex-col gap-3">
-                    <Button disabled={!checkFilling()} className="bg-green-800 hover:bg-green-600 w-full text-base md:text-sm select-none" onClick={()=> {onReadyReport()}} >Visualizar relatório</Button>
-                    
-                    {(!inspectionInformations || !formUnlocked) && <p className="flex flex-row items-center justify-center gap-2 select-none text-center text-[14px] mb-[-10px] text-yellow-600">
-                                                                        <MessageSquareWarning className="w-5 h-5"/>
-                                                                        <i>{`Preencha os dados da inspeção${listRisks.length ? '.' : ' e'}`}</i>
-                                                                    </p>
-                    }
-                    
-                    {!listRisks.length && <div className="flex flex-row justify-center select-none text-center text-[14px] text-yellow-600">
-                                                <i className="flex flex-row">
-                                                    {
-                                                        (!inspectionInformations || !formUnlocked)
-                                                        ?
-                                                        <p>a</p> 
-                                                        : 
-                                                        <p className="flex flex-row items-center gap-2">
-                                                            <MessageSquareWarning className="w-5 h-5"/>
-                                                            A
-                                                        </p>
-                                                    }
-                                                <p>dicione pelo menos uma situação de risco.</p>
-                                                </i>
-                                            </div>
-                    }
-
-                    <Separator className="w-full h-[0.5px] my-1"/>
-
-                    <Button
-                        onClick={()=> DownloadFile(checkFilling, inspectionInformations, listRisks)}
-                        disabled={!checkFilling()} 
-                        className="bg-zinc-700 hover:bg-zinc-500 w-full text-base md:text-sm select-none"     
-                    >
-                        <FileDown />
-                        Salvar relatório
-                    </Button>
-
-                    <div className="flex items-center justify-center bg-inherit border-[1px] border-green-700 hover:bg-green-100 rounded-md w-full py-2 cursor-pointer">
-                        {
-                            isLoadingFile
-                            ?
-                            <LoadingIndicatorAnimated styles="w-4 h-4 border-[3px] mr-2" />
-                            :
-                            <FileUp className="text-green-700 mr-2 h-4 w-4" />
+                <TooltipProvider>
+                    <div className="flex flex-col gap-3">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button 
+                                    disabled={!checkFilling()} 
+                                    className="bg-green-800 hover:bg-green-600 w-full text-base md:text-sm select-none" 
+                                    onClick={()=> {onReadyReport()}} 
+                                >
+                                    Visualizar relatório
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-green-700 text-sm">
+                                <p>Visualizar o relatório preparado para impressão</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        
+                        {(!inspectionInformations || !formUnlocked) && <p className="flex flex-row items-center justify-center gap-2 select-none text-center text-[14px] mb-[-10px] text-yellow-600">
+                                                                            <MessageSquareWarning className="w-5 h-5"/>
+                                                                            <i>{`Preencha os dados da inspeção${listRisks.length ? '.' : ' e'}`}</i>
+                                                                        </p>
                         }
-                        <p className="text-sm text-green-700 select-none">{`${isLoadingFile ? 'Carregando relatório...' : 'Carregar relatório existente'}`}</p>
-                        <Input 
-                            className="absolute w-[25%] cursor-pointer" 
-                            style={{opacity: 0, cursor: 'pointer'}}
-                            type="file" 
-                            accept=".ris"
-                            id="inputFileLoaded"
-                            onClick={()=> handleSelectFile()}
-                        />
+                        
+                        {!listRisks.length && <div className="flex flex-row justify-center select-none text-center text-[14px] text-yellow-600">
+                                                    <i className="flex flex-row">
+                                                        {
+                                                            (!inspectionInformations || !formUnlocked)
+                                                            ?
+                                                            <p>a</p> 
+                                                            : 
+                                                            <p className="flex flex-row items-center gap-2">
+                                                                <MessageSquareWarning className="w-5 h-5"/>
+                                                                A
+                                                            </p>
+                                                        }
+                                                    <p>dicione pelo menos uma situação de risco.</p>
+                                                    </i>
+                                                </div>
+                        }
+
+                        <Separator className="w-full h-[0.5px] my-1"/>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    onClick={()=> DownloadFile(checkFilling, inspectionInformations, listRisks)}
+                                    disabled={!checkFilling()} 
+                                    className="bg-zinc-700 hover:bg-zinc-500 w-full text-base md:text-sm select-none"     
+                                >
+                                    <FileDown />
+                                    Salvar relatório
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-green-700 text-sm">
+                                <p>Download do relatório no estado atual como arquivo</p>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="flex items-center justify-center bg-inherit border-[1px] border-green-700 hover:bg-green-100 rounded-md w-full py-2 cursor-pointer">
+                                    {
+                                        isLoadingFile
+                                        ?
+                                        <LoadingIndicatorAnimated styles="w-4 h-4 border-[3px] mr-2" />
+                                        :
+                                        <FileUp className="text-green-700 mr-2 h-4 w-4" />
+                                    }
+                                    <p className="text-sm text-green-700 select-none">{`${isLoadingFile ? 'Carregando relatório...' : 'Carregar relatório existente'}`}</p>
+                                    <Input 
+                                        className="absolute w-[25%] cursor-pointer" 
+                                        style={{opacity: 0, cursor: 'pointer'}}
+                                        type="file" 
+                                        accept=".ris"
+                                        id="inputFileLoaded"
+                                        onClick={()=> handleSelectFile()}
+                                    />
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-green-700 text-sm">
+                                <p>Carregar um relatório existente para edição</p>
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
-                </div>
+                </TooltipProvider>
 
             </div>
         )

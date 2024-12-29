@@ -50,6 +50,6 @@ export default function ListRiskItem( { children, onRemoveRiskOfList, index, ite
                     <p>{`${index + 1}. ${item.risco}`}</p>
                 </TooltipContent>
             </Tooltip>
-        </TooltipProvider>
+        </TooltipProvider> 
     )
 }
