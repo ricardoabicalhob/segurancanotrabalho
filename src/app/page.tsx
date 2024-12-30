@@ -59,11 +59,11 @@ export default function Home() {
             setIsLoadingPage(true)
 
             setTimeout(() => {
-                setUploadedFile(null)
-            }, 5000);
-            
-            setTimeout(() => {
                 router.push('/editor')
+                
+                setTimeout(() => {
+                    setUploadedFile(null)
+                }, 5000);
             }, 2000);
         }
     }, [uploadedFile])

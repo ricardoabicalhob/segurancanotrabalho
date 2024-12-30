@@ -47,7 +47,7 @@ export default function MyDialog({
     const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
     const listRef = useRef<HTMLDivElement>(null)
     const [stateScrollBar, setStateScrollBar] = useState(false)
-    const [ isValidatedFilling, setIsValidatedFilling ] = useState(false)
+    const [ isInvalidatedFilling, setIsInvalidatedFilling ] = useState(false)
 
 
     const { validateCompletionOfConsequencesOrRecommendedActions } = useContext(SystemContext)
@@ -80,7 +80,7 @@ export default function MyDialog({
             setTimeout(() => {
                 textareaConsequenciasRefs.current.forEach(textarea => {
                     if(textarea.value !== ''){
-                        textarea.style.height = '36px'
+                        textarea.style.height = '40px'
                         textarea.style.height = textarea.scrollHeight + 'px'
                         textarea.classList.add('placeholder:text-gray-400')
                     }
@@ -94,7 +94,7 @@ export default function MyDialog({
             setTimeout(() => {
                 textareaAcoesRefs.current.forEach((textarea, index) => {
                     if(textarea.value !== ''){
-                        textarea.style.height = '36px'
+                        textarea.style.height = '40px'
                         textarea.style.height = textarea.scrollHeight + 'px'
                         textarea.classList.add('placeholder:text-gray-400')
                     }
@@ -270,62 +270,58 @@ export default function MyDialog({
                 </div>
                 
                 <DialogFooter>
-                    {/* <DialogClose asChild > */}
-                        <Button
-                            className="bg-green-800 hover:bg-green-600" 
-                            type='button' 
-                            onClick={()=> {
-                                
-                                
-                            }}    
-                        >
-                            <DialogClose onClick={e => {
-                                if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias)?.status && validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes)?.status) {
-                                    
-                                    setIsValidatedFilling(true)
-
-                                } else {
-                                    e.preventDefault()
-                                    if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.length > 0) {
-                                        validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.reverse().map(itemList => {
-                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
-                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
-                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
-                                            setTimeout(() => {
-                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
-                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[2px]')    
-                                            }, 5000);
-                                        })
-                                    }
-
-                                    if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes).emptyItemsList.length > 0) {
-                                        validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes).emptyItemsList.reverse().map(itemList => {
-                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
-                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
-                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
-                                            setTimeout(() => {
-                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
-                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[2px]')    
-                                            }, 5000);
-                                        })
-                                    }
-
-                                    setIsValidatedFilling(true)
-
-                                    setTimeout(() => {
-                                        setIsValidatedFilling(false)
-                                    }, 3000);
-                                    console.log('Erro ao adicionar o risco')
-                                }
-                            }}>
-                            Concluir alterações
-                            </DialogClose>
+                    <Button
+                        className="flex p-0 bg-green-800 hover:bg-green-600" 
+                        type='button' 
+                        onClick={()=> {
                             
-                        </Button>
-                    {/* </DialogClose> */}
+                            
+                        }}    
+                    >
+                        <DialogClose className="flex flex-1 w-full h-full rounded-md items-center justify-center px-4" onClick={e => {
+                            if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias)?.status && validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes)?.status) {    
+                                console.log('Preenchimento OK!')
+                            } else {
+                                e.preventDefault()
+                                if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.length > 0) {
+                                    validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.reverse().map(itemList => {
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                        setTimeout(() => {
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[2px]')    
+                                        }, 5000);
+                                    })
+                                }
+
+                                if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes).emptyItemsList.length > 0) {
+                                    validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes).emptyItemsList.reverse().map(itemList => {
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                        setTimeout(() => {
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[2px]')    
+                                        }, 5000);
+                                    })
+                                }
+
+                                setIsInvalidatedFilling(true)
+
+                                setTimeout(() => {
+                                    setIsInvalidatedFilling(false)
+                                }, 3000);
+                                console.log('Erro ao adicionar o risco')
+                            }
+                        }}>
+                        Concluir alterações
+                        </DialogClose>
+                        
+                    </Button>
                 </DialogFooter>
                 {
-                    isValidatedFilling && <AlertNotification text="Preencha todos os campos!" />
+                    isInvalidatedFilling && <AlertNotification text="Preencha todos os campos!" />
                 }
             </DialogContent>
         </Dialog>
