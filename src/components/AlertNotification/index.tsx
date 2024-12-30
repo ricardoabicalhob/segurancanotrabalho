@@ -12,7 +12,7 @@ export default function AlertNotification({ text } :AlertNotificationProps) {
                 <CardContent className='py-4 bg-red-200 rounded-md'>
                     <div className='flex items-center justify-center gap-3'>
                         <CircleX className='text-red-600'/>
-                        <p>{text}</p>
+                        <p className='flex flex-wrap'>{text}</p>
                     </div>
                 </CardContent>
             </Card>

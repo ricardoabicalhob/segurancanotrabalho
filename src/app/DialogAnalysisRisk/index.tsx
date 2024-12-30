@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CircleAlert, CircleCheckBig, ImageOff, MessageSquare, Plus, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { RiskProps } from "../CardRiskAnalysisAI/_components/card-analysis";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import AlertNotification from "@/components/AlertNotification";
@@ -14,6 +14,7 @@ import Image from "next/image";
 import { uuid } from 'uuidv4'
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { SystemContext } from "@/lib/context/SystemContext";
 
 interface DialogAnalysisRiskProps {
     onAddRisk :(risk :RiskProps)=>void
@@ -31,6 +32,9 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
     const scrollAreaRef = useRef<HTMLDivElement>(null)
     const textareaAcoesRefs = useRef<HTMLTextAreaElement[]>([])
     const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
+    const [ isInvalidatedFilling, setIsInvalidatedFilling ] = useState(false)
+
+    const { validateCompletionOfConsequencesOrRecommendedActions } = useContext(SystemContext)
 
     function handleLinkImages() {
         document.getElementById('buttonAnalysis')?.click()
@@ -523,10 +527,11 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         <div key={'listaDeConsequencias'} className="bg-gray-100 rounded-b-2xl px-2">
                             {
                                 risk && risk.consequencias?.map((consequencia, indexConsequencia)=> (
-                                    <div key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                                    <div id={`ID${consequencia.id}`} key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                                         <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                         <textarea 
+                                            id={`TEXTAREAID${consequencia.id}`}
                                             key={indexConsequencia}
                                             ref={(element) => {
                                                 if (element) {
@@ -535,7 +540,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                                             }} 
                                             value={consequencia.value}
                                             placeholder="Descreva a consequência aqui..."
-                                            className="bg-gray-100 focus:bg-white text-base md:text-sm text-justify flex-1 overflow-y-hidden resize-none px-1"
+                                            className="bg-transparent focus:bg-white text-base md:text-sm text-justify flex-1 overflow-y-hidden resize-none px-1"
                                             onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "40px"; target.style.height = target.scrollHeight + 'px'}}
                                             onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "40px"; target.style.height = target.scrollHeight + 'px'}}
                                             onChange={e => handleConsequenceChange(indexConsequencia, e.target.value)}
@@ -564,10 +569,11 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         <div key={'listaDeAcoesRecomendadas'} className="bg-gray-100 rounded-b-2xl px-2">
                             {
                                 risk && risk.acoes.map((acao, indexAcao)=> (
-                                    <div key={acao.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                                    <div id={`ID${acao.id}`} key={acao.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                                         <CircleCheckBig className="mt-[0.5px] min-w-4 min-h-4 max-w-4 max-h-4 self-center text-green-600" />
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                         <textarea 
+                                            id={`TEXTAREAID${acao.id}`}
                                             key={indexAcao}
                                             ref={(element) => {
                                                 if (element) {
@@ -576,7 +582,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                                             }}
                                             value={acao.value}
                                             placeholder="Descreva a ação recomendada aqui..."
-                                            className="bg-gray-100 focus:bg-white text-base md:text-sm text-justify flex-1 overflow-y-hidden resize-none px-1"
+                                            className="bg-transparent focus:bg-white text-base md:text-sm text-justify flex-1 overflow-y-hidden resize-none px-1"
                                             onInput={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "40px"; target.style.height = target.scrollHeight + 'px'}}
                                             onFocus={(e)=>{const target = e.target as HTMLTextAreaElement; target.style.height = "40px"; target.style.height = target.scrollHeight + 'px'}}
                                             onChange={e=> handleActionChange(indexAcao, e.target.value)}
@@ -608,15 +614,51 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                             className="w-fit bg-green-800 hover:bg-green-600"
                             id="buttonSave"
                             onClick={()=>{ 
-                                        console.log(risk); 
-                                        handleSaveRisk(); 
-                                        handleClearPrompt(); 
-                                        handleClearCode()
+                                        if(validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias)?.status && validateCompletionOfConsequencesOrRecommendedActions(risk.acoes)?.status) {
+                                            handleSaveRisk(); 
+                                            handleClearPrompt(); 
+                                            handleClearCode()
+                                        } else {
+
+                                            if(validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias).emptyItemsList.length > 0) {
+                                                validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias).emptyItemsList.reverse().map(itemList => {
+                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-red-400')
+                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-[1px]')
+                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                                    setTimeout(() => {
+                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-red-400')
+                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-[1px]')    
+                                                    }, 5000);
+                                                })
+                                            }
+
+                                            if(validateCompletionOfConsequencesOrRecommendedActions(risk.acoes).emptyItemsList.length > 0) {
+                                                validateCompletionOfConsequencesOrRecommendedActions(risk.acoes).emptyItemsList.reverse().map(itemList => {
+                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-red-400')
+                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-[1px]')
+                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                                    setTimeout(() => {
+                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-red-400')
+                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-[1px]')    
+                                                    }, 5000);
+                                                })
+                                            }
+
+                                            setIsInvalidatedFilling(true)
+
+                                            setTimeout(() => {
+                                                setIsInvalidatedFilling(false)
+                                            }, 3000);
+                                            console.log('Erro ao adicionar o risco')
+                                        }
                                     }}
                         >
                             Adicionar ao relatório
                         </Button>
                     </div>
+                    {
+                        isInvalidatedFilling && <AlertNotification text="Preencha todos os campos!" />
+                    }
                 </CardContent>
             }
         </Card>

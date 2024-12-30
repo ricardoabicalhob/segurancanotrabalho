@@ -60,7 +60,7 @@ export default function Home() {
 
             setTimeout(() => {
                 setUploadedFile(null)
-            }, 3000);
+            }, 5000);
             
             setTimeout(() => {
                 router.push('/editor')

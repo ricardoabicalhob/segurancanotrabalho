@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { inspectionInformations } from '@/lib/pdf-generate';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, Edit } from 'lucide-react';
+import CustomInputData from '@/components/CustomInputData';
 
 export const formInspectionInformationSchema = z.object({
     empresa: z.string().min(2, {
@@ -43,6 +44,8 @@ export const formInspectionInformationSchema = z.object({
 
     }).toUpperCase()
 })
+
+type formInspectionInformationSchema = z.infer<typeof formInspectionInformationSchema>
 
 interface InspectionInformationFormProps {
     onAddInspectionInformations :(inspectionInformations :inspectionInformations)=> void
@@ -107,12 +110,14 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cidade' {...register('cidade')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
+                    {/* <CustomInputData /> */}
+
                     <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Função / Cargo' {...register('funcaoResponsavelPelaInspecao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Matrícula' {...register('matriculaResponsavelPelaInspecao')} />
                 </form>
-            </CardContent>
+            </CardContent>          
             <CardFooter>
                 {
                     isSaved && <Button onClick={()=> {setIsSaved(!isSaved); setFormUnlocked()}} className="bg-zinc-700 hover:bg-zinc-500 w-full">

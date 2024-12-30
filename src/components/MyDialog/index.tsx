@@ -1,13 +1,15 @@
 import { CircleAlert, CircleCheckBig, Edit, ImageOff, Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
 import Image from "next/image";
 import { ButtonDelete } from "../ButtonDelete";
 import convertToBase64 from "@/lib/convert-base64";
 import { Separator } from "../ui/separator";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { SystemContext } from "@/lib/context/SystemContext";
+import AlertNotification from "../AlertNotification";
 
 interface MyDialogProps {
     indexRisk :number
@@ -45,6 +47,10 @@ export default function MyDialog({
     const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
     const listRef = useRef<HTMLDivElement>(null)
     const [stateScrollBar, setStateScrollBar] = useState(false)
+    const [ isValidatedFilling, setIsValidatedFilling ] = useState(false)
+
+
+    const { validateCompletionOfConsequencesOrRecommendedActions } = useContext(SystemContext)
     
     function handleSelectImage(indexRisk :number) {
         const img = document.getElementById(`imageInput${indexRisk}`)
@@ -123,14 +129,23 @@ export default function MyDialog({
         }
     }, [itemRisk.acoes.length])
     
+    
     return(
-        <Dialog>
+        <Dialog
+             onOpenChange={()=> {
+                console.log('alterou estado da dialog')
+             }} 
+             modal={true}
+        >
             <DialogTrigger asChild>
                 <Button variant='outline' onClick={()=> setStateScrollBar(!stateScrollBar)} className="bg-inherit hover:bg-lime-400">
                     <Edit />
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent 
+                id={`${itemRisk.risco}`}
+                onPointerDownOutside={element=> {element.preventDefault()}}
+            >
                 <DialogHeader>
                     <h1 className="mt-3 bg-gray-100 text-green-900 p-2 font-bold text-center rounded-md">{itemRisk.risco.toUpperCase()}</h1>
                 </DialogHeader>
@@ -188,6 +203,7 @@ export default function MyDialog({
                                     <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
                                     <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                     <textarea 
+                                        id={`TEXTAREAID${consequencia.id}`}
                                         key={indexConsequencia+consequencia.id}
                                         ref={(element) => {
                                             if (element) {
@@ -228,6 +244,7 @@ export default function MyDialog({
                                     <CircleCheckBig className="mt-[0.5px] min-w-4 min-h-4 max-w-4 max-h-4 self-center text-green-600" />
                                     <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                     <textarea 
+                                        id={`TEXTAREAID${acao.id}`}
                                         key={indexAcao+acao.id}
                                         ref={(element) => {
                                             if (element) {
@@ -253,8 +270,63 @@ export default function MyDialog({
                 </div>
                 
                 <DialogFooter>
-                    
+                    {/* <DialogClose asChild > */}
+                        <Button
+                            className="bg-green-800 hover:bg-green-600" 
+                            type='button' 
+                            onClick={()=> {
+                                
+                                
+                            }}    
+                        >
+                            <DialogClose onClick={e => {
+                                if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias)?.status && validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes)?.status) {
+                                    
+                                    setIsValidatedFilling(true)
+
+                                } else {
+                                    e.preventDefault()
+                                    if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.length > 0) {
+                                        validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.reverse().map(itemList => {
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                            setTimeout(() => {
+                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[2px]')    
+                                            }, 5000);
+                                        })
+                                    }
+
+                                    if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes).emptyItemsList.length > 0) {
+                                        validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes).emptyItemsList.reverse().map(itemList => {
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
+                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                            setTimeout(() => {
+                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                                document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[2px]')    
+                                            }, 5000);
+                                        })
+                                    }
+
+                                    setIsValidatedFilling(true)
+
+                                    setTimeout(() => {
+                                        setIsValidatedFilling(false)
+                                    }, 3000);
+                                    console.log('Erro ao adicionar o risco')
+                                }
+                            }}>
+                            Concluir alterações
+                            </DialogClose>
+                            
+                        </Button>
+                    {/* </DialogClose> */}
                 </DialogFooter>
+                {
+                    isValidatedFilling && <AlertNotification text="Preencha todos os campos!" />
+                }
             </DialogContent>
         </Dialog>
     )

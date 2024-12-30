@@ -51,6 +51,7 @@ const config: Config = {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
+
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -78,7 +79,7 @@ const config: Config = {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   		}
-  	}
+  	},
   },
   plugins: [require("tailwindcss-animate")],
 };
