@@ -15,26 +15,27 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
             document.getElementById(`input-${label}`)?.classList.add('disabled:text-gray-400')
 
             document.getElementById(`label${label}`)?.classList.replace('top-6', 'top-2')
-            document.getElementById(`label${label}`)?.classList.replace('text-sm', 'text-xs')                    
+            document.getElementById(`label${label}`)?.classList.replace('text-base', 'text-xs')     
+            document.getElementById(`label${label}`)?.classList.replace('md:text-sm', 'text-xs')               
         }
     }, [initialState])
 
     return (
         <div
             id={`container${label}`}
-            className={`relative disabled:cursor-not-allowed px-2 pt-1 pb-1.5 border-[1px] rounded-md ${classNameContainer}`}
+            className={`relative disabled:cursor-not-allowed px-2 pt-2 md:pt-1 pb-1.5 md:pb-1.5 border-[1px] rounded-md ${classNameContainer}`}
         >
             <label
                 id={`label${label}`}
                 htmlFor={`input-${label}`}
                 className="absolute select-none bg-white w-[80%] text-gray-500 px-1
-                           top-6 -translate-y-4 text-sm transform origin-top-left 
+                           top-6 -translate-y-4 text-base md:text-sm transform origin-top-left 
                            transition-all 
                            duration-200 
                            cursor-text"
             >{label}</label>
             <input
-                className="w-full bg-inherit focus:outline-none text-sm peer"
+                className="w-full bg-inherit focus:outline-none text-base md:text-sm peer"
                 id={`input-${label}`}
                 type={type}
                 required
@@ -46,7 +47,9 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
                     document.getElementById(`container${label}`)?.classList.add('border-green-600')
 
                     document.getElementById(`label${label}`)?.classList.replace('top-6', 'top-2')
-                    document.getElementById(`label${label}`)?.classList.replace('text-sm', 'text-xs')
+                    document.getElementById(`label${label}`)?.classList.replace('text-base', 'text-xs')
+                    document.getElementById(`label${label}`)?.classList.replace('md:text-sm', 'md:text-xs')
+
                 }}
 
                 onBlur={(e)=> {
@@ -59,7 +62,9 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
                         document.getElementById(`label${label}`)?.classList.add('w-[80%]')
 
                         document.getElementById(`label${label}`)?.classList.replace('top-2', 'top-6')
-                        document.getElementById(`label${label}`)?.classList.replace('text-xs', 'text-sm')
+                        document.getElementById(`label${label}`)?.classList.replace('text-xs', 'text-base')
+                        document.getElementById(`label${label}`)?.classList.replace('md:text-xs', 'md:text-sm')
+
                     } 
                 }}
             />
