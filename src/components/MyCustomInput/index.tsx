@@ -16,14 +16,14 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
 
             document.getElementById(`label${label}`)?.classList.replace('top-6', 'top-2')
             document.getElementById(`label${label}`)?.classList.replace('text-base', 'text-xs')     
-            document.getElementById(`label${label}`)?.classList.replace('md:text-sm', 'text-xs')               
+            document.getElementById(`label${label}`)?.classList.replace('md:text-sm', 'md:text-xs')               
         }
     }, [initialState])
 
     return (
         <div
             id={`container${label}`}
-            className={`relative disabled:cursor-not-allowed px-2 pt-2 md:pt-1 pb-1.5 md:pb-1.5 border-[1px] rounded-md ${classNameContainer}`}
+            className={`relative disabled:cursor-not-allowed px-2 pt-2 md:pt-2 pb-1.5 md:pb-0.5 border-[1px] rounded-md ${classNameContainer}`}
         >
             <label
                 id={`label${label}`}
