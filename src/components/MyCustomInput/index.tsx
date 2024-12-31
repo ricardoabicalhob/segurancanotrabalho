@@ -27,7 +27,7 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
             <label
                 id={`label${label}`}
                 htmlFor={`input-${label}`}
-                className="absolute bg-white w-[80%] text-gray-500 px-1
+                className="absolute select-none bg-white w-[80%] text-gray-500 px-1
                            top-6 -translate-y-4 text-sm transform origin-top-left 
                            transition-all 
                            duration-200 

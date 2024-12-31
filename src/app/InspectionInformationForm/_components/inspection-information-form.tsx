@@ -104,15 +104,62 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                 <CardTitle className='text-lg'>Dados da Inspeção</CardTitle>
             </CardHeader>
             <CardContent className='flex-1 mt-[30px]'>
-                <form id='formInformation'  onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-2'>
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Empresa' {...register('empresa')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área emitente' {...register('areaEmitente')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Ano CIPA' {...register('cipa')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área/Lotação' {...register('areaLotacao')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cidade' {...register('cidade')} />
-                    {/* <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} /> */}
+                <form id='formInformation'  onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-3'>
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Empresa' {...register('empresa')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Empresa'
+                        type='text'
+                        {...register('empresa')}
+                    />
 
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área emitente' {...register('areaEmitente')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Área emitente'
+                        type='text'
+                        {...register('areaEmitente')}
+                    />
+                    
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Ano CIPA' {...register('cipa')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Ano CIPA'
+                        type='text'
+                        {...register('cipa')}
+                    />
+
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área/Lotação' {...register('areaLotacao')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Área/Lotação'
+                        type='text'
+                        {...register('areaLotacao')}
+                    />
+                    
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Local inspecionado'
+                        type='text'
+                        {...register('localInspecionado')}
+                    />
+                    
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cidade' {...register('cidade')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Cidade'
+                        type='text'
+                        {...register('cidade')}
+                    />
+                    
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} /> */}
                     <MyCustomInput 
                         initialState={inspectionInformations? true : false}
                         disabled={isSaved}
@@ -122,7 +169,6 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                     />
 
                     {/* <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} /> */}
-                    
                     <MyCustomInput 
                         initialState={inspectionInformations? true : false}
                         disabled={isSaved}
@@ -131,9 +177,33 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                         {...register('hora')}
                     />
 
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Função / Cargo' {...register('funcaoResponsavelPelaInspecao')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Matrícula' {...register('matriculaResponsavelPelaInspecao')} />
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Responsável pela inspeção'
+                        type='text'
+                        {...register('responsavelPelaInspecao')}
+                    />
+                    
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Função / Cargo' {...register('funcaoResponsavelPelaInspecao')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Função / Cargo'
+                        type='text'
+                        {...register('funcaoResponsavelPelaInspecao')}
+                    />
+                    
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Matrícula' {...register('matriculaResponsavelPelaInspecao')} /> */}
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Matrícula'
+                        type='text'
+                        {...register('matriculaResponsavelPelaInspecao')}
+                    />
+                
                 </form>
             </CardContent>          
             <CardFooter>
