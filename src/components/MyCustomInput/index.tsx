@@ -22,12 +22,12 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
     return (
         <div
             id={`container${label}`}
-            className={`relative disabled:cursor-not-allowed border-[1px] rounded-md ${classNameContainer}`}
+            className={`relative disabled:cursor-not-allowed px-3 pt-1 pb-1.5 border-[1px] rounded-md ${classNameContainer}`}
         >
             <label
                 id={`label${label}`}
                 htmlFor={`input-${label}`}
-                className="absolute bg-white w-[80%] text-gray-500 px-3
+                className="absolute bg-white w-[80%] text-gray-500 px-1
                            top-6 text-sm -translate-y-4 scale-100 transform origin-top-left 
                            transition-all 
                            duration-200 
@@ -35,7 +35,7 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
                            valid:top-2 cursor-text"
             >{label}</label>
             <input
-                className="w-full bg-inherit px-3 pt-1.5 pb-1 rounded-md focus:outline-none text-sm peer"
+                className="w-full focus:outline-none text-sm peer"
                 id={`input-${label}`}
                 type={type}
                 required
