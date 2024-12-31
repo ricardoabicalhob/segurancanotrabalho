@@ -14,6 +14,8 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
         if(initialState) {
             document.getElementById(`label${label}`)?.classList.remove('w-[80%]')
 
+            document.getElementById(`input-${label}`)?.classList.add('disabled:text-gray-400')
+
             document.getElementById(`label${label}`)?.classList.replace('top-6', 'top-2')
             document.getElementById(`label${label}`)?.classList.replace('scale-100', 'scale-90')                    
         }
@@ -64,7 +66,7 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
                     } 
                 }}
 
-                className="w-full focus:outline-none text-sm shrink peer"
+                className="w-full bg-inherit focus:outline-none text-sm peer"
             />
             
         </div>
