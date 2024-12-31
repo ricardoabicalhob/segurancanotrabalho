@@ -527,7 +527,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         <div key={'listaDeConsequencias'} className="bg-gray-100 rounded-b-2xl px-2">
                             {
                                 risk && risk.consequencias?.map((consequencia, indexConsequencia)=> (
-                                    <div id={`ID${consequencia.id}`} key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                                    <div key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                                         <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                         <textarea 
@@ -569,7 +569,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         <div key={'listaDeAcoesRecomendadas'} className="bg-gray-100 rounded-b-2xl px-2">
                             {
                                 risk && risk.acoes.map((acao, indexAcao)=> (
-                                    <div id={`ID${acao.id}`} key={acao.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
+                                    <div key={acao.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
                                         <CircleCheckBig className="mt-[0.5px] min-w-4 min-h-4 max-w-4 max-h-4 self-center text-green-600" />
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                         <textarea 
@@ -622,24 +622,24 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
 
                                             if(validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias).emptyItemsList.length > 0) {
                                                 validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias).emptyItemsList.reverse().map(itemList => {
-                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-[1px]')
+                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
                                                     setTimeout(() => {
-                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-[1px]')    
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')    
                                                     }, 5000);
                                                 })
                                             }
 
                                             if(validateCompletionOfConsequencesOrRecommendedActions(risk.acoes).emptyItemsList.length > 0) {
                                                 validateCompletionOfConsequencesOrRecommendedActions(risk.acoes).emptyItemsList.reverse().map(itemList => {
-                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`ID${itemList.id}`)?.classList.add('border-[1px]')
+                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
                                                     setTimeout(() => {
-                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`ID${itemList.id}`)?.classList.remove('border-[1px]')    
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')    
                                                     }, 5000);
                                                 })
                                             }

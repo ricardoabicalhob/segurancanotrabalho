@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { inspectionInformations } from '@/lib/pdf-generate';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Check, Edit } from 'lucide-react';
-import CustomInputData from '@/components/CustomInputData';
+import CustomInput from '@/components/CustomInput';
+import { MyCustomInput } from '@/components/MyCustomInput';
 
 export const formInspectionInformationSchema = z.object({
     empresa: z.string().min(2, {
@@ -45,6 +46,7 @@ export const formInspectionInformationSchema = z.object({
     }).toUpperCase()
 })
 
+
 type formInspectionInformationSchema = z.infer<typeof formInspectionInformationSchema>
 
 interface InspectionInformationFormProps {
@@ -63,7 +65,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
     })
 
     function handleSaveInspectionInformation(data :object) {
-        if(data) {
+        if(data) {          
             onAddInspectionInformations(data as inspectionInformations)
             setIsSaved(!isSaved)
             setFormUnlocked()
@@ -84,8 +86,8 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                 setValue('data', new Date(inspectionInformations.data).toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
             }else{
                 setValue('data', inspectionInformations.data.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
-
             }
+
             setValue('hora', inspectionInformations.hora)
             setValue('responsavelPelaInspecao', inspectionInformations.responsavelPelaInspecao)
             setValue('funcaoResponsavelPelaInspecao', inspectionInformations.funcaoResponsavelPelaInspecao)
@@ -109,10 +111,26 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Área/Lotação' {...register('areaLotacao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Local inspecionado' {...register('localInspecionado')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Cidade' {...register('cidade')} />
-                    <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} />
-                    {/* <CustomInputData /> */}
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} type='date' placeholder='Data' {...register('data')} /> */}
 
-                    <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} />
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Data' 
+                        type='date' 
+                        {...register('data')} 
+                    />
+
+                    {/* <Input className='text-base md:text-sm' disabled={isSaved} type='time' placeholder='Hora' {...register('hora')} /> */}
+                    
+                    <MyCustomInput 
+                        initialState={inspectionInformations? true : false}
+                        disabled={isSaved}
+                        label='Hora'
+                        type='time'
+                        {...register('hora')}
+                    />
+
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Responsável pela inspeção' {...register('responsavelPelaInspecao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Função / Cargo' {...register('funcaoResponsavelPelaInspecao')} />
                     <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Matrícula' {...register('matriculaResponsavelPelaInspecao')} />

@@ -150,7 +150,7 @@ export default function MyDialog({
                     <h1 className="mt-3 bg-gray-100 text-green-900 p-2 font-bold text-center rounded-md">{itemRisk.risco.toUpperCase()}</h1>
                 </DialogHeader>
 
-                <div id="scrollAreaListaDeRiscos" ref={listRef} className="overflow-y-auto max-h-[500px] pb-3 pr-1">
+                <div id="scrollAreaListaDeRiscos" ref={listRef} className="overflow-y-auto max-h-[500px] rounded-3xl pb-3 pr-1">
                     <div className="flex justify-between items-center sticky top-0 rounded-t-2xl bg-gray-200 p-2">
                         <p className="text-base md:text-sm font-bold select-none">Fotos</p>
                         <div id='addImageSection' className="flex bg-green-600 hover:bg-green-400 rounded-3xl p-1 text-xs select-none text-white cursor-pointer">

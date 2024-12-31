@@ -130,7 +130,7 @@ export default function Home() {
 
                     <div className="flex flex-row flex-1">
                         <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
-                            Descreva as situações de risco identificadas em campo e deixe a Inteligência Artifical Google Gemini fazer uma análise das principais consequências que esta situação pode acarretar, 
+                            Descreva as situações de risco identificadas em campo e deixe que a Inteligência Artifical Google Gemini te ajude a fazer uma análise das principais consequências que esta situação pode acarretar, 
                             e recomendar ações para garantir a segurança dos trabalhadores e o cumprimento das normas regulamentadoras, ou faça sua própria análise.
                         </p>
                     </div>
@@ -139,15 +139,7 @@ export default function Home() {
                     
                     <div className="flex flex-row flex-1">
                         <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
-                            Adicione fotos para deixar o seu relatório mais completo se desejar.
-                        </p>
-                    </div>
-
-                    <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
-                    
-                    <div className="flex flex-row flex-1">
-                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
-                            Edite as análises feitas pela IA, complementando, removendo ou reescrevendo informações.
+                            Adicione fotos para proporcionar uma visualização mais clara e completa dos dados e informações apresentados, deixando o seu relatório ainda mais completo.
                         </p>
                     </div>
 
