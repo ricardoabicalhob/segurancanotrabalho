@@ -39,7 +39,7 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
                            cursor-text`}
             >{label}</label>
             <input
-                className="w-full rounded-[5px] focus:outline-none text-base md:text-sm peer"
+                className="w-full bg-inherit rounded-[5px] focus:outline-none text-base md:text-sm peer"
                 id={`input-${label}`}
                 type={type}
                 required
