@@ -54,6 +54,17 @@ export default function Home() {
         }
     }
 
+    useEffect(() => {
+        window.history.pushState(null, window.location.href)
+        window.onpopstate = () => {
+          if (window.confirm('Todo o preenchimento do relatório será perdido! Tem certeza que deseja sair?')) {
+            window.history.go(0)
+          } else {
+            window.history.go(1);
+          }
+        };
+      }, []);
+
     useEffect(()=> {
         if(uploadedFile) {
             setIsLoadingPage(true)
@@ -80,13 +91,12 @@ export default function Home() {
                 <p className="w-[70%] pb-8 self-center text-center text-base md:text-lg">Um editor projetado para criar relatórios de inspeção de segurança do trabalho.</p>
 
                 <div className="flex flex-col md:flex-row self-center gap-4 mb-4">
-                    <Link href={'/editor'}>
                         <Button 
                             className="bg-green-800 hover:bg-green-600 w-full md:w-fit"
+                            onClick={()=> router.push('/editor')}
                         >
                             Começar
                         </Button>
-                    </Link>
 
                     <div className="flex items-center justify-center border-[1px] bg-green-800 hover:bg-green-600 rounded-md w-fit px-4 py-2 cursor-pointer">
                         {

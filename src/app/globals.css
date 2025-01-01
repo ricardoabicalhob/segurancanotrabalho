@@ -89,4 +89,5 @@ body {
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-zinc-200 rounded-lg !important
   }
+
 }

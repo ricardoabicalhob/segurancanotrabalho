@@ -107,6 +107,7 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
                 <form id='formInformation'  onSubmit={handleSubmit(handleSaveInspectionInformation)} className='grid gap-3'>
                     {/* <Input className='text-base md:text-sm' disabled={isSaved} placeholder='Empresa' {...register('empresa')} /> */}
                     <MyCustomInput 
+                        classNameLabel='bg-green-600'
                         initialState={inspectionInformations? true : false}
                         disabled={isSaved}
                         label='Empresa'

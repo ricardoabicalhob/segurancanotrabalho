@@ -161,7 +161,6 @@ export default function Home() {
         handleCheckFilling()
     }, [listRisks.length, formUnlocked])
 
-
     return(
         <div className="flex flex-col w-screen h-[100vh] justify-between">
             
