@@ -23,13 +23,25 @@ import { ok } from "assert";
 
 export type objList = {
     id :string,
-    value :string
+    value :string,
+    corDoGrupoDeRisco :string
+}
+
+export type objConsequenceList = {
+    id :string,
+    value :string,
+    corDoGrupoDeRisco :string
+}
+
+export type objActionList = {
+    id :string,
+    value :string,
 }
 
 export type RiskProps = {
     risco :string
-    consequencias : objList[]
-    acoes : objList[]
+    consequencias : objConsequenceList[]
+    acoes : objActionList[]
     images : string[]
 }
 

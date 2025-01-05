@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pastas do projeto
+/src/app/editorteste
+/src/app/novalista
+/src/components/MyCustomList

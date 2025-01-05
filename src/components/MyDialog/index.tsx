@@ -7,11 +7,16 @@ import Image from "next/image";
 import { ButtonDelete } from "../ButtonDelete";
 import convertToBase64 from "@/lib/convert-base64";
 import { Separator } from "../ui/separator";
-import { useContext, useEffect, useRef, useState } from "react";
+import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { SystemContext } from "@/lib/context/SystemContext";
 import AlertNotification from "../AlertNotification";
+import { tabelaDeRiscos, TabelaDeRiscosCompleta, tabelaDeRiscosSimplificada } from "@/lib/tabela-de-riscos";
+import { buildCustomRoute } from "next/dist/server/lib/router-utils/filesystem";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import CustomSelect from "../CustomSelect";
 
 interface MyDialogProps {
+    children? :ReactNode
     indexRisk :number
     itemRisk :RiskProps
     onChangeRisco :(indexRisk :number, newValue :string)=> void
@@ -28,6 +33,7 @@ interface MyDialogProps {
 }
 
 export default function MyDialog({ 
+    children,
     itemRisk, 
     indexRisk, 
     isEditableRisk,
@@ -50,7 +56,7 @@ export default function MyDialog({
     const [ isInvalidatedFilling, setIsInvalidatedFilling ] = useState(false)
 
 
-    const { validateCompletionOfConsequencesOrRecommendedActions } = useContext(SystemContext)
+    const { validateCompletionOfConsequencesOrRecommendedActions, buscarRiscoPorCor, buscarRiscoPorTipo } = useContext(SystemContext)
     
     function handleSelectImage(indexRisk :number) {
         const img = document.getElementById(`imageInput${indexRisk}`)
@@ -71,6 +77,14 @@ export default function MyDialog({
             img.addEventListener('change', listener, {once: true})
         }else{
             console.log('negativo para img')
+        }
+    }
+
+    function handleColorGroupConsequenceChange(index :number, newValue :string) {
+        if(itemRisk) {
+            const newConsequeces = [...itemRisk.consequencias]
+            const newConsequence = newConsequeces[index]
+            newConsequence.corDoGrupoDeRisco = newValue
         }
     }
     
@@ -138,19 +152,25 @@ export default function MyDialog({
              modal={true}
         >
             <DialogTrigger asChild>
-                <Button variant='outline' onClick={()=> setStateScrollBar(!stateScrollBar)} className="bg-inherit hover:bg-lime-400">
-                    <Edit />
-                </Button>
+                {
+                    children
+                    ?
+                        children
+                        :
+                        <Button variant='outline' onClick={()=> setStateScrollBar(!stateScrollBar)} className="bg-inherit hover:bg-lime-400">
+                            <Edit />
+                        </Button>
+                }
             </DialogTrigger>
             <DialogContent 
                 id={`${itemRisk.risco}`}
                 onPointerDownOutside={element=> {element.preventDefault()}}
             >
                 <DialogHeader>
-                    <h1 className="mt-3 bg-gray-100 text-green-900 p-2 font-bold text-center rounded-md">{itemRisk.risco.toUpperCase()}</h1>
+                    <h1 className="flex flex-col gap-3 mt-3 bg-gray-100 text-green-900 p-2 font-bold text-center rounded-md">{itemRisk.risco.toUpperCase()}</h1>
                 </DialogHeader>
 
-                <div id="scrollAreaListaDeRiscos" ref={listRef} className="overflow-y-auto max-h-[500px] rounded-3xl pb-3 pr-1">
+                <div id="scrollAreaListaDeRiscos" ref={listRef} className="overflow-y-auto max-h-[500px] rounded-3xl pb-3 pr-1 custom-scrollbar">
                     <div className="flex justify-between items-center sticky top-0 rounded-t-2xl bg-gray-200 p-2">
                         <p className="text-base md:text-sm font-bold select-none">Fotos</p>
                         <div id='addImageSection' className="flex bg-green-600 hover:bg-green-400 rounded-3xl p-1 text-xs select-none text-white cursor-pointer">
@@ -200,7 +220,26 @@ export default function MyDialog({
                         {
                             itemRisk && itemRisk.consequencias?.map((consequencia, indexConsequencia)=> (
                                 <div key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
-                                    <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
+                                    
+                                    <CustomSelect id={`COLORGROUPRISCID${consequencia.id}`}
+                                        handleColorGroupConsequence={handleColorGroupConsequenceChange} 
+                                        indexConsequence={indexConsequencia}
+                                        valorSelecionado={consequencia.corDoGrupoDeRisco}
+                                    />
+                                    {/* <Tooltip>
+                                        <TooltipTrigger>
+                                      
+                                        </TooltipTrigger>
+                                        <TooltipContent className={`
+                                            font-bold
+                                            ${consequencia.corDoGrupoDeRisco === 'verde' ? 'bg-green-700' : ''}
+                                            ${consequencia.corDoGrupoDeRisco === 'vermelho' ? 'bg-red-super' : ''}
+                                            ${consequencia.corDoGrupoDeRisco === 'laranja' ? 'bg-orange-800' : ''}
+                                            ${consequencia.corDoGrupoDeRisco === 'amarelo' ? 'bg-yellow-400' : ''}
+                                            ${consequencia.corDoGrupoDeRisco === 'azul' ? 'bg-blue-700' : ''}
+                                        `}>{buscarRiscoPorCor(consequencia.corDoGrupoDeRisco)?.tipo}</TooltipContent>
+                                    </Tooltip> */}
+
                                     <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                     <textarea 
                                         id={`TEXTAREAID${consequencia.id}`}
@@ -272,11 +311,7 @@ export default function MyDialog({
                 <DialogFooter>
                     <Button
                         className="flex p-0 bg-green-800 hover:bg-green-600" 
-                        type='button' 
-                        onClick={()=> {
-                            
-                            
-                        }}    
+                        type='button'    
                     >
                         <DialogClose className="flex flex-1 w-full h-full rounded-md items-center justify-center px-4" onClick={e => {
                             if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias)?.status && validateCompletionOfConsequencesOrRecommendedActions(itemRisk.acoes)?.status) {    
@@ -286,7 +321,11 @@ export default function MyDialog({
                                 if(validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.length > 0) {
                                     validateCompletionOfConsequencesOrRecommendedActions(itemRisk.consequencias).emptyItemsList.reverse().map(itemList => {
                                         document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
                                         document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[2px]')
+                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('rounded-md')
+                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-red-400')
+                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-[1px]')
                                         document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
                                         setTimeout(() => {
                                             document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')

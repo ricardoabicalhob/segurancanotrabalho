@@ -21,6 +21,8 @@ export default function Home() {
     const [ readyReport, setReadyReport ] = useState(true)
     const [ isWelcome, setIsWelcome ] = useState(true)
     const [ formUnlocked, setFormUnlocked ] = useState(false)
+    const [pontoAdicionado, setPontoAdicionado] = useState(false);
+
     const router = useRouter()
 
     function handleCheckFilling() {
@@ -100,11 +102,13 @@ export default function Home() {
             console.log('Ação não permitida. Máximo de 5 consequências para cada situação de risco.')
         }
     }
-
+    
     function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
         if(listRisks[indexRisk]) {
             const newListRisks = [...listRisks]
-            newListRisks[indexRisk].consequencias[indexConsequencia].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+            let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+
+            newListRisks[indexRisk].consequencias[indexConsequencia].value = updatedValue
 
             setListRisks(newListRisks)
         }
@@ -133,8 +137,9 @@ export default function Home() {
     function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
         if(listRisks[indexRisk]) {
             const newListRisks = [...listRisks]
-            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+            let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
 
+            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = updatedValue
             setListRisks(newListRisks)
         }
     }

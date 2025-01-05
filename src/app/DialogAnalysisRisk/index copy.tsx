@@ -15,10 +15,6 @@ import { uuid } from 'uuidv4'
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { SystemContext } from "@/lib/context/SystemContext";
-import { twMerge } from "tailwind-merge";
-import { tabelaDeRiscosSimplificada } from "@/lib/tabela-de-riscos";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import CustomSelect from "@/components/CustomSelect";
 
 interface DialogAnalysisRiskProps {
     onAddRisk :(risk :RiskProps)=>void
@@ -38,12 +34,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
     const textareaConsequenciasRefs = useRef<HTMLTextAreaElement[]>([])
     const [ isInvalidatedFilling, setIsInvalidatedFilling ] = useState(false)
 
-    const { 
-        validateCompletionOfConsequencesOrRecommendedActions, 
-        buscarRiscoPorCor, 
-        validateCompletionOfConsequences,
-        validateCompletionOfRecommendedActions
-    } = useContext(SystemContext)
+    const { validateCompletionOfConsequencesOrRecommendedActions } = useContext(SystemContext)
 
     function handleLinkImages() {
         document.getElementById('buttonAnalysis')?.click()
@@ -61,8 +52,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
             consequencias: [
                 {
                     id: uuid(),
-                    value: '',
-                    corDoGrupoDeRisco: ''
+                    value: ''
                 }
             ],
             acoes: [
@@ -140,7 +130,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
         if(risk) {
             if(risk.consequencias.length < 5) {
                 const newConsequences = [...risk.consequencias]
-                newConsequences.push({id: uuid(), value: '', corDoGrupoDeRisco: ''})
+                newConsequences.push({id: uuid(), value: ''})
 
                 setRisk({
                     ...risk,
@@ -177,19 +167,6 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
         }
     }
 
-    function handleColorGroupConsequenceChange(index :number, newValue :string) {
-        if(risk) {
-            const newConsequeces = [...risk.consequencias]
-            const newConsequence = newConsequeces[index]
-            newConsequence.corDoGrupoDeRisco = newValue
-
-            setRisk({
-                ...risk,
-                consequencias: newConsequeces
-            })
-        }
-    }
-
     function handleActionChange(index :number, newValue :string) {
         if(risk) {
             const newActions = [...risk.acoes]
@@ -206,24 +183,20 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
 
         try {
             
-            if(prompt) { 
+            if(prompt) {
                 
                 const response = await GenerateAI(prompt)
-                const data = await response?.json()
-                const responseJson :RiskProps = data
-                console.log('Resposta da analise: ', responseJson)
+                const data :RiskProps = await response?.json()
+                console.log(data)
 
                 if(response?.ok) {
-                    responseJson.consequencias.map((consequencia) => {
+                    data.consequencias.map(consequencia => {
                         consequencia.id = uuid()
                     })
-                    responseJson.acoes.map(acao => {
+                    data.acoes.map(acao => {
                         acao.id = uuid()
                     })
-                    responseJson.images = []
-                    console.log(responseJson)
-
-                    setRisk(responseJson)
+                    setRisk(data)
                     setIsLoading(false)
                     setTimeout(() => {
                         handleLinkImages()
@@ -555,27 +528,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                             {
                                 risk && risk.consequencias?.map((consequencia, indexConsequencia)=> (
                                     <div key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
-
-                                        <TooltipProvider>
-                                            <Tooltip>
-                                                <CustomSelect 
-                                                    id={`COLORGROUPRISCID${consequencia.id}`}
-                                                    handleColorGroupConsequence={handleColorGroupConsequenceChange} 
-                                                    indexConsequence={indexConsequencia}
-                                                    valorSelecionado={consequencia.corDoGrupoDeRisco}
-                                                />
-                                                
-                                                <TooltipContent className={`
-                                                    font-bold
-                                                    ${consequencia.corDoGrupoDeRisco === 'verde' ? 'bg-green-700' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'vermelho' ? 'bg-red-super' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'laranja' ? 'bg-orange-800' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'amarelo' ? 'bg-yellow-400' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'azul' ? 'bg-blue-700' : ''}
-                                                `}>{buscarRiscoPorCor(consequencia.corDoGrupoDeRisco)?.tipo}</TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                        
+                                        <CircleAlert className="mt-[0.5px] min-wmd-4 min-h-4 max-w-4 max-h-4 self-center text-yellow-500" />
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
                                         <textarea 
                                             id={`TEXTAREAID${consequencia.id}`}
@@ -661,33 +614,26 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                             className="w-fit bg-green-800 hover:bg-green-600"
                             id="buttonSave"
                             onClick={()=>{ 
-                                        if(validateCompletionOfConsequences(risk.consequencias)?.status && validateCompletionOfRecommendedActions(risk.acoes)?.status) {
+                                        if(validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias)?.status && validateCompletionOfConsequencesOrRecommendedActions(risk.acoes)?.status) {
                                             handleSaveRisk(); 
                                             handleClearPrompt(); 
                                             handleClearCode()
                                         } else {
 
-                                            if(validateCompletionOfConsequences(risk.consequencias).emptyItemsList.length > 0) {
-                                                validateCompletionOfConsequences(risk.consequencias).emptyItemsList.reverse().map(itemList => {
+                                            if(validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias).emptyItemsList.length > 0) {
+                                                validateCompletionOfConsequencesOrRecommendedActions(risk.consequencias).emptyItemsList.reverse().map(itemList => {
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
-                                                    document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('rounded-md')
-                                                    document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-[1px]')
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
                                                     setTimeout(() => {
                                                         document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')
-                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.remove('border-[1px]')        
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')    
                                                     }, 5000);
                                                 })
                                             }
 
-                                            if(validateCompletionOfRecommendedActions(risk.acoes).emptyItemsList.length > 0) {
-                                                validateCompletionOfRecommendedActions(risk.acoes).emptyItemsList.reverse().map(itemList => {
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
+                                            if(validateCompletionOfConsequencesOrRecommendedActions(risk.acoes).emptyItemsList.length > 0) {
+                                                validateCompletionOfConsequencesOrRecommendedActions(risk.acoes).emptyItemsList.reverse().map(itemList => {
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
                                                     document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()

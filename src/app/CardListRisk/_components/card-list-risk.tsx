@@ -39,7 +39,27 @@ export interface CardListRiskProps {
     formUnlocked :boolean
 }
 
-export default function CardListRisk({setFormUnlocked, checkFilling, onLoadListRisks, onLoadInspectionInformations, onDeleteImage, onAddImage, onChangeRisco, onDeleteConsequencia, onAddConsequencia, onChangeConsequencia, onDeleteAcaoRecomendada, onAddAcaoRecomendada, onChangeAcaoRecomendada, onRemoveRiskOfList, formUnlocked, listRisks , inspectionInformations, statusReadyReport, onReadyReport} :CardListRiskProps){
+export default function CardListRisk({
+    setFormUnlocked, 
+    checkFilling, 
+    onLoadListRisks, 
+    onLoadInspectionInformations, 
+    onDeleteImage, 
+    onAddImage, 
+    onChangeRisco, 
+    onDeleteConsequencia, 
+    onAddConsequencia, 
+    onChangeConsequencia, 
+    onDeleteAcaoRecomendada, 
+    onAddAcaoRecomendada, 
+    onChangeAcaoRecomendada, 
+    onRemoveRiskOfList, 
+    formUnlocked, 
+    listRisks , 
+    inspectionInformations, 
+    statusReadyReport, 
+    onReadyReport
+} :CardListRiskProps){
 
     const [isEditableRisk, setIsEditableRisk] = useState(false)
     const [isLoadingFile, setIsLoadingFile] = useState(false)

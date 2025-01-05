@@ -46,7 +46,7 @@ export default function ListRiskItem( { children, onRemoveRiskOfList, index, ite
                         </div>
                     </div>
                 </TooltipTrigger>
-                <TooltipContent className="z-auto bg-green-700">
+                <TooltipContent className="z-auto bg-green-700 whitespace-pre-line max-w-md">
                     <p>{`${index + 1}. ${item.risco}`}</p>
                 </TooltipContent>
             </Tooltip>
