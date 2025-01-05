@@ -76,27 +76,27 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                     risk.consequencias?.map(( consequencia, index ) => (
                                         <p 
                                             key={consequencia.id}
-                                            className='text-sm antialiased ml-6 flex gap-2 my-4'
+                                            className='flex text-sm antialiased ml-6 gap-2 my-4'
                                         >
-                                        {/* <CircleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' />  */}
-                                        <div 
-                                            id={`CLASSIFICACAORISCO${consequencia.id}`}
-                                            key={`grupoRisco${consequencia.id}`}
-                                            className={`
-                                                w-4 h-4 mt-[0.5px] rounded-full self-center 
-                                                ${consequencia.corDoGrupoDeRisco === 'verde' ? 'bg-green-700' : ''}
-                                                ${consequencia.corDoGrupoDeRisco === 'vermelho' ? 'bg-red-super' : ''}
-                                                ${consequencia.corDoGrupoDeRisco === 'laranja' ? 'bg-orange-800' : ''}
-                                                ${consequencia.corDoGrupoDeRisco === 'amarelo' ? 'bg-yellow-400' : ''}
-                                                ${consequencia.corDoGrupoDeRisco === 'azul' ? 'bg-blue-700' : ''}
-                                            `}
-                                        />
-                                        <span
-                                            className="font-bold"
-                                        >
-                                            {buscarRiscoPorCor(consequencia.corDoGrupoDeRisco).tipo}:
-                                        </span>
-                                        {consequencia.value}
+                                            {/* <CircleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' />  */}
+                                            <div 
+                                                id={`CLASSIFICACAORISCO${consequencia.id}`}
+                                                key={`grupoRisco${consequencia.id}`}
+                                                className={`
+                                                    w-4 h-4 mt-[0.5px] rounded-full 
+                                                    ${consequencia.corDoGrupoDeRisco === 'verde' ? 'bg-green-700' : ''}
+                                                    ${consequencia.corDoGrupoDeRisco === 'vermelho' ? 'bg-red-super' : ''}
+                                                    ${consequencia.corDoGrupoDeRisco === 'laranja' ? 'bg-orange-800' : ''}
+                                                    ${consequencia.corDoGrupoDeRisco === 'amarelo' ? 'bg-yellow-400' : ''}
+                                                    ${consequencia.corDoGrupoDeRisco === 'azul' ? 'bg-blue-700' : ''}
+                                                `}
+                                            />
+                                            <span
+                                                className="font-bold"
+                                            >
+                                                {buscarRiscoPorCor(consequencia.corDoGrupoDeRisco).tipo}:
+                                            </span>
+                                            {consequencia.value}
                                         </p>
                                     ))
                                 }

@@ -211,7 +211,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                 const response = await GenerateAI(prompt)
                 const data = await response?.json()
                 const responseJson :RiskProps = data
-                console.log('Resposta da analise: ', responseJson)
+                // console.log('Resposta da analise: ', responseJson)
 
                 if(response?.ok) {
                     responseJson.consequencias.map((consequencia) => {
