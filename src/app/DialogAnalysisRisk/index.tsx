@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CircleAlert, CircleCheckBig, ImageOff, MessageSquare, Plus, Trash2 } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { RiskProps } from "../CardRiskAnalysisAI/_components/card-analysis";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import AlertNotification from "@/components/AlertNotification";
 import { GenerateAI } from "@/lib/generate-ai";
@@ -15,10 +14,9 @@ import { uuid } from 'uuidv4'
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { SystemContext } from "@/lib/context/SystemContext";
-import { twMerge } from "tailwind-merge";
-import { tabelaDeRiscosSimplificada } from "@/lib/tabela-de-riscos";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import CustomSelect from "@/components/CustomSelect";
+import { ListRisks, RiskProps } from "@/lib/types";
 
 interface DialogAnalysisRiskProps {
     onAddRisk :(risk :RiskProps)=>void
@@ -27,8 +25,6 @@ interface DialogAnalysisRiskProps {
 export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskProps) {
 
     const [prompt, setPrompt] = useState<string>('')
-    const [formEditable, setFormEditable] = useState(false)
-    const [risk, setRisk] = useState<RiskProps>()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
     const [isFirstUpdateScrollArea, setIsFirstUpdateScrollArea] = useState(true)
@@ -39,11 +35,28 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
     const [ isInvalidatedFilling, setIsInvalidatedFilling ] = useState(false)
 
     const { 
-        validateCompletionOfConsequencesOrRecommendedActions, 
-        buscarRiscoPorCor, 
         validateCompletionOfConsequences,
-        validateCompletionOfRecommendedActions
+        validateCompletionOfRecommendedActions,
+        risk, setRisk,
+        formEditable, setFormEditable,
+        listRisks, setListRisks
     } = useContext(SystemContext)
+
+    function handleSaveChanges(newRisk :RiskProps) {
+        handleClearRisk()
+        handleResetUpdateStates()
+        setFormEditable(false)
+
+        setListRisks(prevRisks => {
+            if(Array.isArray(prevRisks)) {
+                return prevRisks.map((item)=> {
+                    return item.risco === newRisk.risco ? newRisk : item
+                })
+            }
+            console.error('índice inválido ou lista de riscos está vazia.')
+            return prevRisks
+        })
+    }
 
     function handleLinkImages() {
         document.getElementById('buttonAnalysis')?.click()
@@ -86,7 +99,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
         }, 100);
     }
 
-    function handleClearCode() {
+    function handleClearRisk() {
         setRisk(undefined)
     }
 
@@ -252,11 +265,7 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
 
     function handleSaveRisk() {
         if(risk) {
-            const codeWithUppercaseRisco = {
-                ...risk,
-                risco: risk.risco.toUpperCase()
-            }
-            onAddRisk(codeWithUppercaseRisco)  
+            onAddRisk(risk)  
             handleResetUpdateStates()     
         }else {
             console.log('Algo deu errado! Por favor tente novamente.')
@@ -278,16 +287,18 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
     function handleSelectImage() {
         const img = document.getElementById(`imageInput`)
         
-        const listener = function(event){
-            const file = event.target?.files[0]
-
-            convertToBase64(file)
-            .then(base64String => {
-                handleAddImage(base64String as string)        
-            })
-            .catch(error => {
-                console.error('Erro ao converter a imagem: ', error)
-            })
+        const listener = function(event :Event){
+            const input = event.target as HTMLInputElement
+            if(input.files && input.files.length) {
+                const file = input.files[0]
+                convertToBase64(file)
+                .then(base64String => {
+                    handleAddImage(base64String as string)        
+                })
+                .catch(error => {
+                    console.error('Erro ao converter a imagem: ', error)
+                })
+            }
         }
 
         if(img) {
@@ -557,23 +568,12 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                                     <div key={consequencia.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
 
                                         <TooltipProvider>
-                                            <Tooltip>
-                                                <CustomSelect 
-                                                    id={`COLORGROUPRISCID${consequencia.id}`}
-                                                    handleColorGroupConsequence={handleColorGroupConsequenceChange} 
-                                                    indexConsequence={indexConsequencia}
-                                                    valorSelecionado={consequencia.corDoGrupoDeRisco}
-                                                />
-                                                
-                                                <TooltipContent className={`
-                                                    font-bold
-                                                    ${consequencia.corDoGrupoDeRisco === 'verde' ? 'bg-green-700' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'vermelho' ? 'bg-red-super' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'laranja' ? 'bg-orange-800' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'amarelo' ? 'bg-yellow-400' : ''}
-                                                    ${consequencia.corDoGrupoDeRisco === 'azul' ? 'bg-blue-700' : ''}
-                                                `}>{buscarRiscoPorCor(consequencia.corDoGrupoDeRisco)?.tipo}</TooltipContent>
-                                            </Tooltip>
+                                            <CustomSelect 
+                                                id={`COLORGROUPRISCID${consequencia.id}`}
+                                                handleColorGroupConsequence={handleColorGroupConsequenceChange} 
+                                                indexConsequence={indexConsequencia}
+                                                valorSelecionado={consequencia.corDoGrupoDeRisco}
+                                            />
                                         </TooltipProvider>
                                         
                                         <Separator orientation='vertical' className="self-center w-[0.5px] h-7 bg-gray-300" />
@@ -649,66 +649,77 @@ export default function DialogAnalysisRisk( { onAddRisk } :DialogAnalysisRiskPro
                         <Button 
                             className="w-fit bg-zinc-700 hover:bg-zinc-500"
                             onClick={()=> {
-                                handleClearCode(); 
+                                handleClearRisk(); 
                                 handleClearPrompt(); 
                                 handleResetUpdateStates();
+                                setFormEditable(false)
                             }}
                         >
                             Cancelar
                         </Button>
 
-                        <Button
-                            className="w-fit bg-green-800 hover:bg-green-600"
-                            id="buttonSave"
-                            onClick={()=>{ 
-                                        if(validateCompletionOfConsequences(risk.consequencias)?.status && validateCompletionOfRecommendedActions(risk.acoes)?.status) {
-                                            handleSaveRisk(); 
-                                            handleClearPrompt(); 
-                                            handleClearCode()
-                                        } else {
+                        {
+                            formEditable
+                            ?
+                            <Button
+                                onClick={()=> {
+                                    handleSaveChanges(risk)
+                                }}
+                            >Salvar alterações</Button>
+                            :
+                            <Button
+                                className="w-fit bg-green-800 hover:bg-green-600"
+                                id="buttonSave"
+                                onClick={()=>{ 
+                                            if(validateCompletionOfConsequences(risk.consequencias)?.status && validateCompletionOfRecommendedActions(risk.acoes)?.status) {
+                                                handleSaveRisk(); 
+                                                handleClearPrompt(); 
+                                                handleClearRisk()
+                                            } else {
 
-                                            if(validateCompletionOfConsequences(risk.consequencias).emptyItemsList.length > 0) {
-                                                validateCompletionOfConsequences(risk.consequencias).emptyItemsList.reverse().map(itemList => {
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
-                                                    document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('rounded-md')
-                                                    document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-[1px]')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
-                                                    setTimeout(() => {
-                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')
-                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.remove('border-[1px]')        
-                                                    }, 5000);
-                                                })
+                                                if(validateCompletionOfConsequences(risk.consequencias).emptyItemsList.length > 0) {
+                                                    validateCompletionOfConsequences(risk.consequencias).emptyItemsList.reverse().map(itemList => {
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
+                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('rounded-md')
+                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-red-400')
+                                                        document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.add('border-[1px]')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                                        setTimeout(() => {
+                                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')
+                                                            document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.remove('border-red-400')
+                                                            document.getElementById(`COLORGROUPRISCID${itemList.id}`)?.classList.remove('border-[1px]')        
+                                                        }, 5000);
+                                                    })
+                                                }
+
+                                                if(validateCompletionOfRecommendedActions(risk.acoes).emptyItemsList.length > 0) {
+                                                    validateCompletionOfRecommendedActions(risk.acoes).emptyItemsList.reverse().map(itemList => {
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
+                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
+                                                        setTimeout(() => {
+                                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
+                                                            document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')    
+                                                        }, 5000);
+                                                    })
+                                                }
+
+                                                setIsInvalidatedFilling(true)
+
+                                                setTimeout(() => {
+                                                    setIsInvalidatedFilling(false)
+                                                }, 3000);
+                                                console.log('Erro ao adicionar o risco')
                                             }
-
-                                            if(validateCompletionOfRecommendedActions(risk.acoes).emptyItemsList.length > 0) {
-                                                validateCompletionOfRecommendedActions(risk.acoes).emptyItemsList.reverse().map(itemList => {
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('rounded-sm')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-red-400')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.add('border-[1px]')
-                                                    document.getElementById(`TEXTAREAID${itemList.id}`)?.focus()
-                                                    setTimeout(() => {
-                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-red-400')
-                                                        document.getElementById(`TEXTAREAID${itemList.id}`)?.classList.remove('border-[1px]')    
-                                                    }, 5000);
-                                                })
-                                            }
-
-                                            setIsInvalidatedFilling(true)
-
-                                            setTimeout(() => {
-                                                setIsInvalidatedFilling(false)
-                                            }, 3000);
-                                            console.log('Erro ao adicionar o risco')
-                                        }
-                                    }}
-                        >
-                            Adicionar ao relatório
-                        </Button>
+                                        }}
+                            >
+                                Adicionar ao relatório
+                            </Button>
+                        }
                     </div>
                     {
                         isInvalidatedFilling && <AlertNotification text="Preencha todos os campos!" />

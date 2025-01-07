@@ -1,19 +1,13 @@
 'use client'
 
-import { objActionList, objConsequenceList, objList } from "@/app/CardRiskAnalysisAI/_components/card-analysis";
-import { createContext, ReactNode, useState } from "react";
-import { InformacoesDoGrupoDeRisco, Risco, tabelaDeRiscos, TabelaDeRiscos, TabelaDeRiscosCompleta, TabelaDeRiscosCompletaProps, tabelaDeRiscosSimplificada } from "../tabela-de-riscos";
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { InformacoesDoGrupoDeRisco, Risco, TabelaDeRiscos, TabelaDeRiscosCompleta, TabelaDeRiscosCompletaProps, tabelaDeRiscosSimplificada } from "../tabela-de-riscos";
+import { inspectionInformationsProps, ListRisks, objActionList, objConsequenceList, objList, RiskProps } from "../types";
+import { uuid } from "uuidv4";
 
-export const SystemContext = createContext({})
-
-interface SystemContextProps {
+interface SystemContextPropsChildren {
     children :ReactNode
 }
-
-type validateCompletionOfConsequencesOrRecommendedActionsResponse = {
-    status :boolean
-    emptyItemsList :objList[]
-} 
 
 type validateCompletionOfConsequencesResponse = {
     status :boolean
@@ -26,13 +20,44 @@ type validateCompletionOfRecommendedActionsResponse = {
     emptyItemsList :objActionList[]
 }
 
-export function SystemProvider({ children } :SystemContextProps) {
+interface SystemContextProps {
+    // children :ReactNode
+    risk :RiskProps | undefined
+    setRisk :Dispatch<SetStateAction<RiskProps | undefined>>
+    formEditable :boolean
+    setFormEditable :Dispatch<SetStateAction<boolean>>
+    uploadedFile :object | undefined
+    setUploadedFile :Dispatch<SetStateAction<undefined>>
+    buscarRiscoPorCor :(cor: keyof TabelaDeRiscos)=> Risco | undefined
+    buscarRiscoPorTipo :(tipo: keyof TabelaDeRiscosCompletaProps)=> InformacoesDoGrupoDeRisco | undefined
+    validateCompletionOfConsequences :(listOfConsequences :objConsequenceList[])=> validateCompletionOfConsequencesResponse
+    validateCompletionOfRecommendedActions :(listOfRecommendedActions :objActionList[]) => validateCompletionOfRecommendedActionsResponse
+    listRisks :ListRisks
+    setListRisks :Dispatch<SetStateAction<ListRisks>>
+    inspectionInformations :inspectionInformationsProps | undefined
+    setInspectionInformations :Dispatch<SetStateAction<inspectionInformationsProps | undefined>>
+    handleSaveRisk :(risk :RiskProps)=> void
+    handleChangeRisco :(indexRisk :number, newValue :string)=> void
+    handleRemoveRiskOfList :(index :number)=> void
+    handleDeleteImageOfListRiscks :(indexRisk :number, indexImage :number)=> void
+    handleAddImageOnListRisks :(indexRisk :number, image :unknown)=> void
+    handleDeleteConsequencia :(indexRisk :number, indexConsequencia :number)=> void
+    handleAddConsequencia :(indexRisk :number)    => void
+    handleChangeConsequencia :(indexRisk :number, indexConsequencia :number, newValue :string)=> void
+    handleDeleteAcaoRecomendada:(indexRisk :number, indexAcaoRecomendada :number)=> void
+    handleAddAcaoRecomendada :(indexRisk :number)=> void
+    handleChangeAcaoRecomendada :(indexRisk :number, indexAcaoRecomendada :number, newValue :string)=> void
+}
 
-    const [ uploadedFile, setUploadedFile ] = useState(null)
-    const validateResponse :validateCompletionOfConsequencesOrRecommendedActionsResponse = {
-        status: false,
-        emptyItemsList: []
-    }
+export const SystemContext = createContext({} as SystemContextProps)
+
+export function SystemProvider({ children } :SystemContextPropsChildren) {
+
+    const [ uploadedFile, setUploadedFile ] = useState()
+    const [ listRisks, setListRisks ] = useState<ListRisks>([])     
+    const [ risk, setRisk ] = useState<RiskProps>()
+    const [formEditable, setFormEditable] = useState(false)
+    const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformationsProps>()
 
     const validateConsequencesResponse :validateCompletionOfConsequencesResponse = {
         status: false,
@@ -45,34 +70,10 @@ export function SystemProvider({ children } :SystemContextProps) {
         emptyItemsList: []
     }
 
-    function validateCompletionOfConsequencesOrRecommendedActions(listOfConsequencesOrRecommendedActions :objList[]) {
-        const emptyItemsList :objList[] = []
-        listOfConsequencesOrRecommendedActions.forEach(itemList => {
-            if(itemList.value.length === 0) {
-                emptyItemsList.push(itemList)
-            }
-        })
-
-        if(emptyItemsList.length !== 0) {
-            validateResponse.status = false
-            validateResponse.emptyItemsList = emptyItemsList
-            
-            return validateResponse
-        }
-
-        validateResponse.status = true
-        validateResponse.emptyItemsList = emptyItemsList
-
-        return validateResponse
-    }
-
     function validateCompletionOfConsequences(listOfConsequences :objConsequenceList[]) {
         const emptyItemsList :objConsequenceList[] = []
         listOfConsequences.forEach(itemList => {
-            if(itemList.value.length === 0) {
-                emptyItemsList.push(itemList)
-            }
-            if(itemList.corDoGrupoDeRisco.length === 0) {
+            if(itemList.value.length === 0 || itemList.corDoGrupoDeRisco.length === 0) {
                 emptyItemsList.push(itemList)
             }
         })
@@ -126,16 +127,122 @@ export function SystemProvider({ children } :SystemContextProps) {
         return undefined
     }
 
+    function handleSaveRisk(risk :RiskProps) {
+        const newListRisks = [...listRisks]
+        newListRisks.push({
+            ...risk,
+            risco: risk.risco.toUpperCase()
+        })
+        setListRisks(newListRisks)
+    }
+
+    function handleChangeRisco(indexRisk :number, newValue :string) {
+        if(listRisks[indexRisk]) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].risco = newValue
+            setListRisks(updatedListRisks)
+        }
+    }
+
+    function handleRemoveRiskOfList(index :number) {
+        if(listRisks) {
+            const newListRisks = [...listRisks]
+            newListRisks.splice(index, 1)
+            setListRisks(newListRisks)
+         }
+    }
+
+    function handleDeleteImageOfListRiscks(indexRisk :number, indexImage :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].images) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].images.splice(indexImage, 1)
+            setListRisks(updatedListRisks)
+        }
+    }
+
+    function handleAddImageOnListRisks(indexRisk :number, image :unknown) {
+        if(listRisks[indexRisk]) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].images.push(image as string)
+            setListRisks(updatedListRisks)
+        }
+    }
+
+    function handleDeleteConsequencia(indexRisk :number, indexConsequencia :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length > 1) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].consequencias.splice(indexConsequencia, 1)
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Precisa haver pelo menos uma consequência para cada situação de risco.')
+        }
+    }
+
+    function handleAddConsequencia(indexRisk :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length < 5) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].consequencias.push({id: uuid(), value: '', corDoGrupoDeRisco: ''})
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Máximo de 5 consequências para cada situação de risco.')
+        }
+    }
+    
+    function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
+        if(listRisks[indexRisk]) {
+            const newListRisks = [...listRisks]
+            let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+
+            newListRisks[indexRisk].consequencias[indexConsequencia].value = updatedValue
+
+            setListRisks(newListRisks)
+        }
+    }
+
+    function handleDeleteAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number) {
+            if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
+                const updatedListRisks = [...listRisks]
+                updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1)
+                setListRisks(updatedListRisks)
+            } else {
+                console.log('Ação não permitida. Precisa haver pelo menos uma ação recomendada para cada situação de risco.')
+            }
+        }
+    
+        function handleAddAcaoRecomendada(indexRisk :number) {
+            if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length < 5) {
+                const updatedListRisks = [...listRisks]
+                updatedListRisks[indexRisk].acoes.push({id: uuid(), value: ''})
+                setListRisks(updatedListRisks)
+            } else {
+                console.log('Ação não permitida. Máximo de 5 ações recomendadas para cada situação de risco.')
+            }
+        }
+    
+        function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
+            if(listRisks[indexRisk]) {
+                const newListRisks = [...listRisks]
+                let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+    
+                newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = updatedValue
+                setListRisks(newListRisks)
+            }
+        }
+
     return(
         <SystemContext.Provider 
             value={{
-                uploadedFile, 
-                setUploadedFile, 
-                validateCompletionOfConsequencesOrRecommendedActions, 
-                buscarRiscoPorCor,
-                buscarRiscoPorTipo,
-                validateCompletionOfConsequences,
-                validateCompletionOfRecommendedActions
+                risk, setRisk,
+                formEditable, setFormEditable,
+                uploadedFile, setUploadedFile, 
+                buscarRiscoPorCor, buscarRiscoPorTipo,
+                validateCompletionOfConsequences, validateCompletionOfRecommendedActions,
+                listRisks, setListRisks,
+                inspectionInformations, setInspectionInformations,
+                handleSaveRisk, handleChangeRisco, handleRemoveRiskOfList,
+                handleDeleteImageOfListRiscks, handleAddImageOnListRisks,
+                handleDeleteConsequencia, handleAddConsequencia, handleChangeConsequencia,
+                handleDeleteAcaoRecomendada, handleAddAcaoRecomendada, handleChangeAcaoRecomendada
             }}
         >
             { children }

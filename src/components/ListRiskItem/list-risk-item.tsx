@@ -1,19 +1,23 @@
 import { Button } from "../ui/button"
 import { X } from "lucide-react"
 import { RiskProps } from "@/app/CardRiskAnalysisAI/_components/card-analysis"
-import { ReactNode, useEffect } from "react"
+import { ReactNode, useContext, useEffect } from "react"
 import { Tooltip, TooltipContent, TooltipProvider } from "../ui/tooltip"
 import { TooltipTrigger } from "@radix-ui/react-tooltip"
+import { SystemContext } from "@/lib/context/SystemContext"
 
 interface ListRiskItemProps {
     onRemoveRiskOfList :(index :number)=> void
     index :number
     item :RiskProps
-    children :ReactNode
+    children? :ReactNode
 }
 
 export default function ListRiskItem( { children, onRemoveRiskOfList, index, item } :ListRiskItemProps) {
     
+    // const {risk, setRisk,
+    //     formEditable, setFormEditable
+    // } = useContext(SystemContext)
 
     useEffect(()=> {
         const container = document.getElementById(`container${index}`)
@@ -36,6 +40,13 @@ export default function ListRiskItem( { children, onRemoveRiskOfList, index, ite
                         <div className="flex flex-row w-auto items-center gap-3">
                             
                             {children}
+
+                            {/* <Button 
+                                onClick={()=> {setRisk(item); setFormEditable(true)}} 
+                                className="max-w-[45px] h-fit px-6 bg-inherit hover:bg-red-400 text-black text-xs"
+                            >
+                                Alt
+                            </Button> */}
 
                             <Button 
                                 onClick={()=> onRemoveRiskOfList(index)} 

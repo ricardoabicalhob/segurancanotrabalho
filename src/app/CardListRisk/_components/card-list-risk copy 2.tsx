@@ -12,14 +12,26 @@ import ListRiskItem from "@/components/ListRiskItem/list-risk-item";
 import MyDialog from "@/components/MyDialog";
 import { SystemContext } from "@/lib/context/SystemContext";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { FileRIS, inspectionInformationsProps } from "@/lib/types";
+import { inspectionInformationsProps, ListRisks, RiskProps } from "@/lib/types";
 
 
 export interface CardListRiskProps {
+    listRisks :Array<RiskProps>
+    onLoadListRisks :(listRisks :ListRisks) => void
     inspectionInformations :inspectionInformationsProps
     onLoadInspectionInformations :(inspectionInformations :inspectionInformationsProps) => void
     statusReadyReport :boolean
     onReadyReport :() => void
+    onRemoveRiskOfList :(index :number)=> void
+    onChangeRisco :(indexRisk :number, newValue :string)=> void
+    onDeleteImage :(indexRisk :number, indexImage :number)=> void
+    onAddImage :(indexRisk :number, image :unknown)=> void
+    onDeleteConsequencia :(indexRisk :number, indexConsequencia :number)=> void
+    onAddConsequencia :(indexRisk :number)=> void
+    onDeleteAcaoRecomendada :(indexRisk :number, indexAcaoRecomendada :number)=> void
+    onAddAcaoRecomendada :(indexRisk :number)=> void
+    onChangeConsequencia :(indexRisk :number, indexConsequencia :number, newValue :string)=> void
+    onChangeAcaoRecomendada :(indexRisk :number, indexAcaoRecomendada :number, newValue :string)=> void
     checkFilling :()=> boolean
     setFormUnlocked :(value? :boolean)=> void
     formUnlocked :boolean
@@ -28,8 +40,20 @@ export interface CardListRiskProps {
 export default function CardListRisk({
     setFormUnlocked, 
     checkFilling, 
+    onLoadListRisks, 
     onLoadInspectionInformations, 
+    onDeleteImage, 
+    onAddImage, 
+    onChangeRisco, 
+    onDeleteConsequencia, 
+    onAddConsequencia, 
+    onChangeConsequencia, 
+    onDeleteAcaoRecomendada, 
+    onAddAcaoRecomendada, 
+    onChangeAcaoRecomendada, 
+    onRemoveRiskOfList, 
     formUnlocked, 
+    listRisks , 
     inspectionInformations, 
     statusReadyReport, 
     onReadyReport
@@ -39,39 +63,35 @@ export default function CardListRisk({
     const [isLoadingFile, setIsLoadingFile] = useState(false)
     const listRef = useRef<HTMLDivElement>(null)
 
-    const { uploadedFile, 
-        listRisks, setListRisks, handleRemoveRiskOfList } = useContext(SystemContext)
+    const { uploadedFile } = useContext(SystemContext)
 
     function handleSelectFile() {
         const fileSelected = document.getElementById('inputFileLoaded')
 
-        const listener = function(event :Event){
-            const input = event.target as HTMLInputElement
+        const listener = function(event){
+            const file = event.target?.files[0]
 
-            if(input.files && input.files.length) {
-                const file = input.files[0]
-                let reader = new FileReader()
-                reader.readAsText(file, 'utf8')
+            let reader = new FileReader()
+            reader.readAsText(file, 'utf8')
 
-                setIsLoadingFile(true)
+            setIsLoadingFile(true)
 
-                reader.onload = () => {
-                    try {
-                        const data = JSON.parse(reader.result as string)
-                        onLoadInspectionInformations(data?.inspectionInformations)
-                        setListRisks(data?.listRisks)
-                        setFormUnlocked(data?.checkFilling)
-                    }catch(error) {
-                        console.error('Erro ao ler o arquivo: ', error)
-                    }finally{
-                        setIsLoadingFile(false)
-                    }
-                }
-
-                reader.onerror = () => {
-                    console.error('Erro ao ler o arquivo.')
+            reader.onload = () => {
+                try {
+                    const data = JSON.parse(reader.result)
+                    onLoadInspectionInformations(data?.inspectionInformations)
+                    onLoadListRisks(data?.listRisks)
+                    setFormUnlocked(data?.checkFilling)
+                }catch(error) {
+                    console.error('Erro ao ler o arquivo: ', error)
+                }finally{
                     setIsLoadingFile(false)
                 }
+            }
+
+            reader.onerror = () => {
+                console.error('Erro ao ler o arquivo.')
+                setIsLoadingFile(false)
             }
         }
 
@@ -93,10 +113,9 @@ export default function CardListRisk({
 
     useEffect(()=> {
         if(uploadedFile) {
-            const dataUploadedFile = uploadedFile as FileRIS
-            onLoadInspectionInformations(dataUploadedFile?.inspectionInformations)
-            setListRisks(dataUploadedFile?.listRisks)
-            setFormUnlocked(dataUploadedFile?.checkFilling)
+            onLoadInspectionInformations(uploadedFile?.inspectionInformations)
+            onLoadListRisks(uploadedFile?.listRisks)
+            setFormUnlocked(uploadedFile?.checkFilling)
         }
     }, [])
 
@@ -119,12 +138,21 @@ export default function CardListRisk({
                                     key={index}
                                     index={index}
                                     item={item}
-                                    onRemoveRiskOfList={handleRemoveRiskOfList}
+                                    onRemoveRiskOfList={onRemoveRiskOfList}
                                 >
                                     <MyDialog
                                         indexRisk={index}
                                         itemRisk={item}
                                         isEditableRisk={isEditableRisk}
+                                        onChangeRisco={onChangeRisco}
+                                        onChangeConsequencia={onChangeConsequencia}
+                                        onChangeAcaoRecomendada={onChangeAcaoRecomendada}
+                                        onAddImage={onAddImage}
+                                        onAddConsequencia={onAddConsequencia}
+                                        onAddAcaoRecomendada={onAddAcaoRecomendada}
+                                        onDeleteImage={onDeleteImage}
+                                        onDeleteConsequencia={onDeleteConsequencia}
+                                        onDeleteAcaoRecomendada={onDeleteAcaoRecomendada}
                                         setIsEditableRisk={setIsEditableRisk}
                                     />
                                 </ListRiskItem>

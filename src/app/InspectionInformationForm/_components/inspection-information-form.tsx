@@ -98,7 +98,6 @@ export default function InspectionInformationForm({ onAddInspectionInformations,
     }, [readyReport, inspectionInformations])
 
     return(
-
         <Card className="flex flex-col justify-between mx-auto max-w-md h-full">
             <CardHeader>
                 <CardTitle className='text-lg'>Dados da Inspeção</CardTitle>

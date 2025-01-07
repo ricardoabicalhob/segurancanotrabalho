@@ -1,16 +1,16 @@
 'use client'
 
-import { RiskProps } from "./CardRiskAnalysisAI/_components/card-analysis";
-import InspectionInformationForm from "./InspectionInformationForm/_components/inspection-information-form";
-import CardListRisk from "./CardListRisk/_components/card-list-risk copy 2";
+import InspectionInformationForm from "../InspectionInformationForm/_components/inspection-information-form";
+import CardListRisk from "../CardListRisk/_components/card-list-risk copy 2"; 
 import { useEffect, useState } from "react";
 import { inspectionInformations } from "@/lib/pdf-generate";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Welcome from "@/components/Welcome";
 import { ExternalLink, Link } from "lucide-react";
-import DialogAnalysisRisk from "./DialogAnalysisRisk";
+import DialogAnalysisRisk from "../DialogAnalysisRisk"; 
 import { uuid } from "uuidv4";
+import { RiskProps } from "../CardRiskAnalysisAI/_components/card-analysis";
 
 export type ListRisks = Array<RiskProps>
 
@@ -21,6 +21,7 @@ export default function Home() {
     const [ readyReport, setReadyReport ] = useState(true)
     const [ isWelcome, setIsWelcome ] = useState(true)
     const [ formUnlocked, setFormUnlocked ] = useState(false)
+
     const router = useRouter()
 
     function handleCheckFilling() {
@@ -94,17 +95,19 @@ export default function Home() {
     function handleAddConsequencia(indexRisk :number) {
         if(listRisks[indexRisk] && listRisks[indexRisk].consequencias.length < 5) {
             const updatedListRisks = [...listRisks]
-            updatedListRisks[indexRisk].consequencias.push({id: uuid(), value: ''})
+            updatedListRisks[indexRisk].consequencias.push({id: uuid(), value: '', corDoGrupoDeRisco: ''})
             setListRisks(updatedListRisks)
         } else {
             console.log('Ação não permitida. Máximo de 5 consequências para cada situação de risco.')
         }
     }
-
+    
     function handleChangeConsequencia(indexRisk :number, indexConsequencia :number, newValue :string) {
         if(listRisks[indexRisk]) {
             const newListRisks = [...listRisks]
-            newListRisks[indexRisk].consequencias[indexConsequencia].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+            let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+
+            newListRisks[indexRisk].consequencias[indexConsequencia].value = updatedValue
 
             setListRisks(newListRisks)
         }
@@ -133,8 +136,9 @@ export default function Home() {
     function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
         if(listRisks[indexRisk]) {
             const newListRisks = [...listRisks]
-            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+            let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
 
+            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = updatedValue
             setListRisks(newListRisks)
         }
     }
@@ -161,19 +165,19 @@ export default function Home() {
         handleCheckFilling()
     }, [listRisks.length, formUnlocked])
 
-
     return(
         <div className="flex flex-col w-screen h-[100vh] justify-between">
             
             <nav className={`bg-gray-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
-                <Image className="self-center" alt="" src={require('../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
-                <p className="self-center justify-self-start w-full">{`${readyReport ? 'EDITOR PARA' : ''} RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO`}</p>
+                <Image className="self-center" alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
+                {/* <p className="self-center justify-self-start w-full">{`${readyReport ? 'EDITOR PARA' : ''} RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO`}</p> */}
+                <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
             </nav>
 
             <main className={`grid grid-cols-1 sm:grid-cols-2 h-auto ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
-                {
+                {/* {
                     isWelcome && <Welcome onWelcome={handleWelcome} />
-                }
+                } */}
                 
                 {
                     readyReport &&  <section className="">
@@ -193,10 +197,7 @@ export default function Home() {
                                     </section>
                 } */}
 
-                <section>
-                    {
-                        // readyReport && <p className="text-green-900 mx-auto max-w-md text-3xl font-bold font-sans mb-2">Final</p>
-                    }
+                <section className="sm:col-span-2 lg:col-span-1">
                     <CardListRisk 
                         onLoadListRisks={setListRisks}
                         onLoadInspectionInformations={setInspectionInformations}

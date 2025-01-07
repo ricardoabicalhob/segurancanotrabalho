@@ -40,8 +40,8 @@ export default function CustomSelect({ handleColorGroupConsequence, indexConsequ
                     ${cor === 'azul' ? 'bg-blue-700' : ''}
                     ${cor === 'cinza' ? 'bg-gray-100' : ''}
                 `}>
-                <span className="font-bold text-sm">{buscarRiscoPorCor(cor).tipo + ': '}</span> 
-                {buscarRiscoPorTipo(buscarRiscoPorCor(cor).tipo).riscos.map((risco, index)=> {
+                <span className="font-bold text-sm">{buscarRiscoPorCor(cor)?.tipo + ': '}</span> 
+                {buscarRiscoPorTipo(buscarRiscoPorCor(cor).tipo)?.riscos.map((risco, index)=> {
                     return index === buscarRiscoPorTipo(buscarRiscoPorCor(cor).tipo).riscos.length - 1 ? risco + '.' : risco + ', '
                 })}
             </TooltipContent>
@@ -50,7 +50,7 @@ export default function CustomSelect({ handleColorGroupConsequence, indexConsequ
 
     return(
 
-        <div {...props} className="flex h-full w-fit items-center">
+        <div {...props} className="flex w-fit items-center">
             <Select defaultValue={valorSelecionado? valorSelecionado : ''} onValueChange={(value)=> handleColorGroupConsequence(indexConsequence, value)}>
                 <SelectTrigger>
                     <SelectValue placeholder='Cor'/>

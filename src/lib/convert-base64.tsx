@@ -1,7 +1,5 @@
 export default function convertToBase64(file :Blob) {
 
-
-
     return new Promise((resolve, reject)=> {
         const reader = new FileReader()
         
