@@ -83,7 +83,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                                 id={`CLASSIFICACAORISCO${consequencia.id}`}
                                                 key={`grupoRisco${consequencia.id}`}
                                                 className={`
-                                                    w-4 h-4 mt-[0.5px] rounded-full 
+                                                    min-w-4 min-h-4 max-w-4 max-h-4 mt-[0.5px] rounded-full 
                                                     ${consequencia.corDoGrupoDeRisco === 'verde' ? 'bg-green-700' : ''}
                                                     ${consequencia.corDoGrupoDeRisco === 'vermelho' ? 'bg-red-super' : ''}
                                                     ${consequencia.corDoGrupoDeRisco === 'laranja' ? 'bg-orange-800' : ''}
