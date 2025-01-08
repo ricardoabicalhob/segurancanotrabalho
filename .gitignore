@@ -46,6 +46,8 @@ next-env.d.ts
 # componentes do projeto
 /src/components/MyCustomList
 /src/components/Welcome
+/src/components/Container
+/src/components/DadosDaInspecao
 
 # arquivos do projeto
 /src/app/page-home-1.tsx;

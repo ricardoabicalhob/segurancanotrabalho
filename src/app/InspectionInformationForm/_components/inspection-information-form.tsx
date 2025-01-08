@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { inspectionInformations } from '@/lib/pdf-generate';
 import { useEffect, useState } from 'react';
 import { Check, Edit } from 'lucide-react';
-import CustomInput from '@/components/CustomInput';
 import { MyCustomInput } from '@/components/MyCustomInput';
 
 export const formInspectionInformationSchema = z.object({

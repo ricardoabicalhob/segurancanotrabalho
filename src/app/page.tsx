@@ -18,6 +18,7 @@ export default function Home() {
 
     const [ isLoadingFile, setIsLoadingFile ] = useState(false)
     const [ isLoadingPage, setIsLoadingPage ] = useState(false)
+    const [ isLoadingEditor, setIsLoadingEditor ] = useState(false)
     const { setUploadedFile, uploadedFile } = useContext(SystemContext)
 
     function handleSelectFile() {
@@ -52,6 +53,10 @@ export default function Home() {
         if(fileSelected) {
             fileSelected.addEventListener('change', listener, {once: true})
         }
+    }
+
+    function handleIsLoadingEditor() {
+        setIsLoadingEditor(true)
     }
 
     useEffect(() => {
@@ -93,7 +98,7 @@ export default function Home() {
                 <div className="flex flex-col md:flex-row self-center gap-4 mb-4">
                         <Button 
                             className="bg-green-800 hover:bg-green-600 w-full md:w-fit"
-                            onClick={()=> router.push('/editor')}
+                            onClick={()=> {router.push('/editor'); handleIsLoadingEditor()}}
                         >
                             Começar
                         </Button>
@@ -164,7 +169,7 @@ export default function Home() {
                 </div>
 
                 {
-                    isLoadingPage && <LoadingIndicator text="Carregando o relatório..." />
+                    (isLoadingPage || isLoadingEditor) && <LoadingIndicator text={isLoadingEditor? 'Abrindo o editor...' : 'Carregando o relatório...'} />
                 }
                 
             </main>
