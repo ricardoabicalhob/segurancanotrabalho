@@ -48,6 +48,7 @@ next-env.d.ts
 /src/components/Welcome
 /src/components/Container
 /src/components/DadosDaInspecao
+/src/components/DadosDaAnaliseDeRisco
 
 # arquivos do projeto
 /src/app/page-home-1.tsx;

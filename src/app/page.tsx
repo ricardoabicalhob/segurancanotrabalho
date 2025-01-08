@@ -169,7 +169,7 @@ export default function Home() {
                 </div>
 
                 {
-                    (isLoadingPage || isLoadingEditor) && <LoadingIndicator text={isLoadingEditor? 'Abrindo o editor...' : 'Carregando o relatório...'} />
+                    (isLoadingPage || isLoadingEditor) && <LoadingIndicator text={isLoadingEditor? 'Inicializando o editor...' : 'Carregando o relatório...'} />
                 }
                 
             </main>
