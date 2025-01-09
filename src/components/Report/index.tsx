@@ -4,8 +4,10 @@ import { Separator } from "../ui/separator"
 import Image from "next/image"
 import { ListRisks } from "@/app/page-home-1"
 import { inspectionInformations } from "@/lib/pdf-generate"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { SystemContext } from "@/lib/context/SystemContext"
+import MyChart from "../MyChart"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 
 interface ReportProps {
     listRisks :ListRisks
@@ -15,11 +17,15 @@ interface ReportProps {
 
 export default function Report( { listRisks, inspectionInformations, onReadyReport } :ReportProps ) {
 
-    const { buscarRiscoPorCor } = useContext(SystemContext)
+    const { buscarRiscoPorCor, handleSummarizeByRiskGroup, dataChart } = useContext(SystemContext)
    
     function handlePrint() {
         window.print()
     }
+
+    useEffect(()=> {
+        handleSummarizeByRiskGroup()
+    }, [])
 
     return(
         <div key={'containerPrincipal'} className='w-svw h-svh flex flex-col items-center'>
@@ -94,7 +100,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                             <span
                                                 className="font-bold"
                                             >
-                                                {buscarRiscoPorCor(consequencia.corDoGrupoDeRisco).tipo}:
+                                                {buscarRiscoPorCor(consequencia.corDoGrupoDeRisco)?.tipo}:
                                             </span>
                                             {consequencia.value}
                                         </p>
@@ -121,11 +127,41 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                     
                 </div>
             }
+
+            <p className="w-[910px] font-bold mb-3">RESUMO GRÁFICO</p>
+            <div className="flex w-[910px] justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md">
+                <div className="flex w-[30%]">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[50%] text-center">Tipo de risco</TableHead>
+                                <TableHead className="w-[50%] text-center">Quantidade</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {
+                                dataChart?.map((item, index)=> (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">{item.tipo}</TableCell>
+                                        <TableCell className="text-right">{item.quantidade}</TableCell>
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
+
+                <MyChart data={dataChart} />
+            </div>
+
+            <Separator className="w-[910px] my-4 h-1"/>
+
             <div className="border-t-2 px-24 py-3 mt-32 border-gray-500">
                 <p className="text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
                 <p className="text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
                 <p className="text-center antialiased font-bold">Responsável pela inspeção</p>
             </div>
+
             <div className=" flex flex-row gap-2 py-10">
                 <Button id='voltar' className={`bg-green-800 hover:bg-green-600 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
                 <Button id='imprimir' className={`bg-zinc-700 hover:bg-zinc-500 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } ><Printer /> Imprimir</Button>

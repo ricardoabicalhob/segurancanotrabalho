@@ -140,8 +140,8 @@ export default function MyDialog({
              modal={true}
         >
             <DialogTrigger>
-                <Button variant='outline' onClick={()=> setStateScrollBar(!stateScrollBar)} className="bg-inherit hover:bg-lime-400">
-                    <Edit />
+                <Button variant='outline' onClick={()=> setStateScrollBar(!stateScrollBar)} className="bg-inherit w-8 h-8 hover:bg-lime-400">
+                    <Edit className="w-4 h-4"/>
                 </Button>   
             </DialogTrigger>
             <DialogContent 

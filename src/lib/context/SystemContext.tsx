@@ -47,6 +47,9 @@ interface SystemContextProps {
     handleDeleteAcaoRecomendada:(indexRisk :number, indexAcaoRecomendada :number)=> void
     handleAddAcaoRecomendada :(indexRisk :number)=> void
     handleChangeAcaoRecomendada :(indexRisk :number, indexAcaoRecomendada :number, newValue :string)=> void
+    handleSummarizeByRiskGroup :()=> void
+    dataChart :{ tipo: string; quantidade: number}[]
+    setDataChart :Dispatch<SetStateAction<{ tipo: string; quantidade: number}[]>>
 }
 
 export const SystemContext = createContext({} as SystemContextProps)
@@ -58,6 +61,7 @@ export function SystemProvider({ children } :SystemContextPropsChildren) {
     const [ risk, setRisk ] = useState<RiskProps>()
     const [formEditable, setFormEditable] = useState(false)
     const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformationsProps>()
+    const [ dataChart, setDataChart ] = useState<{ tipo: string; quantidade: number}[]>([])
 
     const validateConsequencesResponse :validateCompletionOfConsequencesResponse = {
         status: false,
@@ -200,34 +204,88 @@ export function SystemProvider({ children } :SystemContextPropsChildren) {
     }
 
     function handleDeleteAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number) {
-            if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
-                const updatedListRisks = [...listRisks]
-                updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1)
-                setListRisks(updatedListRisks)
-            } else {
-                console.log('Ação não permitida. Precisa haver pelo menos uma ação recomendada para cada situação de risco.')
-            }
+        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length > 1) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].acoes.splice(indexAcaoRecomendada, 1)
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Precisa haver pelo menos uma ação recomendada para cada situação de risco.')
         }
-    
-        function handleAddAcaoRecomendada(indexRisk :number) {
-            if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length < 5) {
-                const updatedListRisks = [...listRisks]
-                updatedListRisks[indexRisk].acoes.push({id: uuid(), value: ''})
-                setListRisks(updatedListRisks)
-            } else {
-                console.log('Ação não permitida. Máximo de 5 ações recomendadas para cada situação de risco.')
-            }
+    }
+
+    function handleAddAcaoRecomendada(indexRisk :number) {
+        if(listRisks[indexRisk] && listRisks[indexRisk].acoes.length < 5) {
+            const updatedListRisks = [...listRisks]
+            updatedListRisks[indexRisk].acoes.push({id: uuid(), value: ''})
+            setListRisks(updatedListRisks)
+        } else {
+            console.log('Ação não permitida. Máximo de 5 ações recomendadas para cada situação de risco.')
         }
-    
-        function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
-            if(listRisks[indexRisk]) {
-                const newListRisks = [...listRisks]
-                let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
-    
-                newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = updatedValue
-                setListRisks(newListRisks)
-            }
+    }
+
+    function handleChangeAcaoRecomendada(indexRisk :number, indexAcaoRecomendada :number, newValue :string) {
+        if(listRisks[indexRisk]) {
+            const newListRisks = [...listRisks]
+            let updatedValue = newValue.charAt(0).toUpperCase() + newValue.slice(1)
+
+            newListRisks[indexRisk].acoes[indexAcaoRecomendada].value = updatedValue
+            setListRisks(newListRisks)
         }
+    }
+
+    function handleSummarizeByRiskGroup() {
+        const data = [
+            {tipo: 'Físico', quantidade: 0},
+            {tipo: 'Químico', quantidade: 0},
+            {tipo: 'Biológico', quantidade: 0},
+            {tipo: 'Ergonômico', quantidade: 0},
+            {tipo: 'Acidente', quantidade: 0},
+        ]
+        
+        if(listRisks) {
+            let riscosFisicos = 0
+            let riscosQuimicos = 0
+            let riscosBiologicos = 0
+            let riscosErgonomicos = 0
+            let riscosAcidentes = 0
+            let totalRiscos = 0
+
+            listRisks.map((risk, indexRisk)=> {
+                risk.consequencias.map((consequencia, indexConsequencia)=> {
+                    switch(consequencia.corDoGrupoDeRisco){
+                        case 'verde': 
+                            riscosFisicos += 1;
+                            break;
+                        case 'vermelho': 
+                            riscosQuimicos += 1;
+                            break;
+                        case 'laranja': 
+                            riscosBiologicos += 1;
+                            break;
+                        case 'amarelo': 
+                            riscosErgonomicos += 1;
+                            break;
+                        case 'azul': 
+                            riscosAcidentes += 1;
+                            break;
+                        default: 
+                            console.error('Cor de grupo de risco inválida:', consequencia.corDoGrupoDeRisco);
+                            break;
+                    }
+
+                    totalRiscos += 1
+                })
+            })
+
+            data[0].quantidade = riscosFisicos
+            data[1].quantidade = riscosQuimicos
+            data[2].quantidade = riscosBiologicos
+            data[3].quantidade = riscosErgonomicos
+            data[4].quantidade = riscosAcidentes
+        }
+
+        setDataChart(data)
+    }
 
     return(
         <SystemContext.Provider 
@@ -242,7 +300,8 @@ export function SystemProvider({ children } :SystemContextPropsChildren) {
                 handleSaveRisk, handleChangeRisco, handleRemoveRiskOfList,
                 handleDeleteImageOfListRiscks, handleAddImageOnListRisks,
                 handleDeleteConsequencia, handleAddConsequencia, handleChangeConsequencia,
-                handleDeleteAcaoRecomendada, handleAddAcaoRecomendada, handleChangeAcaoRecomendada
+                handleDeleteAcaoRecomendada, handleAddAcaoRecomendada, handleChangeAcaoRecomendada,
+                handleSummarizeByRiskGroup, dataChart, setDataChart
             }}
         >
             { children }

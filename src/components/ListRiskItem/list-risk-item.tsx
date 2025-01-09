@@ -34,7 +34,7 @@ export default function ListRiskItem( { children, onRemoveRiskOfList, index, ite
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <div id={`container${index}`} className={`flex flex-row transition duration-500 ease-in-out gap-3 justify-between items-center bg-green-100 hover:bg-gray-100 border-green-600 border-[1px] p-2 rounded-md`}>
+                    <div id={`container${index}`} className={`flex flex-row max-w-full h-fit transition duration-500 ease-in-out gap-3 justify-between items-center bg-green-100 hover:bg-gray-100 border-green-600 border-[1px] px-1 py-1 rounded-md`}>
                         <p className="font-medium text-left whitespace-nowrap overflow-hidden overflow-ellipsis max-w-[90%] break-words text-base md:text-sm select-none">{`${index + 1}. ${item.risco}`}</p>
 
                         <div className="flex flex-row w-auto items-center gap-3">
@@ -50,9 +50,9 @@ export default function ListRiskItem( { children, onRemoveRiskOfList, index, ite
 
                             <Button 
                                 onClick={()=> onRemoveRiskOfList(index)} 
-                                className="max-w-[45px] h-fit px-6 bg-inherit hover:bg-red-400 text-black text-xs"
+                                className="max-w-6 max-h-[30px] min-w-6 min-h-[30px] bg-inherit hover:bg-red-400 text-black text-xs rounded-sm"
                             >
-                                <X />
+                                <X className="w-4 h-4"/>
                             </Button>
                         </div>
                     </div>

@@ -13,7 +13,7 @@ export interface TabelaDeRiscos {
 
 export const tabelaDeRiscosSimplificada :TabelaDeRiscos = {
     verde: {cor: 'bg-green-700', tipo: 'Físico'},
-    vermelho: {cor: 'bg-red-500', tipo: 'Químico'},
+    vermelho: {cor: 'bg-red-super', tipo: 'Químico'},
     laranja: {cor: 'bg-orange-400', tipo: 'Biológico'},
     amarelo: {cor: 'bg-yellow-400', tipo: 'Ergonômico'},
     azul: {cor: 'bg-blue-700', tipo: 'Acidente'},
