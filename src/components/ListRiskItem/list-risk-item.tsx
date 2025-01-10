@@ -14,10 +14,6 @@ interface ListRiskItemProps {
 }
 
 export default function ListRiskItem( { children, onRemoveRiskOfList, index, item } :ListRiskItemProps) {
-    
-    // const {risk, setRisk,
-    //     formEditable, setFormEditable
-    // } = useContext(SystemContext)
 
     useEffect(()=> {
         const container = document.getElementById(`container${index}`)

@@ -109,7 +109,7 @@ export default function CardListRisk({
                 <div 
                     ref={listRef}
                     id="scrollAreaListaDeRiscos" 
-                    className="flex flex-col flex-1 max-h-[51vh] w-[100%] mb-6 pt-3 mt-14 border-[1px] rounded-md overflow-y-auto" 
+                    className="flex flex-col flex-1 max-h-[56vh] w-[100%] mb-6 pt-3 mt-14 border-[1px] rounded-md overflow-y-auto" 
                 >
                     {
                         listRisks.map((item, index)=>(
