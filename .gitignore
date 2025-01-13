@@ -39,6 +39,7 @@ next-env.d.ts
 # /src/app/testelayout
 # /src/app/CardRiskAnalysisAI
 # /src/app/testerelatorio
+/src/app/api/generate-pdf
 
 # componentes do projeto
 # /src/components/MyCustomList
