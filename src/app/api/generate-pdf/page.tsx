@@ -15,8 +15,8 @@ export default async function GeneratePdf(req, res :NextApiResponse) {
         const browser = await puppeteer.launch()
         const page = await browser.newPage()
 
-        // await page.goto('http://ricardoabicalhob.github.io/safety-inspection-report/inscritos')
-        await page.goto('http://localhost:3000/relatorio')
+        await page.goto('http://ricardoabicalhob.github.io/safety-inspection-report/inscritos')
+        // await page.goto('http://localhost:3000/relatorio')
         
 
         const pdfBuffer = await page.pdf({
