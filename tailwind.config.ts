@@ -52,7 +52,12 @@ const config: Config = {
   			},
 			red: {
 				super: '#FF0000'
-			}
+			},
+			customgray: {
+				1000: '#525659',
+				1100: '#323639'
+			},
+
   		},
 
   		borderRadius: {
@@ -81,7 +86,11 @@ const config: Config = {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
-  		}
+  		},
+		boxShadow: {
+			'custom-dark': '0 4px 5px 2px rgba(0, 0, 0.05), 0 1px 6px 1px rgba(255, 255, 255, 1)',
+			'custom-white': '4px 5px 2px rgba(255, 255, 255.1), 0 1px 6px 1px rgba(0, 0, 0.05)',
+		}
   	},
   },
   plugins: [require("tailwindcss-animate")],

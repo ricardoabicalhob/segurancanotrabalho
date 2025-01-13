@@ -188,7 +188,7 @@ export default function CardListRisk({
                             <TooltipTrigger asChild>
                                 <Button
                                     onClick={()=> DownloadFile(checkFilling, inspectionInformations, listRisks)}
-                                    disabled={!checkFilling()} 
+                                    disabled={!checkFilling()}  
                                     className="bg-zinc-700 hover:bg-zinc-500 w-full text-base md:text-sm select-none"     
                                 >
                                     <FileDown />
@@ -234,7 +234,7 @@ export default function CardListRisk({
         (
             <Report 
                 listRisks={listRisks}
-                inspectionInformations={inspectionInformations}
+                inspectionInformations={inspectionInformations} 
                 onReadyReport={onReadyReport}
             />
         )

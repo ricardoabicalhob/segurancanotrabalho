@@ -36,20 +36,18 @@ yarn-error.log*
 next-env.d.ts
 
 # pastas do projeto
-/src/app/editorteste
-/src/app/novalista
-/src/app/testelayout
-/src/app/CardFinish
-/src/app/CardRiskAnalysisAI
-/src/app/editor copy
+# /src/app/testelayout
+# /src/app/CardRiskAnalysisAI
+# /src/app/testerelatorio
 
 # componentes do projeto
-/src/components/MyCustomList
+# /src/components/MyCustomList
 /src/components/Welcome
-/src/components/Container
-/src/components/DadosDaInspecao
-/src/components/DadosDaAnaliseDeRisco
+# /src/components/Container
+# /src/components/DadosDaInspecao
+# /src/components/DadosDaAnaliseDeRisco
 /src/components/ListaDeRiscos
+# /src/components/ActionBar
 
 # arquivos do projeto
 /src/app/page-home-1.tsx;

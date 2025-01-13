@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { InformacoesDoGrupoDeRisco, Risco, TabelaDeRiscos, TabelaDeRiscosCompleta, TabelaDeRiscosCompletaProps, tabelaDeRiscosSimplificada } from "../tabela-de-riscos";
 import { inspectionInformationsProps, ListRisks, objActionList, objConsequenceList, objList, RiskProps } from "../types";
 import { uuid } from "uuidv4";
@@ -21,7 +21,6 @@ type validateCompletionOfRecommendedActionsResponse = {
 }
 
 interface SystemContextProps {
-    // children :ReactNode
     risk :RiskProps | undefined
     setRisk :Dispatch<SetStateAction<RiskProps | undefined>>
     formEditable :boolean
@@ -50,6 +49,8 @@ interface SystemContextProps {
     handleSummarizeByRiskGroup :()=> void
     dataChart :{ tipo: string; quantidade: number}[]
     setDataChart :Dispatch<SetStateAction<{ tipo: string; quantidade: number}[]>>
+    formUnlocked :boolean
+    setFormUnlocked :Dispatch<SetStateAction<boolean>>
 }
 
 export const SystemContext = createContext({} as SystemContextProps)
@@ -62,6 +63,7 @@ export function SystemProvider({ children } :SystemContextPropsChildren) {
     const [formEditable, setFormEditable] = useState(false)
     const [ inspectionInformations, setInspectionInformations ] = useState<inspectionInformationsProps>()
     const [ dataChart, setDataChart ] = useState<{ tipo: string; quantidade: number}[]>([])
+    const [ formUnlocked, setFormUnlocked ] = useState(true)
 
     const validateConsequencesResponse :validateCompletionOfConsequencesResponse = {
         status: false,
@@ -287,12 +289,17 @@ export function SystemProvider({ children } :SystemContextPropsChildren) {
         setDataChart(data)
     }
 
+    useEffect(()=> {
+        console.log('formUnlocked: ', formUnlocked)
+    }, [formUnlocked])
+
     return(
         <SystemContext.Provider 
             value={{
                 risk, setRisk,
                 formEditable, setFormEditable,
                 uploadedFile, setUploadedFile, 
+                formUnlocked, setFormUnlocked,
                 buscarRiscoPorCor, buscarRiscoPorTipo,
                 validateCompletionOfConsequences, validateCompletionOfRecommendedActions,
                 listRisks, setListRisks,
@@ -301,7 +308,7 @@ export function SystemProvider({ children } :SystemContextPropsChildren) {
                 handleDeleteImageOfListRiscks, handleAddImageOnListRisks,
                 handleDeleteConsequencia, handleAddConsequencia, handleChangeConsequencia,
                 handleDeleteAcaoRecomendada, handleAddAcaoRecomendada, handleChangeAcaoRecomendada,
-                handleSummarizeByRiskGroup, dataChart, setDataChart
+                handleSummarizeByRiskGroup, dataChart, setDataChart,
             }}
         >
             { children }

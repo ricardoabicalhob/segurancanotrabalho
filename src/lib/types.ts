@@ -12,6 +12,20 @@ export type inspectionInformationsProps = {
     matriculaResponsavelPelaInspecao :string
 }
 
+export type inspectionInformationsTeste = {
+    empresa :string
+    areaLotacao :string
+    localInspecionado :string
+    areaEmitente :string
+    cidade :string
+    cipa :string
+    data : string
+    hora :string
+    responsavelPelaInspecao :string
+    funcaoResponsavelPelaInspecao :string
+    matriculaResponsavelPelaInspecao :string
+}
+
 export type objList = {
     id :string,
     value :string,
@@ -42,6 +56,12 @@ export type FileRIS = {
     checkFilling: boolean,
     inspectionInformations: inspectionInformationsProps,
     listRisks: ListRisks
+}
+
+export type FileRISTeste = {
+    checkFilling :boolean
+    inspectionData :inspectionInformationsTeste
+    listRisks :ListRisks
 }
 
 export type CorRisco = 'verde' | 'vermelho' | 'laranja' | 'amarelo' | 'azul'

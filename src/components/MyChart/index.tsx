@@ -39,33 +39,37 @@ outerRadius,
 percent,
 index,
 }: any) => {
-const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
+const radius = innerRadius + (outerRadius - innerRadius) * 1.3;
 const x = cx + radius * Math.cos(-midAngle * RADIAN);
 const y = cy + radius * Math.sin(-midAngle * RADIAN);
 const currentEntry :MyChartItem = data[index]
     return (
-        <text
-            x={x}
-            y={y}
-            fill="black"
-            textAnchor={x > cx ? "start" : "end"}
-            dominantBaseline="central"
-            >
-            {`${(percent * 100).toFixed(0)}% - ${currentEntry.tipo}`}
-        </text>
+        currentEntry.quantidade > 0
+        ?
+            <text
+                x={x}
+                y={y}
+                fill="black"
+                textAnchor={x > cx ? "start" : "end"}
+                dominantBaseline="central"
+                >
+                {`${(percent * 100).toFixed(0)}% - ${currentEntry.tipo}`}
+            </text>
+        :
+            null
     )
 }
 
 
     return(
-            <PieChart accessibilityLayer width={500} height={400} className="bg-inherit bg">
+            <PieChart accessibilityLayer width={550} height={400} className="bg-inherit">
                 <Pie 
                     data={data} 
                     dataKey="quantidade" 
                     nameKey="tipo" 
                     cx="50%" 
                     cy="50%" 
-                    outerRadius={110} 
+                    outerRadius={100} 
                     fill="#8884d8"
                     label={renderCustomizedLabel}
                 >

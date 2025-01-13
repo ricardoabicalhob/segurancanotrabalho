@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
 
-    const API_KEY = 'AIzaSyDX7kYegZH-DhtbM8k-s5K7CJ7eu9RfyYY'
+    const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY
     const genAI = new GoogleGenerativeAI(API_KEY)
 
 
@@ -18,15 +18,6 @@ export async function POST(req) {
             topP: 0.95,
             topK: 64,
             maxOutputTokens: 400,
-            // responseMimeType: "application/json",
-            // responseSchema: {
-            //     type: "object",
-            //     properties: {
-            //       response: {
-            //         type: "string"
-            //       }
-            //     }
-            //   }
             responseMimeType: "text/plain"
         };
 

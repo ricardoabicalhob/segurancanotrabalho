@@ -8,28 +8,35 @@ import { useContext, useEffect, useState } from "react"
 import { SystemContext } from "@/lib/context/SystemContext"
 import MyChart from "../MyChart"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import { inspectionInformationsTeste } from "@/lib/types"
+import { useRouter } from "next/navigation"
+import { DataContext } from "@/lib/datacontext"
 
 interface ReportProps {
     listRisks :ListRisks
-    inspectionInformations :inspectionInformations
+    inspectionInformations :inspectionInformationsTeste
     onReadyReport? :() => void
 }
 
 export default function Report( { listRisks, inspectionInformations, onReadyReport } :ReportProps ) {
 
-    const { buscarRiscoPorCor, handleSummarizeByRiskGroup, dataChart } = useContext(SystemContext)
-   
-    function handlePrint() {
-        window.print()
-    }
+    const { buscarRiscoPorCor, handleSummarizeByRiskGroup, dataChart } = useContext(DataContext)
 
     useEffect(()=> {
         handleSummarizeByRiskGroup()
     }, [])
 
     return(
-        <div key={'containerPrincipal'} className='w-svw h-svh flex flex-col items-center'>
+        <div key={'containerPrincipal'} className='w-svw flex flex-col items-center'>
             <div key={'containerSubprincipal'} className="max-w-[960px] px-4">
+                <div className={`bg-gray-100 text-green-900
+                                font-bold text-2xl 
+                                flex p-4 gap-2 mb-4
+                                border-b-2 
+                                max-w-[926px] w-full self-center`}>
+                    <Image className="self-center" alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
+                    <p className="self-center justify-self-start w-full ml-2">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+                </div>
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
                         <td className="border-2 pl-2"><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
@@ -163,8 +170,6 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
             </div>
 
             <div className=" flex flex-row gap-2 py-10">
-                <Button id='voltar' className={`bg-green-800 hover:bg-green-600 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
-                <Button id='imprimir' className={`bg-zinc-700 hover:bg-zinc-500 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } ><Printer /> Imprimir</Button>
             </div>    
         </div>
     )

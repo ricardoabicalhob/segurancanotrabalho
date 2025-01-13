@@ -8,28 +8,35 @@ import { useContext, useEffect, useState } from "react"
 import { SystemContext } from "@/lib/context/SystemContext"
 import MyChart from "../MyChart"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import { inspectionInformationsTeste } from "@/lib/types"
+import { useRouter } from "next/navigation"
+import { DataContext } from "@/lib/datacontext"
 
 interface ReportProps {
     listRisks :ListRisks
-    inspectionInformations :inspectionInformations
+    inspectionInformations :inspectionInformationsTeste
     onReadyReport? :() => void
 }
 
 export default function Report( { listRisks, inspectionInformations, onReadyReport } :ReportProps ) {
 
-    const { buscarRiscoPorCor, handleSummarizeByRiskGroup, dataChart } = useContext(SystemContext)
-   
-    function handlePrint() {
-        window.print()
-    }
+    const { buscarRiscoPorCor, handleSummarizeByRiskGroup, dataChart } = useContext(DataContext)
 
     useEffect(()=> {
         handleSummarizeByRiskGroup()
     }, [])
 
     return(
-        <div key={'containerPrincipal'} className='w-svw h-svh flex flex-col items-center'>
+        <div key={'containerPrincipal'} className='w-svw flex flex-col items-center'>
             <div key={'containerSubprincipal'} className="max-w-[960px] px-4">
+                <div className={`bg-gray-100 text-green-900
+                                font-bold text-2xl 
+                                flex p-4 gap-2 mb-4
+                                border-b-2 
+                                max-w-[926px] w-full self-center`}>
+                    <Image className="self-center" alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
+                    <p className="self-center justify-self-start w-full ml-2">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+                </div>
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
                         <td className="border-2 pl-2"><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
@@ -56,13 +63,13 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                             <div key={'analise'}>
                                 <p 
                                     key={index}
-                                    className='font-bold text-base antialiased mt-4'
+                                    className='font-bold text-base antialiased mt-4 print:break-inside-avoid print:break-after-avoid'
                                 >
                                     {`${index + 1}. ${risk.risco}`}
                                 </p>
 
-                                <p key={'fotos'} className='text-sm font-bold antialiased py-3'>Fotos</p>
-                                <div className='flex flex-row items-center justify-center flex-wrap p-6 gap-4 border-2 rounded-md'>
+                                <p key={'fotos'} className='text-sm font-bold antialiased py-3 print:break-after-avoid'>Fotos</p>
+                                <div className='flex flex-row items-center justify-center flex-wrap p-6 gap-4 border-2 rounded-md print:break-inside-avoid'>
                                     {
                                         risk.images?.map(( image, index ) => (
                                             <Image key={index} alt="" className="w-[300px] h-[225px] mt-1 mb-1" src={image} width={150} height={90}/>
@@ -77,12 +84,12 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                     
                                 </div>
 
-                                <p key={'consequencias'} className='text-sm font-bold antialiased py-3'>Principais consequências</p>
+                                <p key={'consequencias'} className='text-sm font-bold antialiased py-3 print:break-after-avoid'>Principais consequências</p>
                                 {
                                     risk.consequencias?.map(( consequencia, index ) => (
                                         <p 
                                             key={consequencia.id}
-                                            className='flex text-sm antialiased ml-6 gap-2 my-4'
+                                            className='flex text-sm antialiased ml-6 gap-2 my-4 print:break-after-avoid'
                                         >
                                             {/* <CircleAlert className='text-yellow-600 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' />  */}
                                             <div 
@@ -107,12 +114,12 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                     ))
                                 }
 
-                                <p key={'acoes'} className='text-sm font-bold antialiased py-3'>Ações recomendadas</p>
+                                <p key={'acoes'} className='text-sm font-bold antialiased py-3 print:break-after-avoid'>Ações recomendadas</p>
                                 {
                                     risk.acoes?.map(( acao, index ) => (
                                         <p 
                                             key={acao.id}
-                                            className='text-sm antialiased ml-6 flex flex-row my-4'
+                                            className='text-sm antialiased ml-6 flex flex-row my-4 print:break-after-avoid'
                                         >
                                             <CircleCheckBig className='text-green-700 min-w-4 min-h-4 max-w-4 max-h-4 mr-2' /> {acao.value}
                                         </p>
@@ -128,8 +135,8 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 </div>
             }
 
-            <p className="w-[910px] font-bold mb-3">RESUMO GRÁFICO</p>
-            <div className="flex w-[910px] justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md">
+            <p className="w-[910px] font-bold mb-3 print:break-after-avoid">RESUMO GRÁFICO</p>
+            <div className="flex w-[910px] justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md print:break-inside-avoid">
                 <div className="flex w-[30%]">
                     <Table>
                         <TableHeader>
@@ -156,15 +163,13 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
 
             <Separator className="w-[910px] my-4 h-1"/>
 
-            <div className="border-t-2 px-24 py-3 mt-32 border-gray-500">
+            <div className="border-t-2 px-24 py-3 mt-32 border-gray-500 print:break-before-avoid print:break-inside-avoid">
                 <p className="text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
                 <p className="text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
                 <p className="text-center antialiased font-bold">Responsável pela inspeção</p>
             </div>
 
             <div className=" flex flex-row gap-2 py-10">
-                <Button id='voltar' className={`bg-green-800 hover:bg-green-600 print:hidden text-base md:text-sm select-none`} onClick={()=> {onReadyReport() } } >Fechar visualização</Button>
-                <Button id='imprimir' className={`bg-zinc-700 hover:bg-zinc-500 print:hidden text-base md:text-sm select-none`} onClick={()=> {handlePrint() } } ><Printer /> Imprimir</Button>
             </div>    
         </div>
     )
