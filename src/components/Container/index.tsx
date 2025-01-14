@@ -13,7 +13,7 @@ export default function Container({ children, titulo, maximizableComponent, acti
     return(
         <div className={`flex flex-col items-center justify-center border-[1px] rounded-md min-w-full max-w-full m-2`}>
             <div className="bg-gray-100 flex w-full justify-between items-center rounded-tl-md rounded-tr-md">
-                <span className="w-full mt-2 px-2 text-base antialiased">{titulo}</span>
+                <span className="w-full mt-2 px-2 text-base antialiased select-none">{titulo}</span>
                 {actions}
                 {maximizableComponent}
             </div>

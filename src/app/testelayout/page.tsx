@@ -106,14 +106,15 @@ export default function TesteLayout() {
                     <ActionBar.Action 
                         disabled={ handleCheckFilling() } 
                         icon={ScanEye} 
-                        textTooltip={`${formUnlocked || !listRisks.length? 'Para visualizar o relatório: ' : 'Visualizar relatório'} ${formUnlocked? '- Preencha os dados da inspeção.' : ''} ${!listRisks.length? '- Insira pelo menos uma situação de risco em sua lista.' : ''}`} 
+                        textButton="Visualizar relatório"
+                        textTooltip={`${formUnlocked || !listRisks.length? 'Para visualizar o relatório: ' : 'Visualizar'} ${formUnlocked? '- Preencha os dados da inspeção.' : ''} ${!listRisks.length? '- Insira pelo menos uma situação de risco em sua lista.' : ''}`} 
                         onClick={()=> {
                             setIsLoadingReport(true)
                             router.push('/testerelatorio')
                         }} 
                     />
-                    <ActionBar.ActionUploadFile icon={FileUp} textTooltip="Carregar relatório" isLoadingFile={isLoadingFile} onClick={()=> handleSelectFile()} />
-                    <ActionBar.Action icon={Download} textTooltip="Baixar backup" disabled={ handleCheckFilling() } onClick={()=> DownloadFileRIS(handleCheckFilling, inspectionData, listRisks)} />
+                    <ActionBar.ActionUploadFile icon={FileUp} textButton="Carregar relatório" isLoadingFile={isLoadingFile} onClick={()=> handleSelectFile()} />
+                    <ActionBar.Action icon={Download} textButton="Baixar" disabled={ handleCheckFilling() } onClick={()=> DownloadFileRIS(handleCheckFilling, inspectionData, listRisks)} />
                 </ActionBar.Bar>
 
                 <main  className={`grid max-w-screen h-[100vh] grid-flow-row

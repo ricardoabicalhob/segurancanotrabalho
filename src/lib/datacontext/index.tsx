@@ -51,6 +51,8 @@ interface DataContextProps {
     setDataChart :Dispatch<SetStateAction<{ tipo: string; quantidade: number}[]>>
     formUnlocked :boolean
     setFormUnlocked :Dispatch<SetStateAction<boolean>>
+    hideChart :boolean
+    setHideChart :Dispatch<SetStateAction<boolean>>
 }
 
 export const DataContext = createContext({} as DataContextProps)
@@ -64,6 +66,7 @@ export function DataProvider({ children } :DataProviderProps) {
     const [ inspectionData, setInspectionData ] = useState<inspectionInformationsTeste>()
     const [ dataChart, setDataChart ] = useState<{ tipo: string; quantidade: number}[]>([])
     const [ formUnlocked, setFormUnlocked ] = useState(true)
+    const [ hideChart, setHideChart ] = useState(false)
 
     function buscarRiscoPorCor(cor: keyof TabelaDeRiscos): Risco | undefined {
         if(cor in tabelaDeRiscosSimplificada) {
@@ -304,7 +307,8 @@ export function DataProvider({ children } :DataProviderProps) {
             handleDeleteAcaoRecomendada, handleAddAcaoRecomendada, handleChangeAcaoRecomendada,
             handleSummarizeByRiskGroup,
             dataChart, setDataChart,
-            formUnlocked, setFormUnlocked
+            formUnlocked, setFormUnlocked,
+            hideChart, setHideChart
         }}>
             {children}
         </DataContext.Provider>

@@ -19,48 +19,54 @@ function Bar({ children, alignItems, border, ...rest } :BarProps) {
 
 
 interface ActionProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    icon :ElementType
+    icon? :ElementType
     invertIconColor? :boolean
     textTooltip? :string
+    textButton? :string
 }
 
-function Action({ icon: Icon, invertIconColor, textTooltip, ...rest } :ActionProps) {
+function Action({ icon: Icon, invertIconColor, textTooltip, textButton, ...rest } :ActionProps) {
     return(
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <button className={`flex justify-center items-center  rounded-full w-7 h-7 disabled:text-gray-500 ${invertIconColor? 'text-gray-300 hover:bg-customgray-1000' : 'text-gray-800 hover:bg-gray-200'}`} {...rest}>
-                        <Icon className={`w-[18px] h-[18px] `} />
+                    <button className={`flex justify-center items-center ${textButton? 'px-2' : ''} rounded-full min-w-7 h-7 gap-1 disabled:text-gray-500 ${invertIconColor? 'text-gray-300 hover:bg-customgray-1000' : 'text-gray-800 hover:bg-gray-200'}`} {...rest}>
+                        {Icon && <Icon className={`w-[18px] h-[18px] `} />}
+                        {textButton && <span className="text-xs">{textButton}</span>}
                     </button>
                 </TooltipTrigger>
-                <TooltipContent className="bg-green-800 max-w-xs">{textTooltip}</TooltipContent>
+                {textTooltip && <TooltipContent className="bg-green-800 max-w-xs">{textTooltip}</TooltipContent>}
             </Tooltip>    
         </TooltipProvider>
     )
 }
 
 interface ActionUploadFileProps extends InputHTMLAttributes<HTMLInputElement> {
-    icon :ElementType
+    icon? :ElementType
     isLoadingFile :boolean
     textTooltip? :string
+    textButton? :string
 }
 
-function ActionUploadFile({ icon: Icon, isLoadingFile, textTooltip, ...rest } :ActionUploadFileProps) {
+function ActionUploadFile({ icon: Icon, isLoadingFile, textTooltip, textButton, ...rest } :ActionUploadFileProps) {
     return(
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <div className="relative flex items-center justify-center bg-inherit hover:bg-gray-200 disabled:text-gray-500 w-7 h-7 rounded-full cursor-pointer">
+                    <div className={`relative flex items-center justify-center bg-inherit hover:bg-gray-200 disabled:text-gray-500 min-w-7 h-7 gap-1 rounded-full cursor-pointer ${textButton? 'px-2' : ''}`}>
                         {
                             isLoadingFile
                             ?
                             <LoadingIndicatorAnimated styles="w-5 h-5 border-[3px]" />
                             :
-                            <Icon className="h-[18px] w-[18px] text-gray-800 hover:text-gray-500" />
+                            <>
+                                {Icon && <Icon className="h-[18px] w-[18px] text-gray-800 hover:text-gray-500" />}
+                                {textButton && <span className="text-xs">{textButton}</span>}
+                            </>
                         }
                         <Input
                             {...rest}
-                            className="absolute bg-inherit left-0 w-[15%] h-[100%] cursor-pointer" 
+                            className={`absolute bg-inherit left-0 ${textButton? `w-[90%]` : 'w-[15%]'} h-[100%] cursor-pointer`} 
                             style={{opacity: 0, cursor: 'pointer'}}
                             type="file" 
                             accept=".ris"
@@ -68,7 +74,7 @@ function ActionUploadFile({ icon: Icon, isLoadingFile, textTooltip, ...rest } :A
                         />
                     </div>
                 </TooltipTrigger>
-                <TooltipContent className="bg-green-800 max-w-md">{textTooltip}</TooltipContent>
+                {textTooltip && <TooltipContent className="bg-green-800 max-w-md">{textTooltip}</TooltipContent>}
             </Tooltip>
         </TooltipProvider>
     )

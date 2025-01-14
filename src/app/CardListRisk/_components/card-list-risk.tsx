@@ -155,7 +155,7 @@ export default function CardListRisk({
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent className="bg-green-700 text-sm">
-                                <p>Visualizar o relatório preparado para impressão</p>
+                                <p>Pré-visualizar o relatório</p>
                             </TooltipContent>
                         </Tooltip>
                         

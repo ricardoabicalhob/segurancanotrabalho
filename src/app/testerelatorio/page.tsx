@@ -4,14 +4,14 @@ import { ActionBar } from "@/components/ActionBar"
 import AlertNotification from "@/components/AlertNotification"
 import Report from "@/components/Report/index-layout-2"
 import { DataContext } from "@/lib/datacontext"
-import { LogOut, Printer } from "lucide-react"
+import { ChartPie, CircleDashed, LogOut, Printer } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useContext, useRef } from "react"
+import { useContext, useRef, useState } from "react"
 
 export default function IFrame() {
 
     const router = useRouter()
-    const { inspectionData, listRisks } = useContext(DataContext)
+    const { inspectionData, listRisks, setHideChart, hideChart } = useContext(DataContext)
     const frameLeftRef = useRef<HTMLDivElement>(null)
     const relatorioRef = useRef<HTMLDivElement>(null)
     const frameRightRef = useRef<HTMLDivElement>(null)
@@ -30,8 +30,9 @@ export default function IFrame() {
             <body className="flex flex-col min-h-full pt-10">  
                 <nav className="bg-customgray-1100 fixed top-0 w-full print:hidden shadow-custom-dark z-10">
                     <ActionBar.Bar className="bg-zinc-600 min-h-[30px]" alignItems="justify-end">
-                        <ActionBar.Action icon={Printer} textTooltip="Imprimir" invertIconColor onClick={()=> handlePrint()} />
-                        <ActionBar.Action icon={LogOut} textTooltip="Fechar visualização" invertIconColor onClick={()=> {router.back()}} />
+                        <ActionBar.Action icon={hideChart? CircleDashed : ChartPie} textButton={hideChart? 'Mostrar gráfico' : 'Ocultar gráfico'} textTooltip="Ocultar / Mostrar gráfico no final do relatório" invertIconColor onClick={()=> {setHideChart(!hideChart)}} />
+                        <ActionBar.Action icon={Printer} textButton="Imprimir" invertIconColor onClick={()=> handlePrint()} />
+                        <ActionBar.Action icon={LogOut} textButton="Fechar" invertIconColor onClick={()=> {router.back()}} />
                     </ActionBar.Bar>
                 </nav>
                 <main className="flex flex-row">

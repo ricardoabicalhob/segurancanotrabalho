@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { inspectionInformationsTeste } from "@/lib/types"
 import { useRouter } from "next/navigation"
 import { DataContext } from "@/lib/datacontext"
+import { TabelaDeRiscos } from "@/lib/tabela-de-riscos"
 
 interface ReportProps {
     listRisks :ListRisks
@@ -20,7 +21,12 @@ interface ReportProps {
 
 export default function Report( { listRisks, inspectionInformations, onReadyReport } :ReportProps ) {
 
-    const { buscarRiscoPorCor, handleSummarizeByRiskGroup, dataChart } = useContext(DataContext)
+    const { 
+        buscarRiscoPorCor, 
+        handleSummarizeByRiskGroup, 
+        dataChart,
+        hideChart
+    } = useContext(DataContext)
 
     useEffect(()=> {
         handleSummarizeByRiskGroup()
@@ -40,7 +46,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
                         <td className="border-2 pl-2"><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
-                        <td className="border-2 pl-2"><b>Data: </b>{`${typeof inspectionInformations.data === 'string' ? new Date(inspectionInformations.data).toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false}) : inspectionInformations.data.toLocaleDateString('pt-BR', {timeZone: 'america/Sao_Paulo', hour12: false})}`}</td>
+                        <td className="border-2 pl-2"><b>Data: </b>{`${new Date(inspectionInformations.data).toLocaleDateString('pt-BR')}`}</td>
                         <td className="border-2 pl-2"><b>Hora: </b>{`${inspectionInformations.hora}`}</td>
                     </tr>
                     <tr className="border-2 w-full">
@@ -107,7 +113,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                             <span
                                                 className="font-bold"
                                             >
-                                                {buscarRiscoPorCor(consequencia.corDoGrupoDeRisco)?.tipo}:
+                                                {buscarRiscoPorCor(consequencia.corDoGrupoDeRisco as keyof TabelaDeRiscos)?.tipo}:
                                             </span>
                                             {consequencia.value}
                                         </p>
@@ -135,38 +141,47 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 </div>
             }
 
-            <p className="w-[910px] font-bold mb-3 print:break-after-avoid">RESUMO GRÁFICO</p>
-            <div className="flex w-[910px] justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md print:break-inside-avoid">
-                <div className="flex w-[30%]">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[50%] text-center">Tipo de risco</TableHead>
-                                <TableHead className="w-[50%] text-center">Quantidade</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {
-                                dataChart?.map((item, index)=> (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{item.tipo}</TableCell>
-                                        <TableCell className="text-right">{item.quantidade}</TableCell>
-                                    </TableRow>
-                                ))
-                            }
-                        </TableBody>
-                    </Table>
+            {
+                !hideChart &&
+                <p className="w-[910px] font-bold mb-3 print:break-after-avoid">RESUMO GRÁFICO</p>
+            }
+            {
+                !hideChart &&
+                <div className="flex w-[910px] justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md print:break-inside-avoid">
+                    <div className="flex w-[30%]">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[50%] text-center">Tipo de risco</TableHead>
+                                    <TableHead className="w-[50%] text-center">Quantidade</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {
+                                    dataChart?.map((item, index)=> (
+                                        <TableRow key={index}>
+                                            <TableCell className="font-medium">{item.tipo}</TableCell>
+                                            <TableCell className="text-right">{item.quantidade}</TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
+                    </div>
+
+                    <MyChart data={dataChart} />
                 </div>
+            }
 
-                <MyChart data={dataChart} />
-            </div>
-
-            <Separator className="w-[910px] my-4 h-1"/>
+            {
+                !hideChart
+                && <Separator className="w-[910px] my-4 h-1"/>
+            }
 
             <div className="border-t-2 px-24 py-3 mt-32 border-gray-500 print:break-before-avoid print:break-inside-avoid">
-                <p className="text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
-                <p className="text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
-                <p className="text-center antialiased font-bold">Responsável pela inspeção</p>
+                <p className="text-sm text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
+                <p className="text-sm text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
+                <p className="text-sm text-center antialiased font-bold">Responsável pela inspeção</p>
             </div>
 
             <div className=" flex flex-row gap-2 py-10">
