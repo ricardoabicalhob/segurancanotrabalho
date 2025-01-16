@@ -17,7 +17,6 @@ export default async function GeneratePdf(req, res :NextApiResponse) {
 
         // await page.goto('http://ricardoabicalhob.github.io/segurancanotrabalho/relatorio')
         // await page.goto('http://localhost:3000/relatorio')
-        await page.goBack()
         
 
         const pdfBuffer = await page.pdf({
