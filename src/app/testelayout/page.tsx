@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
-import { Download, Edit, ExternalLink, FileUp, ScanEye, Trash2 } from "lucide-react";
+import { AlertTriangle, Download, Edit, ExternalLink, FileUp, ScanEye, Trash2 } from "lucide-react";
 import Container, { MaximizeContainer } from "@/components/Container";
 import DadosDaInspecao from "@/components/DadosDaInspecao";
 import DadosDaAnaliseDeRisco from "@/components/DadosDaAnaliseDeRisco";
@@ -16,6 +16,7 @@ import DownloadFileRIS from "@/lib/downloadFile copy";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import LoadingIndicator from "@/components/LoadingIndicator";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 
 export default function TesteLayout() {
@@ -107,7 +108,7 @@ export default function TesteLayout() {
                         disabled={ handleCheckFilling() } 
                         icon={ScanEye} 
                         textButton="Visualizar relatório"
-                        textTooltip={`${formUnlocked || !listRisks.length? 'Para visualizar o relatório: ' : 'Visualizar'} ${formUnlocked? '- Preencha os dados da inspeção.' : ''} ${!listRisks.length? '- Insira pelo menos uma situação de risco em sua lista.' : ''}`} 
+                        textTooltip={`${formUnlocked || !listRisks.length? 'Para visualizar o relatório: ' : 'Visualizar'} ${formUnlocked? '\r\n- Preencha os dados da inspeção.' : ''} ${!listRisks.length? '- Insira pelo menos uma situação de risco em sua lista.' : ''}`} 
                         onClick={()=> {
                             setIsLoadingReport(true)
                             router.push('/testerelatorio')
@@ -174,11 +175,29 @@ export default function TesteLayout() {
                                                     />    
                                                 </MyDialog>
 
-                                                <CustomList.ItemAction 
-                                                    icon={Trash2} 
-                                                    className="border-[1px] bg-inherit hover:bg-red-400" 
-                                                    onClick={()=> {handleRemoveRiskOfList(key as number)}}    
-                                                />
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <CustomList.ItemAction 
+                                                            icon={Trash2} 
+                                                            className="border-[1px] bg-inherit hover:bg-red-400" 
+                                                            // onClick={()=> {handleRemoveRiskOfList(key as number)}}    
+                                                        />
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="w-5 h-5 text-yellow-500" />Alerta</AlertDialogTitle>
+                                                            <AlertDialogDescription className="">
+                                                                <p>Esta ação não poderá ser desfeita. Isso excluirá permanentemente
+                                                                a situação de risco: <br/><br/>
+                                                                <i>{`${item.risco}.`}</i><br/></p>
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                            <AlertDialogAction className="bg-green-800 hover:bg-green-600" onClick={()=> {handleRemoveRiskOfList(key as number)}}>Prosseguir</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
                                             </CustomList.ItemActions>
                                         </CustomList.Item>
                                     )}

@@ -1,23 +1,12 @@
 'use client'
 
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
-import { inspectionInformationsTeste, ListRisks, objActionList, objConsequenceList, RiskProps } from "../types"
+import { inspectionInformationsTeste, ListRisks, objActionList, objConsequenceList, RiskProps, validateCompletionOfConsequencesResponse, validateCompletionOfRecommendedActionsResponse } from "../types"
 import { InformacoesDoGrupoDeRisco, Risco, TabelaDeRiscos, TabelaDeRiscosCompleta, TabelaDeRiscosCompletaProps, tabelaDeRiscosSimplificada } from "../tabela-de-riscos"
 import { uuid } from "uuidv4"
 
 interface DataProviderProps {
     children :ReactNode
-}
-
-type validateCompletionOfConsequencesResponse = {
-    status :boolean
-    emptyItemsList :objConsequenceList[]
-    corDoGrupoDeRisco :string
-}
-
-type validateCompletionOfRecommendedActionsResponse = {
-    status :boolean
-    emptyItemsList :objActionList[]
 }
 
 interface DataContextProps {

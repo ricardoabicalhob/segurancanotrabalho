@@ -4,7 +4,7 @@ import { Dialog } from "@radix-ui/react-dialog";
 import AlertNotification from "../AlertNotification";
 import LoadingIndicator from "../LoadingIndicator";
 import { DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { useContext, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { SystemContext } from "@/lib/context/SystemContext";
 import { RiskProps } from "@/lib/types";
 import { uuid } from "uuidv4";
@@ -103,7 +103,7 @@ export default function DadosDaAnaliseDeRisco({  } :DadosDaAnaliseDeRiscoProps) 
         setRisk(undefined)
     }
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event :KeyboardEvent<HTMLTextAreaElement>) => {
         if(event.key === 'Enter') {
             event.preventDefault()
             handleGenerate(); 

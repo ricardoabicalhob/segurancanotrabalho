@@ -56,4 +56,5 @@ next-env.d.ts
 /src/app/CardListRisk/_components/'card-list-risk copy.tsx'
 /src/app/CardListRisk/_components/'card-list-risk copy 2.tsx'
 /src/app/DialogAnalysisRisk/'index copy.tsx'
+/src/lib/context/'SystemContext copy.tsx'
 

@@ -28,7 +28,7 @@ export default function IFrame() {
             </head>
             
             <body className="flex flex-col min-h-full pt-10">  
-                <nav className="bg-customgray-1100 fixed top-0 w-full print:hidden shadow-custom-dark z-10">
+                <nav className="bg-customgray-1100 fixed left-0 top-0 w-full max-w-full print:hidden shadow-custom-dark z-10">
                     <ActionBar.Bar className="bg-zinc-600 min-h-[30px]" alignItems="justify-end">
                         <ActionBar.Action icon={hideChart? CircleDashed : ChartPie} textButton={hideChart? 'Mostrar gráfico' : 'Ocultar gráfico'} textTooltip="Ocultar / Mostrar gráfico no final do relatório" invertIconColor onClick={()=> {setHideChart(!hideChart)}} />
                         <ActionBar.Action icon={Printer} textButton="Imprimir" invertIconColor onClick={()=> handlePrint()} />
@@ -36,7 +36,7 @@ export default function IFrame() {
                     </ActionBar.Bar>
                 </nav>
                 <main className="flex flex-row">
-                    <div ref={frameLeftRef} className="print:hidden flex min-w-[20%] min-h-full bg-customgray-1000" />
+                    <div ref={frameLeftRef} className="print:hidden flex min-w-[17.6%] min-h-full bg-customgray-1000" />
                         
                         <div ref={relatorioRef} className="print:block flex flex-col items-center justify-start w-[960px]">
                             {
@@ -50,7 +50,7 @@ export default function IFrame() {
                                     <AlertNotification text="Falha na visualização." />
                             }
                         </div>
-                    <div ref={frameRightRef} className="print:hidden min-w-[20%] min-h-full bg-customgray-1000" />
+                    <div ref={frameRightRef} className="print:hidden min-w-[19%] min-h-full bg-customgray-1000" />
                 </main>
             </body>
         </html>

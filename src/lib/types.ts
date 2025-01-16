@@ -67,3 +67,14 @@ export type FileRISTeste = {
 export type CorRisco = 'verde' | 'vermelho' | 'laranja' | 'amarelo' | 'azul'
 
 export type TipoRisco = 'Físico' | 'Químico' | 'Biológico' | 'Ergonômico' | 'Acidente'
+
+export type validateCompletionOfConsequencesResponse = {
+    status :boolean
+    emptyItemsList :objConsequenceList[]
+    corDoGrupoDeRisco :string
+}
+
+export type validateCompletionOfRecommendedActionsResponse = {
+    status :boolean
+    emptyItemsList :objActionList[]
+}
