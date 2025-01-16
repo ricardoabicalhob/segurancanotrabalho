@@ -175,7 +175,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
 
             {
                 !hideChart
-                && <Separator className="w-[910px] my-4 h-1"/>
+                && <Separator className="w-[910px] my-4 h-1 break-before-avoid break-after-avoid"/>
             }
 
             <div className="border-t-2 px-24 py-3 mt-32 border-gray-500 print:break-before-avoid print:break-inside-avoid">
