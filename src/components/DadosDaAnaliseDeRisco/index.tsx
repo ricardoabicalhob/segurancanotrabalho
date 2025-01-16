@@ -504,7 +504,7 @@ export default function DadosDaAnaliseDeRisco({  } :DadosDaAnaliseDeRiscoProps) 
                     </div>
                 </form>
                 :
-                <div className="flex flex-col max-w-full md:h-[250px] lg:h-[380px] xl:h-full 2xl:h-full 2xl:max-h-full"> 
+                <div className="flex flex-col max-w-full md:h-[250px] lg:h-[380px] xl:h-full 2xl:h-full 2xl:max-h-full">
                     {
                         risk && <p className="bg-gray-100 text-green-900 p-2 break-words font-bold text-center mt-6 rounded-md">{risk.risco.toLocaleUpperCase()}</p>
                     }
