@@ -401,7 +401,7 @@ export default function DadosDaAnaliseDeRisco({  } :DadosDaAnaliseDeRiscoProps) 
 
 
     return(
-        <div className="flex flex-col w-full h-full gap-3 p-2">
+        <div className="flex flex-col w-full h-full gap-3 p-2"> 
 
             {
                 !risk
@@ -504,7 +504,7 @@ export default function DadosDaAnaliseDeRisco({  } :DadosDaAnaliseDeRiscoProps) 
                     </div>
                 </form>
                 :
-                <div className="flex flex-col max-w-full md:h-[250px] lg:h-[380px] xl:h-[571px] 2xl:h-[463px]">
+                <div className="flex flex-col max-w-full md:h-[250px] lg:h-[380px] xl:h-full 2xl:h-full">
                     {
                         risk && <p className="bg-gray-100 text-green-900 p-2 break-words font-bold text-center mt-6 rounded-md">{risk.risco.toLocaleUpperCase()}</p>
                     }

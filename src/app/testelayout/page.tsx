@@ -9,7 +9,6 @@ import DadosDaAnaliseDeRisco from "@/components/DadosDaAnaliseDeRisco";
 import { DataContext } from "@/lib/datacontext";
 import { CustomList } from "@/components/MyCustomList";
 import { SystemContext } from "@/lib/context/SystemContext";
-import MyDialog from "@/components/MyDialog";
 import { ActionBar } from "@/components/ActionBar";
 import { FileRIS, FileRISTeste } from "@/lib/types";
 import DownloadFileRIS from "@/lib/downloadFile copy";
@@ -17,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import MyDialog from "@/components/MyDialog/index-layout-2";
 
 
 export default function TesteLayout() {
