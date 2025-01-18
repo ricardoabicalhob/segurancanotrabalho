@@ -17,6 +17,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import MyDialog from "@/components/MyDialog/index-layout-2";
+import ContainerTeste from "@/components/Container/index copy";
+import DadosDaAnaliseDeRiscoTeste from "@/components/DadosDaAnaliseDeRisco/index copy";
 
 
 export default function TesteLayout() {
@@ -140,9 +142,12 @@ export default function TesteLayout() {
                                             flex justify-center px-2 lg:max-h-[70vh] xl:max-h-[75vh] 2xl:max-h-[90vh] flex-grow
                                             ${ocultarPrimeiraSection? 'sm:col-span-2 lg:scale-x-100 lg:col-span-1' : ''}
                                             `}>
-                            <Container titulo="Análise de situação de risco" maximizableComponent={<MaximizeContainer action={()=> handleOcultarPrimeiraSection()}/>}>                                    
+                            {/* <Container titulo="Análise de situação de risco" maximizableComponent={<MaximizeContainer action={()=> handleOcultarPrimeiraSection()}/>}>                                    
                                     <DadosDaAnaliseDeRisco />
-                            </Container>
+                            </Container> */}
+                            <ContainerTeste titulo="Análise de situação de risco" maximizableComponent={<MaximizeContainer action={()=> handleOcultarPrimeiraSection()} />}>
+                                <DadosDaAnaliseDeRiscoTeste />
+                            </ContainerTeste>
                         </section>
                     }
 
