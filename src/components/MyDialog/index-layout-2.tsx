@@ -153,8 +153,8 @@ export default function MyDialog({
                     <h1 className="flex flex-col gap-3 mt-3 bg-gray-100 text-green-900 p-2 font-bold text-center rounded-md">{itemRisk.risco.toUpperCase()}</h1>
                 </DialogHeader>
 
-                <div id="scrollAreaListaDeRiscos" ref={listRef} className="overflow-y-auto max-h-[500px] rounded-3xl pb-3 pr-1 custom-scrollbar">
-                    <div className="flex justify-between items-center sticky top-0 rounded-t-2xl bg-gray-200 p-2">
+                <div id="scrollAreaListaDeRiscos" ref={listRef} className="overflow-y-auto max-h-[500px] rounded-2xl pb-3 pr-1 custom-scrollbar">
+                    <div className="flex justify-between items-center sticky top-0 rounded-t-xl bg-gray-200 p-2">
                         <p className="text-base md:text-sm font-bold select-none">Fotos</p>
                         <div id='addImageSection' className="flex bg-green-600 hover:bg-green-400 rounded-3xl p-1 text-xs select-none text-white cursor-pointer">
                             <Plus className="w-3 h-3" />
@@ -171,7 +171,7 @@ export default function MyDialog({
                         </div>
                     </div>
 
-                    <div className="bg-gray-100 rounded-b-2xl py-2">
+                    <div className="bg-gray-100 rounded-b-xl py-2">
                         <div className="flex flex-row flex-wrap items-center justify-center gap-2">
                             {
                                 itemRisk.images?.map((image, indexImage) => (
@@ -189,7 +189,7 @@ export default function MyDialog({
                         </div>
                     </div>
 
-                    <div className="flex justify-between items-center sticky top-0 mt-4 bg-gray-200 rounded-t-2xl p-2">
+                    <div className="flex justify-between items-center sticky top-0 mt-4 bg-gray-200 rounded-t-xl p-2">
                         <p className="text-base md:text-sm font-bold select-none">Principais consequências</p>
                         <div 
                             className="bg-green-600 hover:bg-green-400 rounded-3xl p-1 text-xs select-none text-white cursor-pointer"
@@ -199,7 +199,7 @@ export default function MyDialog({
                         </div>
                     </div>
 
-                    <div className="bg-gray-100 rounded-b-2xl px-2">
+                    <div className="bg-gray-100 rounded-b-xl px-2">
                         {
                             itemRisk && itemRisk.consequencias?.map((consequencia, indexConsequencia)=> (
                                 <div key={consequencia.id} className="flex h-full p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">
@@ -236,7 +236,7 @@ export default function MyDialog({
                         }
                     </div>
 
-                    <div className="flex justify-between items-center sticky top-0 mt-4 rounded-t-2xl bg-gray-200 p-2">
+                    <div className="flex justify-between items-center sticky top-0 mt-4 rounded-t-xl bg-gray-200 p-2">
                         <p className="text-base md:text-sm font-bold select-none">Ações recomendadas</p>
                         <div 
                             className="bg-green-600 hover:bg-green-400 rounded-3xl p-1 text-xs select-none text-white cursor-pointer"
@@ -246,7 +246,7 @@ export default function MyDialog({
                         </div>
                     </div>
 
-                    <div className="bg-gray-100 rounded-b-2xl px-2">
+                    <div className="bg-gray-100 rounded-b-xl px-2">
                         {
                             itemRisk && itemRisk.acoes.map((acao, indexAcao)=> (
                                 <div key={acao.id} className="flex h-auto p-2 gap-2 justify-between bg-gray-100 rounded-md border-t-[1px]">

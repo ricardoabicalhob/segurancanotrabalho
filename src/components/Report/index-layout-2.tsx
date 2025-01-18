@@ -40,8 +40,8 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                                 flex p-4 gap-2 mb-4
                                 border-b-2 
                                 max-w-[926px] w-full self-center`}>
-                    <Image className="self-center" alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
-                    <p className="self-center justify-self-start w-full ml-2">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+                    <Image className="self-center" alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={60} height={60}/>
+                    <p className="self-center justify-self-start w-full ml-8">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
                 </div>
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
