@@ -5,15 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import { AlertTriangle, Download, Edit, ExternalLink, FileUp, ScanEye, Trash2 } from "lucide-react";
 import Container, { MaximizeContainer } from "@/components/Container";
 import DadosDaInspecao from "@/components/DadosDaInspecao";
-import DadosDaAnaliseDeRisco from "@/components/DadosDaAnaliseDeRisco";
 import { DataContext } from "@/lib/datacontext";
 import { CustomList } from "@/components/MyCustomList";
-import { SystemContext } from "@/lib/context/SystemContext";
 import { ActionBar } from "@/components/ActionBar";
 import { FileRIS, FileRISTeste } from "@/lib/types";
 import DownloadFileRIS from "@/lib/downloadFile copy";
 import { useRouter } from "next/navigation";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import MyDialog from "@/components/MyDialog/index-layout-2";
@@ -142,10 +140,8 @@ export default function TesteLayout() {
                                             flex justify-center px-2 lg:max-h-[70vh] xl:max-h-[75vh] 2xl:max-h-[90vh] flex-grow
                                             ${ocultarPrimeiraSection? 'sm:col-span-2 lg:scale-x-100 lg:col-span-1' : ''}
                                             `}>
-                            {/* <Container titulo="Análise de situação de risco" maximizableComponent={<MaximizeContainer action={()=> handleOcultarPrimeiraSection()}/>}>                                    
-                                    <DadosDaAnaliseDeRisco />
-                            </Container> */}
-                            <ContainerTeste titulo="Análise de situação de risco" maximizableComponent={<MaximizeContainer action={()=> handleOcultarPrimeiraSection()} />}>
+                            
+                            <ContainerTeste titulo="Análise de situação de risco">
                                 <DadosDaAnaliseDeRiscoTeste />
                             </ContainerTeste>
                         </section>

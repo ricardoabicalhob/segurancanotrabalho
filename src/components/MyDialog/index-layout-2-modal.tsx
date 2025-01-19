@@ -217,14 +217,14 @@ export default function MyModalDialog({
     
     
     return(
-        <div className="fixed inset-0 z-[50] w-[100vw] min-h-dvh bg-black/80 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 w-[100vw] min-h-dvh bg-black/80 flex items-center justify-center">
             
-            <div className="flex flex-col justify-start gap-3 p-2 w-full max-w-3xl h-[600px] bg-white rounded-md">
+            <div className="flex flex-col justify-start gap-3 p-2 w-full max-w-2xl h-[670px] bg-white rounded-md">
                 <div className="w-full">
                     <h1 className="flex flex-col gap-3 bg-gray-100 text-green-900 p-2 font-bold text-center rounded-md">{itemRisk.risco.toUpperCase()}</h1>
                 </div>
 
-                <div id="scrollAreaListaDeRiscos" ref={listRef} className="flex-grow overflow-y-auto max-h-[500px] rounded-2xl pb-3 pr-1 custom-scrollbar">
+                <div id="scrollAreaListaDeRiscos" ref={listRef} className="flex-grow overflow-y-auto max-h-[670px] rounded-2xl pb-3 pr-1 custom-scrollbar">
                     <div className="flex justify-between items-center sticky top-0 rounded-t-xl bg-gray-200 p-2">
                         <p className="text-base md:text-sm font-bold select-none">Fotos</p>
                         <div id='addImageSection' className="flex bg-green-600 hover:bg-green-400 rounded-3xl p-1 text-xs select-none text-white cursor-pointer">
