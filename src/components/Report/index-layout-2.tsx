@@ -188,10 +188,21 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
             }
 
             <p className="w-[910px] font-bold mb-3 print:break-after-avoid">CONCLUSÃO</p>
-            <p className="text-justify w-[900px]">A inspeção realizada evidenciou a necessidade de melhorias nas condições de trabalho, com a identificação de <i><strong>{`${listRisks.length} ${listRisks.length === 1? 'situação' : 'situações'}`} de risco</strong></i> no local inspecionado. Os trabalhadores estão expostos a perigos dos tipos: 
-                <i><strong>{`${dataChart.map((item, index)=> (
-                    `${item.quantidade > 0? ` ${item.quantidade > 0? (`${item.tipo.toLocaleLowerCase()}${index === dataChart.length - 2? ' e ' : (`${index === dataChart.length - 1? '' : ', '}`)}` ) : ''}` : ``}`
-                )).join('')}`}</strong></i>. É importante ressaltar que a prevenção de acidentes e doenças ocupacionais é fundamental para garantir a saúde e
+            <p className="text-justify w-[900px]">
+                A inspeção realizada evidenciou a necessidade de melhorias nas condições de trabalho, com a identificação de 
+                <i>
+                    <strong>
+                        {` ${listRisks.length} ${listRisks.length === 1? 'situação' : 'situações'}`} de risco
+                    </strong>
+                </i> no local inspecionado. Os trabalhadores estão expostos a perigos dos tipos: 
+                <i>
+                    <strong>
+                        {`${dataChart.map((item, index)=> (
+                            `${item.quantidade > 0? ` ${item.quantidade > 0? (`${item.tipo.toLocaleLowerCase()}${index === dataChart.length - 2? ' e ' : (`${index === dataChart.length - 1? '' : ', '}`)}` ) : ''}` : ``}`
+                        )).join('')}`}
+                    </strong>
+                </i>. 
+                É importante ressaltar que a prevenção de acidentes e doenças ocupacionais é fundamental para garantir a saúde e
                 a segurança dos colaboradores. Diante do exposto, recomenda-se a adoção urgente das medidas corretivas propostas neste relatório, 
                 visando eliminar ou minimizar os riscos identificados e promover um ambiente de trabalho seguro e saudável.</p>
 
