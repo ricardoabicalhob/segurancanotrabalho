@@ -28,6 +28,18 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
         hideChart
     } = useContext(DataContext)
 
+    function removeEmptyDataChartGroups(dataChart :{ tipo: string; quantidade: number}[]) {
+        const newDataChart :{ tipo: string; quantidade: number}[] = []
+
+        dataChart.map((item, index)=> {
+            if(item.quantidade > 0) {
+                newDataChart.push(item)
+            }
+        })
+
+        return newDataChart
+    }
+
     useEffect(()=> {
         handleSummarizeByRiskGroup()
     }, [])
@@ -158,15 +170,11 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                             </TableHeader>
                             <TableBody>
                                 {
-                                    dataChart?.map((item, index)=> (
-                                        item.quantidade > 0
-                                        ?
-                                            <TableRow key={index}>
-                                                <TableCell className="font-medium">{item.tipo}</TableCell>
-                                                <TableCell className="text-right">{item.quantidade}</TableCell>
-                                            </TableRow>
-                                        :
-                                            null 
+                                    removeEmptyDataChartGroups(dataChart)?.map((item, index)=> (
+                                        <TableRow key={index}>
+                                            <TableCell className="font-medium">{item.tipo}</TableCell>
+                                            <TableCell className="text-right">{item.quantidade}</TableCell>
+                                        </TableRow>
                                     ))
                                 }
                                 <TableRow>
@@ -194,17 +202,18 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                     <strong>
                         {` ${listRisks.length} ${listRisks.length === 1? 'situação' : 'situações'}`} de risco
                     </strong>
-                </i> no local inspecionado. Os trabalhadores estão expostos a perigos dos tipos: 
+                </i> no local inspecionado. Os trabalhadores estão expostos a perigo(s) {removeEmptyDataChartGroups(dataChart).length > 1? 'dos tipos: ' : 'do tipo: '}
                 <i>
                     <strong>
-                        {`${dataChart.map((item, index)=> (
-                            `${item.quantidade > 0? ` ${item.quantidade > 0? (`${item.tipo.toLocaleLowerCase()}${index === dataChart.length - 2? ' e ' : (`${index === dataChart.length - 1? '' : ', '}`)}` ) : ''}` : ``}`
-                        )).join('')}`}
+                        {removeEmptyDataChartGroups(dataChart).map((item, index)=> (
+                            item.tipo.toLocaleLowerCase() + (index === removeEmptyDataChartGroups(dataChart).length -2? ' e ' : (index === removeEmptyDataChartGroups(dataChart).length - 1? '' : ', '))
+                        )).join(' ')}
                     </strong>
                 </i>. 
                 É importante ressaltar que a prevenção de acidentes e doenças ocupacionais é fundamental para garantir a saúde e
                 a segurança dos colaboradores. Diante do exposto, recomenda-se a adoção urgente das medidas corretivas propostas neste relatório, 
-                visando eliminar ou minimizar os riscos identificados e promover um ambiente de trabalho seguro e saudável.</p>
+                visando eliminar ou minimizar os riscos identificados e promover um ambiente de trabalho seguro e saudável.
+            </p>
 
             {
                 !hideChart
