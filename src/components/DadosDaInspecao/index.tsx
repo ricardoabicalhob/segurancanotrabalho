@@ -18,6 +18,15 @@ export const formInspectionInformationSchema = z.object({
     localInspecionado: z.string().min(2, {
         message: ''
     }).toUpperCase(),
+    localInspecionadoRua: z.string().min(2, {
+        message: ''
+    }).toUpperCase(),
+    localInspecionadoNumero: z.string().min(2, {
+        message: ''
+    }).toUpperCase(),
+    localInspecionadoBairro: z.string().min(2, {
+        message: ''
+    }).toUpperCase(),
     areaEmitente: z.string().min(2, {
         message: ''
     }).toUpperCase(),
@@ -87,6 +96,9 @@ export default function DadosDaInspecao() {
                 setValue('cipa', inspectionData.cipa)
                 setValue('areaLotacao', inspectionData.areaLotacao)
                 setValue('localInspecionado', inspectionData.localInspecionado)
+                setValue('localInspecionadoRua', inspectionData.localInspecionadoRua)
+                setValue('localInspecionadoNumero', inspectionData.localInspecionadoNumero)
+                setValue('localInspecionadoBairro', inspectionData.localInspecionadoBairro)
                 setValue('cidade', inspectionData.cidade)
                 setValue('data', new Date(inspectionData.data).toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'))
                 setValue('hora', inspectionData.hora)
@@ -141,6 +153,34 @@ export default function DadosDaInspecao() {
                     label="Local inspecionado"
                     type="text"
                     {...register('localInspecionado')}
+                />
+
+                <div className="flex justify-between gap-2">
+                    <MyCustomInput 
+                        classNameContainer="w-full"
+                        initialState={inspectionData? true : false}
+                        disabled={isSaved}
+                        label="Rua"
+                        type="text"
+                        {...register('localInspecionadoRua')}
+                    />
+                    <MyCustomInput 
+                        classNameContainer="w-[100px]"
+                        maxLength={6}
+                        initialState={inspectionData? true : false}
+                        disabled={isSaved}
+                        label="Nº"
+                        type="text"
+                        {...register('localInspecionadoNumero')}
+                    />
+                </div>
+
+                <MyCustomInput 
+                    initialState={inspectionData? true : false}
+                    disabled={isSaved}
+                    label="Bairro"
+                    type="text"
+                    {...register('localInspecionadoBairro')}
                 />
 
                 <MyCustomInput 

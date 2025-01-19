@@ -1,23 +1,22 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
-
 export interface InputProps 
   extends React.InputHTMLAttributes<HTMLInputElement> { 
     label :string, 
     classNameContainer? :string, 
     initialState :boolean
+    width? :number
 }
 
 const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className: className, type, label, classNameContainer, initialState , ...props }, ref) => {
+  ({ className: className, type, label, width, classNameContainer, initialState , ...props }, ref) => {
 
     React.useEffect(()=> {
         if(initialState) {
             if(type === 'date' || type === 'time'){
                 document.getElementById(`label${label}`)?.classList.replace('w-[80%]', 'w-fit')
             }else {
-                document.getElementById(`label${label}`)?.classList.replace('w-[96%]', 'w-fit')
+                document.getElementById(`label${label}`)?.classList.replace(`w-[${width*0.96}%]`, 'w-fit')
             }
 
             document.getElementById(`input-${label}`)?.classList.add('disabled:text-gray-400')
@@ -31,12 +30,12 @@ const MyCustomInput = React.forwardRef<HTMLInputElement, InputProps>(
     return (
         <div
             id={`container${label}`}
-            className={`relative px-2 pt-2 md:pt-2 pb-1.5 md:pb-0.5 border-[1px] rounded-md ${classNameContainer}`}
+            className={`relative w-[${width}%] px-2 pt-2 md:pt-2 pb-1.5 md:pb-0.5 border-[1px] rounded-md ${classNameContainer}`}
         >
             <label
                 id={`label${label}`}
                 htmlFor={`input-${label}`}
-                className={`absolute select-none bg-white ${type === 'date' || type === 'time'? 'w-[80%]' : 'w-[96%]'} text-gray-500 px-1
+                className={`absolute select-none bg-white ${type === 'date' || type === 'time'? 'w-[80%]' : `w-[${width*0.96}%]`} text-gray-500 px-1
                            top-6 -translate-y-4 text-base md:text-sm transform origin-top-left 
                            transition-all 
                            duration-200 

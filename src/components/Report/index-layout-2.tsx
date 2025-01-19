@@ -57,14 +57,19 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                 </div>
                 <table className="border-2 table-auto bg-slate-50 w-full">
                     <tr className="border-2 w-full">
-                        <td className="border-2 pl-2"><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
+                        <td className="border-2 pl-2" colSpan={2}><b>Empresa: </b>{`${inspectionInformations.empresa}`}</td>
                         <td className="border-2 pl-2"><b>Data: </b>{`${new Date(inspectionInformations.data).toLocaleDateString('pt-BR')}`}</td>
                         <td className="border-2 pl-2"><b>Hora: </b>{`${inspectionInformations.hora}`}</td>
+                        <td className="border-2 pl-2" colSpan={2}><b>Área emitente: </b>{`${inspectionInformations.areaEmitente}/${inspectionInformations.cipa}`}</td>
                     </tr>
                     <tr className="border-2 w-full">
-                        <td className="border-2 pl-2"><b>Local inspecionado: </b>{`${inspectionInformations.areaLotacao}/${inspectionInformations.localInspecionado}`}</td>
+                        <td className="border-2 pl-2" colSpan={5}><b>Local inspecionado: </b>{`${inspectionInformations.areaLotacao}/${inspectionInformations.localInspecionado}`}</td>
                         <td className="border-2 pl-2"><b>Cidade: </b>{`${inspectionInformations.cidade}`}</td>
-                        <td className="border-2 pl-2"><b>Área emitente: </b>{`${inspectionInformations.areaEmitente}/${inspectionInformations.cipa}`}</td>
+                    </tr>
+                    <tr>
+                        <td className="border-2 pl-2" colSpan={3}><b>Rua: </b>{inspectionInformations.localInspecionadoRua}</td>
+                        <td className="border-2 pl-2"><b>Nº: </b>{inspectionInformations.localInspecionadoNumero}</td>
+                        <td className="border-2 pl-2" colSpan={2}><b>Bairro: </b>{inspectionInformations.localInspecionadoBairro}</td>
                     </tr>
                 </table>
 

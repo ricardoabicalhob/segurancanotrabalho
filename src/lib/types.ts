@@ -16,6 +16,9 @@ export type inspectionInformationsTeste = {
     empresa :string
     areaLotacao :string
     localInspecionado :string
+    localInspecionadoRua :string
+    localInspecionadoNumero :string
+    localInspecionadoBairro :string
     areaEmitente :string
     cidade :string
     cipa :string
