@@ -155,7 +155,7 @@ export default function TesteLayout() {
                                         lg:max-h-[70vh] xl:max-h-[75vh] 2xl:max-h-[90vh] flex-grow
                                         `}>
                         <Container 
-                            titulo="Situações de risco identificadas"
+                            titulo={`Situações de risco identificadas ${listRisks.length > 0? '(' + listRisks.length + ')' : ''}`}
                         >
                             <TooltipProvider>
                                 <CustomList.Container
