@@ -162,7 +162,7 @@ export default function TesteLayout() {
                                     data={listRisks}
                                     emptyList={<CustomList.Empty text="Sua lista ainda está vazia"/>}
                                     renderItemComponent={({key, item})=> (
-                                        <CustomList.Item key={key} item={item} index={key}>
+                                        <CustomList.Item key={key} item={item} index={key as number}>
                                             <CustomList.ItemActions>
                                                 <MyDialog
                                                     indexRisk={key as number}
@@ -181,16 +181,15 @@ export default function TesteLayout() {
                                                         <CustomList.ItemAction 
                                                             icon={Trash2} 
                                                             className="border-[1px] bg-inherit hover:bg-red-400" 
-                                                            // onClick={()=> {handleRemoveRiskOfList(key as number)}}    
                                                         />
                                                     </AlertDialogTrigger>
                                                     <AlertDialogContent>
-                                                        <AlertDialogHeader>
-                                                            <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="w-5 h-5 text-yellow-500" />Alerta</AlertDialogTitle>
-                                                            <AlertDialogDescription className="">
-                                                                <p>Esta ação não poderá ser desfeita. Isso excluirá permanentemente
-                                                                a situação de risco: <br/><br/>
-                                                                <i>{`${item.risco}.`}</i><br/></p>
+                                                        <AlertDialogHeader className="p-0 m-[-12px]">
+                                                            <AlertDialogTitle className="flex items-center gap-2 text-base bg-gray-100 p-1 rounded-md"><AlertTriangle className="w-5 h-5 text-yellow-500" />Alerta</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                <p className="mt-4 text-gray-900">Esta ação não poderá ser desfeita. Isso excluirá permanentemente
+                                                                a situação de risco:</p> <br/>
+                                                                <p className="mb-4 p-2 bg-red-100 text-red-super rounded-md"><i>{key as number}. {item.risco}.</i><br/></p>
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter>
