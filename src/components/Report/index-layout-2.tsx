@@ -201,7 +201,7 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
             }
 
             <p className="w-[910px] font-bold mb-3 print:break-after-avoid">CONCLUSÃO</p>
-            <p className="text-justify w-[900px]">
+            <p className="text-justify w-[900px] print:break-inside-avoid">
                 A inspeção realizada evidenciou a necessidade de melhorias nas condições de trabalho, com a identificação de 
                 <i>
                     <strong>
