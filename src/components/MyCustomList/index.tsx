@@ -109,9 +109,10 @@ function TitleList( {title, horizontalAlignment} :TitleListProps) {
 interface ItemListProps {
     children :ReactNode
     item? :RiskProps
+    index :number
 }
 
-function ItemList({ item, children } :ItemListProps) {
+function ItemList({ index, item, children } :ItemListProps) {
     
     useEffect(()=> {
         const container = document.getElementById(`container-${item?.consequencias[0].id}`)
@@ -139,7 +140,7 @@ function ItemList({ item, children } :ItemListProps) {
                         <span 
                             className="text-sm md:text-sm select-none whitespace-nowrap overflow-hidden overflow-ellipsis"
                         >
-                            {item?.risco}
+                            {index + 1}. {item?.risco}
                         </span>
                         {children}
                     </div>

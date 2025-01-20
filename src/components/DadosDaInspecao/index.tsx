@@ -1,4 +1,3 @@
-import { inspectionInformationsProps, inspectionInformationsTeste } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -6,7 +5,6 @@ import { Button } from "../ui/button"
 import { MyCustomInput } from "../MyCustomInput"
 import { useContext, useEffect, useState } from "react"
 import { DataContext } from "@/lib/datacontext"
-import { SystemContext } from "@/lib/context/SystemContext"
 
 export const formInspectionInformationSchema = z.object({
     empresa: z.string().min(2, {

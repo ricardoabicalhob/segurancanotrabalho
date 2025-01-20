@@ -162,7 +162,7 @@ export default function TesteLayout() {
                                     data={listRisks}
                                     emptyList={<CustomList.Empty text="Sua lista ainda está vazia"/>}
                                     renderItemComponent={({key, item})=> (
-                                        <CustomList.Item key={key} item={item}>
+                                        <CustomList.Item key={key} item={item} index={key}>
                                             <CustomList.ItemActions>
                                                 <MyDialog
                                                     indexRisk={key as number}
