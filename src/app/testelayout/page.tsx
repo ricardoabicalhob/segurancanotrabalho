@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
-import { AlertTriangle, Download, Edit, ExternalLink, FileUp, ScanEye, Trash2 } from "lucide-react";
+import { AlertTriangle, Download, Edit, ExternalLink, FileUp, LogOut, ScanEye, Trash2 } from "lucide-react";
 import Container, { MaximizeContainer } from "@/components/Container";
 import DadosDaInspecao from "@/components/DadosDaInspecao";
 import { DataContext } from "@/lib/datacontext";
@@ -17,7 +17,6 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import MyDialog from "@/components/MyDialog/index-layout-2";
 import ContainerTeste from "@/components/Container/index copy";
 import DadosDaAnaliseDeRiscoTeste from "@/components/DadosDaAnaliseDeRisco/index copy";
-import { Separator } from "@/components/ui/separator";
 
 
 export default function TesteLayout() {
@@ -117,6 +116,7 @@ export default function TesteLayout() {
                     />
                     <ActionBar.ActionUploadFile icon={FileUp} textButton="Carregar relatório" isLoadingFile={isLoadingFile} onClick={()=> handleSelectFile()} />
                     <ActionBar.Action icon={Download} textButton="Baixar" disabled={ handleCheckFilling() } onClick={()=> DownloadFileRIS(handleCheckFilling, inspectionData, listRisks)} />
+                    <ActionBar.Action icon={LogOut} textButton="Sair" onClick={()=> router.back()} />
                 </ActionBar.Bar>
 
                 <main  className={`grid max-w-screen h-[100vh] grid-flow-row

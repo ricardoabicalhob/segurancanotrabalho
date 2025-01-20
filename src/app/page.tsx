@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SystemContext } from "@/lib/context/SystemContext";
+import { DataContext } from "@/lib/datacontext";
 import { FileCheck, FileUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,7 +20,7 @@ export default function Home() {
     const [ isLoadingFile, setIsLoadingFile ] = useState(false)
     const [ isLoadingPage, setIsLoadingPage ] = useState(false)
     const [ isLoadingEditor, setIsLoadingEditor ] = useState(false)
-    const { setUploadedFile, uploadedFile } = useContext(SystemContext)
+    const { setUploadedFile, uploadedFile } = useContext(DataContext)
 
     function handleSelectFile() {
         const fileSelected = document.getElementById('inputFileLoaded')
@@ -59,23 +60,39 @@ export default function Home() {
         setIsLoadingEditor(true)
     }
 
-    useEffect(() => {
-        window.history.pushState(null, window.location.href)
-        window.onpopstate = () => {
-          if (window.confirm('Todo o preenchimento do relatório será perdido! Tem certeza que deseja sair?')) {
-            window.history.go(0)
-          } else {
-            window.history.go(1);
-          }
-        };
-      }, []);
+    useEffect(()=> {
+        const initialUrl = window.location.href
+
+        window.onpopstate = ()=> {
+            const currentUrl = window.location.href
+            if(currentUrl === initialUrl) {
+                if(window.confirm('Todo o preenchimento do relatório será perdido! Tem certeza que deseja sair?')) {
+
+                }else {
+                    window.history.go(1)
+                }
+            }
+        }
+    }, [])
+
+    // useEffect(() => {
+    //     window.history.pushState(null, window.location.href)
+    //     window.onpopstate = () => {
+    //       if (window.confirm('Todo o preenchimento do relatório será perdido! Tem certeza que deseja sair?')) {
+    //         window.history.go(0)
+    //       } else {
+    //         window.history.go(1);
+    //       }
+    //     };
+    //   }, []);
 
     useEffect(()=> {
         if(uploadedFile) {
             setIsLoadingPage(true)
 
             setTimeout(() => {
-                router.push('/editor')
+                router.push('/testelayout')
+                // router.push('/editor')
                 
                 setTimeout(() => {
                     setUploadedFile(null)
@@ -85,7 +102,7 @@ export default function Home() {
     }, [uploadedFile])
 
     return(
-        <div className="flex flex-col w-screen h-[100vh] justify-between">
+        <div className="flex flex-col w-screen h-[100vh] justify-center">
             <nav className="p-6">
                 {/* <Image alt='' src={require('../lib/imagens/logo-cipa-2.png')} width={50} height={50} /> */}
             </nav>
@@ -98,7 +115,8 @@ export default function Home() {
                 <div className="flex flex-col md:flex-row self-center gap-4 mb-4">
                         <Button 
                             className="bg-green-800 hover:bg-green-600 w-full md:w-fit"
-                            onClick={()=> {router.push('/editor'); handleIsLoadingEditor()}}
+                            // onClick={()=> {router.push('/editor'); handleIsLoadingEditor()}}
+                            onClick={()=> {router.push('/testelayout'); handleIsLoadingEditor()}}
                         >
                             Começar
                         </Button>
@@ -144,9 +162,10 @@ export default function Home() {
                     <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
 
                     <div className="flex flex-row flex-1">
-                        <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
-                            Descreva as situações de risco identificadas em campo e deixe que a Inteligência Artifical Google Gemini te ajude a fazer uma análise das principais consequências que esta situação pode acarretar, 
-                            e recomendar ações para garantir a segurança dos trabalhadores e o cumprimento das normas regulamentadoras, ou faça sua própria análise.
+                        <p className="flex flex-col p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            Após a identificação das situações de risco em campo, você pode:<br/><br/>
+                            <p><b>Utilizar a Inteligência Artificial Google Gemini</b> para auxiliar na análise de impactos e sugestão de medidas preventivas.</p><br/>
+                            <p><b>Realizar uma análise própria</b>, baseada em sua experiência e conhecimento técnico.</p>
                         </p>
                     </div>
 
@@ -162,7 +181,7 @@ export default function Home() {
                     
                     <div className="flex flex-row flex-1">
                         <p className="flex p-4 lg:p-0 text-md lg:text-sm font-medium">
-                            Revise as situações de risco adicionadas à lista e ao final visualize o relatório completo.
+                            Revise e edite as situações de risco adicionadas à lista e ao final visualize o relatório completo.
                         </p>
                     </div>
                     

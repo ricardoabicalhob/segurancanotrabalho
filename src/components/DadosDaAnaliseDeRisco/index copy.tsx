@@ -430,7 +430,7 @@ export default function DadosDaAnaliseDeRiscoTeste({  } :DadosDaAnaliseDeRiscoPr
                         handleLoadingIndicator()
                     }}
                 >
-                    Analisar sitação de risco com IA
+                    Analisar a situação de risco com IA
                 </Button>
                 <span className="text-sm self-center">Ou</span>
                 <Button
