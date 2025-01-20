@@ -17,6 +17,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import MyDialog from "@/components/MyDialog/index-layout-2";
 import ContainerTeste from "@/components/Container/index copy";
 import DadosDaAnaliseDeRiscoTeste from "@/components/DadosDaAnaliseDeRisco/index copy";
+import { Separator } from "@/components/ui/separator";
 
 
 export default function TesteLayout() {
@@ -189,10 +190,10 @@ export default function TesteLayout() {
                                                             <AlertDialogDescription>
                                                                 <p className="mt-4 text-gray-900">Esta ação não poderá ser desfeita. Isso excluirá permanentemente
                                                                 a situação de risco:</p> <br/>
-                                                                <p className="mb-4 p-2 bg-red-100 text-red-super rounded-md"><i>{key as number}. {item.risco}.</i><br/></p>
+                                                                <p className="mb-4 p-2 border-[1px] text-black rounded-md"><i>{key as number}. {item.risco}.</i></p> <br/>
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
-                                                        <AlertDialogFooter>
+                                                        <AlertDialogFooter className="p-0 m-[-12px]">
                                                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
                                                             <AlertDialogAction className="bg-green-800 hover:bg-green-600" onClick={()=> {handleRemoveRiskOfList(key as number)}}>Prosseguir</AlertDialogAction>
                                                         </AlertDialogFooter>
