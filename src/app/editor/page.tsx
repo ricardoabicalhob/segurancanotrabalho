@@ -1,107 +1,228 @@
 'use client'
 
-import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
+import { AlertTriangle, Download, Edit, ExternalLink, FileUp, LogOut, ScanEye, Trash2 } from "lucide-react";
+import Container, { MaximizeContainer } from "@/components/Container";
+import DadosDaInspecao from "@/components/DadosDaInspecao";
+import { DataContext } from "@/lib/datacontext";
+import { CustomList } from "@/components/MyCustomList";
+import { ActionBar } from "@/components/ActionBar";
+import { FileRIS, FileRISTeste } from "@/lib/types";
+import DownloadFileRIS from "@/lib/downloadFile copy";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ChevronLeft, ExternalLink, Link } from "lucide-react";
-import { inspectionInformationsProps } from "@/lib/types";
-import { SystemContext } from "@/lib/context/SystemContext";
-import CardListRisk from "../CardListRisk/_components/card-list-risk";
-import DialogAnalysisRisk from "../DialogAnalysisRisk";
-import InspectionInformationForm from "../InspectionInformationForm/_components/inspection-information-form";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import MyDialog from "@/components/MyDialog/index-layout-2";
+import ContainerTeste from "@/components/Container/index copy";
+import DadosDaAnaliseDeRiscoTeste from "@/components/DadosDaAnaliseDeRisco/index copy";
 
-export default function Home() {
 
-    const [ readyReport, setReadyReport ] = useState(true)
-    const [ formUnlocked, setFormUnlocked ] = useState(false)
-    const [ hideSectionInspectionInformations, setHideSectionInspectionInformations ] = useState(true)
-
-    const { 
-        listRisks,
-        inspectionInformations, setInspectionInformations,
-        handleSaveRisk } = useContext(SystemContext)
+export default function TesteLayout() {
 
     const router = useRouter()
+    
+    const [ ocultarPrimeiraSection, setOcultarPrimeiraSection ] = useState(false)
+    const [ isLoadingFile, setIsLoadingFile ] = useState(false)
+    const [ isLoadingReport, setIsLoadingReport ] = useState(false)
+
+    const { 
+        setInspectionData, inspectionData,
+        listRisks, setListRisks,
+        formUnlocked, setFormUnlocked,
+        uploadedFile, handleRemoveRiskOfList 
+    } = useContext(DataContext)
+
+    const handleOcultarPrimeiraSection = ()=> {
+        setOcultarPrimeiraSection(!ocultarPrimeiraSection)
+    }
+
+    function handleSelectFile() {
+        const fileSelected = document.getElementById('inputFileLoaded')
+        
+        const listener = function(event :Event){
+            const input = event.target as HTMLInputElement
+
+            if(input.files && input.files.length) {
+                const file = input.files[0]
+                let reader = new FileReader()
+                reader.readAsText(file, 'utf8')
+
+                setIsLoadingFile(true)
+
+                reader.onload = () => {
+                    try {
+                        const data = JSON.parse(reader.result as string)
+                        console.log(data)
+                        setInspectionData(data?.inspectionData)
+                        setListRisks(data?.listRisks)
+                        // setFormUnlocked(data?.checkFilling)
+                    }catch(error) {
+                        console.error('Erro ao ler o arquivo: ', error)
+                    }finally{
+                        setIsLoadingFile(false)
+                        setFormUnlocked(false)
+                    }
+                }
+
+                reader.onerror = () => {
+                    console.error('Erro ao ler o arquivo.')
+                    setIsLoadingFile(false)
+                }
+            }
+        }
+
+        if(fileSelected) {
+            fileSelected.addEventListener('change', listener, {once: true})
+        }
+    }
 
     function handleCheckFilling() {
-        if(listRisks.length && formUnlocked) {
-            return true
+        if(listRisks.length && !formUnlocked) {
+            return false
         }
-        return false
-    }
-
-    function handleSetFormUnlocked(value? :boolean) {
-        if(value) {
-            setFormUnlocked(value)
-        }else {
-            setFormUnlocked(!formUnlocked)
-        }
-    }
-
-    function handleReadyReport() {
-        setReadyReport(!readyReport)
-    }
-
-    function handleAddInspectionInformations(inspectionInformations :inspectionInformationsProps) {
-        setInspectionInformations(inspectionInformations)
-    }
-
-    function handleChangeHideSectionInspectionInformations() {
-        setHideSectionInspectionInformations(!hideSectionInspectionInformations)
+        return true
     }
 
     useEffect(()=> {
-        handleCheckFilling()
-    }, [listRisks.length, formUnlocked])
+        if(uploadedFile) {
+            const dataUploadedFile = uploadedFile as FileRISTeste
+            setInspectionData(dataUploadedFile?.inspectionData)
+            setListRisks(dataUploadedFile?.listRisks)
+            setFormUnlocked(dataUploadedFile?.checkFilling)
+        }
+    }, [listRisks, formUnlocked])
 
     return(
-        <div className="flex flex-col w-screen h-[100vh] justify-between">
-            
-            <nav className={`bg-gray-100 text-green-900 font-bold text-2xl grid grid-flow-col p-6 gap-2 ${readyReport ? '' : 'max-w-[960px] w-full self-center p-6'}`}>
-                <Image className="self-center" alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={100} height={100}/>
-                <p className="self-center justify-self-start w-full">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
-            </nav>
+        <TooltipProvider>
+            <div className="flex flex-col h-[100vh] w-[95vh] md:w-full justify-between">
 
-            <main className={`grid grid-cols-1 sm:grid-cols-2 h-auto ${readyReport ? 'lg:grid-cols-3 px-6' : 'lg:grid-cols-1 max-w-[960px]'}  gap-4 pt-6`}>
-                
-                {
-                    readyReport &&  <section className={`w-full`}>
-                                        <InspectionInformationForm setFormUnlocked={handleSetFormUnlocked} readyReport={readyReport} inspectionInformations={inspectionInformations} onAddInspectionInformations={handleAddInspectionInformations}/>
-                                    </section>
-                }
+                <nav className={`bg-gray-100 font-bold flex p-3 gap-2`}>
+                    <Image className={`self-center`} alt="" src={require('../../lib/imagens/logo-cipa-2.png')} width={40} height={40}/>
+                    <p className="self-center justify-self-start w-full text-green-900">RELATÓRIO DE INSPEÇÃO DE SEGURANÇA DO TRABALHO</p>
+                </nav>
 
-                {
-                    readyReport &&  <section>
-                                        <DialogAnalysisRisk onAddRisk={handleSaveRisk}/>
-                                    </section>
-                }
-
-                <section className="sm:col-span-2 lg:col-span-1">
-                    <CardListRisk 
-                        onLoadInspectionInformations={setInspectionInformations}
-                        statusReadyReport={readyReport} 
-                        onReadyReport={handleReadyReport} 
-                        inspectionInformations={inspectionInformations as inspectionInformationsProps}
-                        checkFilling={handleCheckFilling}
-                        setFormUnlocked={handleSetFormUnlocked}
-                        formUnlocked={formUnlocked}
+                <ActionBar.Bar border alignItems="justify-end">
+                    <ActionBar.Action 
+                        disabled={ handleCheckFilling() } 
+                        icon={ScanEye} 
+                        textButton="Visualizar relatório"
+                        textTooltip={`${formUnlocked || !listRisks.length? 'Para visualizar o relatório: ' : 'Visualizar'} ${formUnlocked? '\r\n- Preencha os dados da inspeção.' : ''} ${!listRisks.length? '- Insira pelo menos uma situação de risco em sua lista.' : ''}`} 
+                        onClick={()=> {
+                            setIsLoadingReport(true)
+                            router.push('/relatorio')
+                        }} 
                     />
-                </section>
+                    <ActionBar.ActionUploadFile icon={FileUp} textButton="Carregar relatório" isLoadingFile={isLoadingFile} onClick={()=> handleSelectFile()} />
+                    <ActionBar.Action icon={Download} textButton="Baixar" disabled={ handleCheckFilling() } onClick={()=> DownloadFileRIS(handleCheckFilling, inspectionData, listRisks)} />
+                    <ActionBar.Action icon={LogOut} textButton="Sair" onClick={()=> router.back()} />
+                </ActionBar.Bar>
 
-            </main>
-            
-            {
-                readyReport &&  <footer className={`flex flex-col h-auto bg-gray-100 p-6 mt-6 gap-2 ${readyReport ? 'w-screen' : 'max-w-[960px]'}`}>
-                                    <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
-                                    <a 
-                                        href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes"
-                                        className={`flex gap-2 mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-md font-bold text-green-600 hover:text-green-400`}
-                                        target="blank"
-                                    >
-                                        <ExternalLink /> Ministério do Trabalho e Emprego - Normas Regulamentadoras Vigentes
-                                    </a>
-                                </footer>
-            }
-        </div>
-   )
+                <main  className={`grid max-w-screen h-[100vh] grid-flow-row
+                            sm:grid-rows-2 sm:grid-cols-2 
+                            lg:grid-rows-1  
+                            ${ocultarPrimeiraSection? 'flex grid-rows-2 md:grid-cols-2' : 'grid-rows-3 lg:grid-cols-3'} 
+                            `}
+                >
+
+                    {
+                        !ocultarPrimeiraSection &&  
+                            <section className="flex justify-center px-2 col-span-1 lg:max-h-[70vh] xl:max-h-[75vh] 2xl:max-h-[90vh] flex-grow"
+                            >
+                                <Container titulo="Dados da inspeção">
+                                    <DadosDaInspecao />
+                                </Container>
+                            </section>
+                    }
+
+                    {
+                        <section className={`
+                                            flex justify-center px-2 lg:max-h-[70vh] xl:max-h-[75vh] 2xl:max-h-[90vh] flex-grow
+                                            ${ocultarPrimeiraSection? 'sm:col-span-2 lg:scale-x-100 lg:col-span-1' : ''}
+                                            `}>
+                            
+                            <ContainerTeste titulo="Análise de situação de risco">
+                                <DadosDaAnaliseDeRiscoTeste />
+                            </ContainerTeste>
+                        </section>
+                    }
+
+                    <section className={`  
+                                        max-w-full
+                                        sm:col-span-2 
+                                        lg:col-span-1  
+                                        px-2 flex justify-center 
+                                        lg:max-h-[70vh] xl:max-h-[75vh] 2xl:max-h-[90vh] flex-grow
+                                        `}>
+                        <Container 
+                            titulo={`Situações de risco identificadas ${listRisks.length > 0? '(' + listRisks.length + ')' : ''}`}
+                        >
+                            <TooltipProvider>
+                                <CustomList.Container
+                                    data={listRisks}
+                                    emptyList={<CustomList.Empty text="Sua lista ainda está vazia"/>}
+                                    renderItemComponent={({key, item})=> (
+                                        <CustomList.Item key={key} item={item} index={key as number}>
+                                            <CustomList.ItemActions>
+                                                <MyDialog
+                                                    indexRisk={key as number}
+                                                    itemRisk={item}
+                                                    isEditableRisk={false}
+                                                    setIsEditableRisk={()=>{}} 
+                                                >
+                                                    <CustomList.ItemAction 
+                                                        icon={Edit} 
+                                                        className="border-[1px] bg-white hover:bg-lime-400"  
+                                                    />    
+                                                </MyDialog>
+
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <CustomList.ItemAction 
+                                                            icon={Trash2} 
+                                                            className="border-[1px] bg-inherit hover:bg-red-400" 
+                                                        />
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader className="p-0 m-[-12px]">
+                                                            <AlertDialogTitle className="flex items-center gap-2 text-base bg-gray-100 p-1 rounded-md"><AlertTriangle className="w-5 h-5 text-yellow-500" />Alerta</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                <p className="mt-4 text-gray-900">Esta ação não poderá ser desfeita. Isso excluirá permanentemente
+                                                                a situação de risco:</p> <br/>
+                                                                <p className="mb-4 p-2 border-[1px] text-black rounded-md"><i>{key as number}. {item.risco}.</i></p> <br/>
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter className="p-0 m-[-12px]">
+                                                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                            <AlertDialogAction className="bg-green-800 hover:bg-green-600" onClick={()=> {handleRemoveRiskOfList(key as number)}}>Prosseguir</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </CustomList.ItemActions>
+                                        </CustomList.Item>
+                                    )}
+                                >
+                                </CustomList.Container>
+                            </TooltipProvider>
+                        </Container>
+                    </section>
+                    {
+                        isLoadingReport && <LoadingIndicator text="Preparando o relatório..."/>
+                    }
+                </main>
+
+                <footer className={`flex flex-col h-auto bg-gray-100 p-6 gap-2 w-screen'}`}>
+                    <p className={`mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-sm`}>Esta ferramenta deve ser utilizada somente para auxílio na elaboração do relatório de inspeção de segurança do trabalho e não exclui a necessidade de avaliação de um profissional. As análises geradas por IA podem ser imprecisas.</p>
+                    <a 
+                        href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes"
+                        className={`flex gap-2 mx-auto max-w-md md:max-w-full my-auto text-center text-base md:text-md font-bold text-green-600 hover:text-green-400`}
+                        target="blank"
+                    >
+                        <ExternalLink /> Ministério do Trabalho e Emprego - Normas Regulamentadoras Vigentes
+                    </a>
+                </footer>
+            </div>
+        </TooltipProvider>
+    )
 }

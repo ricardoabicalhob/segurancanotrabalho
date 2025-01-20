@@ -91,8 +91,7 @@ export default function Home() {
             setIsLoadingPage(true)
 
             setTimeout(() => {
-                router.push('/testelayout')
-                // router.push('/editor')
+                router.push('/editor')
                 
                 setTimeout(() => {
                     setUploadedFile(null)
@@ -115,8 +114,7 @@ export default function Home() {
                 <div className="flex flex-col md:flex-row self-center gap-4 mb-4">
                         <Button 
                             className="bg-green-800 hover:bg-green-600 w-full md:w-fit"
-                            // onClick={()=> {router.push('/editor'); handleIsLoadingEditor()}}
-                            onClick={()=> {router.push('/testelayout'); handleIsLoadingEditor()}}
+                            onClick={()=> {router.push('/editor'); handleIsLoadingEditor()}}
                         >
                             Começar
                         </Button>
@@ -162,11 +160,11 @@ export default function Home() {
                     <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
 
                     <div className="flex flex-row flex-1">
-                        <p className="flex flex-col p-4 lg:p-0 text-md lg:text-sm font-medium">
-                            Após a identificação das situações de risco em campo, você pode:<br/><br/>
+                        <div className="flex flex-col p-4 lg:p-0 text-md lg:text-sm font-medium">
+                            <p>Após a identificação das situações de risco em campo, você pode:</p><br/>
                             <p><b>Utilizar a Inteligência Artificial Google Gemini</b> para auxiliar na análise de impactos e sugestão de medidas preventivas.</p><br/>
                             <p><b>Realizar uma análise própria</b>, baseada em sua experiência e conhecimento técnico.</p>
-                        </p>
+                        </div>
                     </div>
 
                     <Separator className="w-auto h-[2px] mx-5 lg:w-[2px] lg:h-auto" />
