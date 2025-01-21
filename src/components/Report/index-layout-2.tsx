@@ -154,85 +154,88 @@ export default function Report( { listRisks, inspectionInformations, onReadyRepo
                             </div>
                         ))
                     }
+
+                    {
+                        !hideChart &&
+                        <p className="font-bold mb-3 print:break-after-avoid">RESUMO GRÁFICO</p>
+                    }
+                    {
+                        !hideChart &&
+                        <div className="flex justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md print:break-inside-avoid">
+                            <div className="flex w-[30%]">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="w-[50%] text-center">Tipo de risco</TableHead>
+                                            <TableHead className="w-[50%] text-center">Quantidade</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {
+                                            removeEmptyDataChartGroups(dataChart)?.map((item, index)=> (
+                                                <TableRow key={index}>
+                                                    <TableCell className="font-medium">{item.tipo}</TableCell>
+                                                    <TableCell className="text-right">{item.quantidade}</TableCell>
+                                                </TableRow>
+                                            ))
+                                        }
+                                        <TableRow>
+                                            <TableCell className="font-bold">Total</TableCell>
+                                            <TableCell className="font-bold text-right">
+                                                {
+                                                    dataChart.reduce((acumulador, valorAtual)=> {
+                                                        return acumulador + valorAtual.quantidade
+                                                    }, 0)
+                                                }
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </div>
+
+                            <MyChart data={dataChart} />
+                        </div>
+                    }
+
+                    <p className="font-bold mb-3 print:break-after-avoid">CONCLUSÃO</p>
+                    <p className="text-justify print:break-inside-avoid">
+                        A inspeção realizada evidenciou a necessidade de melhorias nas condições de trabalho, com a identificação de 
+                        <i>
+                            <strong>
+                                {` ${listRisks.length} ${listRisks.length === 1? 'situação' : 'situações'}`} de risco
+                            </strong>
+                        </i> no local inspecionado. Os trabalhadores estão expostos a perigo(s) {removeEmptyDataChartGroups(dataChart).length > 1? 'dos tipos: ' : 'do tipo: '}
+                        <i>
+                            <strong>
+                                {removeEmptyDataChartGroups(dataChart).map((item, index)=> (
+                                    item.tipo.toLocaleLowerCase() + (index === removeEmptyDataChartGroups(dataChart).length -2? ' e ' : (index === removeEmptyDataChartGroups(dataChart).length - 1? '' : ', '))
+                                )).join(' ')}
+                            </strong>
+                        </i>. 
+                        É importante ressaltar que a prevenção de acidentes e doenças ocupacionais é fundamental para garantir a saúde e
+                        a segurança dos colaboradores. Diante do exposto, recomenda-se a adoção urgente das medidas corretivas propostas neste relatório, 
+                        visando eliminar ou minimizar os riscos identificados e promover um ambiente de trabalho seguro e saudável.
+                    </p>
+
+                    {
+                        !hideChart
+                        && <Separator className="my-4 h-1 break-before-avoid break-after-avoid"/>
+                    }
+
+                    <div className="px-24 py-3 mt-32 print:break-before-avoid print:break-inside-avoid">
+                        <Separator className="bg-black w-[70%] justify-self-center mb-3"/>
+                        <p className="text-sm text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
+                        <p className="text-sm text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
+                        <p className="text-sm text-center antialiased font-bold">Responsável pela inspeção</p>
+                    </div>
+
+                    <div className=" flex flex-row gap-2 py-10">
+                    </div>
                     
                 </div>
             }
 
-            {
-                !hideChart &&
-                <p className="w-[910px] font-bold mb-3 print:break-after-avoid">RESUMO GRÁFICO</p>
-            }
-            {
-                !hideChart &&
-                <div className="flex w-[910px] justify-between items-center border-2 px-10 gap-10 mb-16 rounded-md print:break-inside-avoid">
-                    <div className="flex w-[30%]">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[50%] text-center">Tipo de risco</TableHead>
-                                    <TableHead className="w-[50%] text-center">Quantidade</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {
-                                    removeEmptyDataChartGroups(dataChart)?.map((item, index)=> (
-                                        <TableRow key={index}>
-                                            <TableCell className="font-medium">{item.tipo}</TableCell>
-                                            <TableCell className="text-right">{item.quantidade}</TableCell>
-                                        </TableRow>
-                                    ))
-                                }
-                                <TableRow>
-                                    <TableCell className="font-bold">Total</TableCell>
-                                    <TableCell className="font-bold text-right">
-                                        {
-                                            dataChart.reduce((acumulador, valorAtual)=> {
-                                                return acumulador + valorAtual.quantidade
-                                            }, 0)
-                                        }
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
-
-                    <MyChart data={dataChart} />
-                </div>
-            }
-
-            <p className="w-[910px] font-bold mb-3 print:break-after-avoid">CONCLUSÃO</p>
-            <p className="text-justify w-[900px] print:break-inside-avoid">
-                A inspeção realizada evidenciou a necessidade de melhorias nas condições de trabalho, com a identificação de 
-                <i>
-                    <strong>
-                        {` ${listRisks.length} ${listRisks.length === 1? 'situação' : 'situações'}`} de risco
-                    </strong>
-                </i> no local inspecionado. Os trabalhadores estão expostos a perigo(s) {removeEmptyDataChartGroups(dataChart).length > 1? 'dos tipos: ' : 'do tipo: '}
-                <i>
-                    <strong>
-                        {removeEmptyDataChartGroups(dataChart).map((item, index)=> (
-                            item.tipo.toLocaleLowerCase() + (index === removeEmptyDataChartGroups(dataChart).length -2? ' e ' : (index === removeEmptyDataChartGroups(dataChart).length - 1? '' : ', '))
-                        )).join(' ')}
-                    </strong>
-                </i>. 
-                É importante ressaltar que a prevenção de acidentes e doenças ocupacionais é fundamental para garantir a saúde e
-                a segurança dos colaboradores. Diante do exposto, recomenda-se a adoção urgente das medidas corretivas propostas neste relatório, 
-                visando eliminar ou minimizar os riscos identificados e promover um ambiente de trabalho seguro e saudável.
-            </p>
-
-            {
-                !hideChart
-                && <Separator className="w-[910px] my-4 h-1 break-before-avoid break-after-avoid"/>
-            }
-
-            <div className="border-t-2 px-24 py-3 mt-32 border-gray-500 print:break-before-avoid print:break-inside-avoid">
-                <p className="text-sm text-center antialiased font-normal">{inspectionInformations.responsavelPelaInspecao}</p>
-                <p className="text-sm text-center antialiased font-normal">{`${inspectionInformations.funcaoResponsavelPelaInspecao} / IF: ${inspectionInformations.matriculaResponsavelPelaInspecao}`}</p>
-                <p className="text-sm text-center antialiased font-bold">Responsável pela inspeção</p>
-            </div>
-
-            <div className=" flex flex-row gap-2 py-10">
-            </div>    
+                
         </div>
     )
 }
