@@ -67,7 +67,7 @@ export default function Home() {
             const currentUrl = window.location.href
             if(currentUrl === initialUrl) {
                 if(window.confirm('Todo o preenchimento do relatório será perdido! Tem certeza que deseja sair?')) {
-
+                    router.back()
                 }else {
                     window.history.go(1)
                 }
