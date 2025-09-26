@@ -3,17 +3,17 @@ import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 export async function GenerateAI( req :string ) {
     try {
         const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY
-        const genAI = new GoogleGenerativeAI(apiKey)
+        const genAI = new GoogleGenerativeAI(apiKey || "")
 
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash"
+            model: "gemini-2.5-flash"
         })
 
         const generationConfig = {
-            temperature: 1,
+            temperature: 0.7,
             topP: 0.95,
             topK: 40,
-            maxOutputTokens: 300,
+            maxOutputTokens: 1024,
             responseMimeType: "application/json",
             responseSchema: {
                 type: SchemaType.OBJECT,
