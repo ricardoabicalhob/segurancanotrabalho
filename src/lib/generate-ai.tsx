@@ -69,7 +69,8 @@ export async function GenerateAI( req :string ) {
                             4 das principais consequencias que a exposição ao risco pode trazer para funcionário. As cores atribuídas
                             aos grupos de risco devem estar de acordo com o padrão: verde para risco tipo Físico, vermelho para risco tipo Químico, 
                             laranja para risco tipo Biológico, amarelo para risco tipo Ergonômico e azul para risco tipo Acidente. Recomende 
-                            no MÍNIMO 1 e no MÁXIMO 4 ações preventivas e/ou corretivas para o risco identificado.`
+                            no MÍNIMO 1 e no MÁXIMO 4 ações preventivas e/ou corretivas para o risco identificado. Responda EXCLUSIVAMENTE com o objeto JSON solicitado,
+                            sem qualquer alteração no risco enviado como prompt.`
 
         const prompt = req
         
